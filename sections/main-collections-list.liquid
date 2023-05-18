@@ -1,0 +1,178 @@
+<section data-component="main-collections-list" data-component-type="section" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="main-collections-list">
+  {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    <section-wrapper>
+      <section-header>
+        <div class="main-collections-list__header">
+          {% if section.settings.heading != blank %}
+            <h1 class="main-collections-list__heading">{{ section.settings.heading | escape }}</h1>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p class="main-collections-list__subheading">
+              {{ section.settings.subheading | escape }}
+            </p>
+          {% endif %}
+        </div>
+      </section-header>
+    </section-wrapper>
+  {% endif %}
+  <section-wrapper>
+    <section-content>
+      {% if section.settings.display_type == 'all' %}
+        {% paginate collections by 24 %}
+          <div class="main-collections-list__container">
+            {% for collection in collections %}
+              {% comment %}Component collection-card:default:1.0.0-pre.10 begin{% endcomment %}
+              {% render 'collection-card', collection: collection %}
+              {% comment %}Component collection-card:default:1.0.0-pre.10 end{% endcomment %}
+            {% endfor %}
+          </div>
+          {% comment %}Component pagination:default:1.0.0-pre.10 begin{% endcomment %}
+          {% render 'pagination', paginate: paginate %}
+          {% comment %}Component pagination:default:1.0.0-pre.10 end{% endcomment %}
+        {% endpaginate %}
+      {% else %}
+        <div class="main-collections-list__container">
+          {% for block in section.blocks %}
+            {% comment %}Component block-collection-card:default:1.0.0-pre.10 begin{% endcomment %}
+            {%- comment -%}
+              @param aspect_ratio [Optional]
+                The aspect ratio for the image. Defaults to: `natural`
+            {%- endcomment -%}
+            
+            <div data-component="block-collection-card" data-component-type="block" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="block-collection-card" {{ block.shopify_attributes }}>
+              {% comment %}Component collection-card:default:1.0.0-pre.10 begin{% endcomment %}
+              {% render 'collection-card', collection: block.settings.collection, use_custom_image: block.settings.use_custom_image, custom_image: block.settings.custom_image %}
+              {% comment %}Component collection-card:default:1.0.0-pre.10 end{% endcomment %}
+            </div>
+            
+            {% comment %}Component block-collection-card:default:1.0.0-pre.10 end{% endcomment %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </section-content>
+  </section-wrapper>
+</section>
+{% schema %}
+{
+  "name": "Collections list page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Help guide customers to the products they’re looking for by featuring collections on your collections list page."
+    },
+    {
+      "type": "paragraph",
+      "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+    },
+    {
+      "type": "radio",
+      "id": "display_type",
+      "label": "Select collections to show",
+      "options": [
+        {
+          "value": "all",
+          "label": "All"
+        },
+        {
+          "value": "selected",
+          "label": "Selected"
+        }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "header",
+      "content": "Collection card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "collection_card_media_ratio",
+      "label": "Media aspect ratio",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (3:2)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (2:3)"
+        }
+      ],
+      "default": "natural"
+    },
+    {
+      "type": "select",
+      "id": "collection_card_crop_mode",
+      "label": "Image crop mode",
+      "info": "This will have no effect when media aspect ratio is set to \"Natural\".",
+      "options": [
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "fit",
+          "label": "Fit"
+        }
+      ],
+      "default": "fill"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_image",
+          "label": "Use custom image"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

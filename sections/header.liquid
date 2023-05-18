@@ -1,0 +1,2995 @@
+{% liquid
+  assign nav_position = section.settings.nav_position | default: 'left-left'
+  assign sticky = section.settings.header_sticky | default: false
+  assign show_border = section.settings.show_border | default: false
+  assign logo = section.settings.header_logo | default: false
+  assign logo_mobile = section.settings.mobile_header_logo | default: false
+  assign logo_width = section.settings.logo_width | default: '300'
+  assign logo_width_mobile = section.settings.logo_width_mobile | default: logo_width
+  assign logo_width_size = section.settings.logo_width | append: 'x'
+  assign logo_width_mobile_size = section.settings.logo_width_mobile | append: 'x'
+  assign show_account = section.settings.show_account | default: true
+  assign announcement_blocks = section.blocks | where: 'type', 'announcement'
+  assign show_header_toolbar = false
+%}
+
+<section
+  data-component="header"
+  data-component-type="section"
+  {% if tag != blank %}data-component-tag="{{ tag }}"
+  {% endif %}class="header header--nav-position-{{ nav_position }}"
+  data-header-section
+  data-is-sticky="{{ sticky }}"
+  data-show-separator="{{ show_border }}"
+  tabindex="-1"
+>
+  {% if sticky %}
+    <style>
+      .section-header {
+        position: sticky;
+        top: calc(var(--announcement-height, 0px) * -1);
+      }
+    </style>
+  {% endif %}
+  <script
+  type="application/json"
+  data-component-data
+  >
+    {
+      "settings": {
+        "sticky": {{ sticky | json }},
+        "show_border": {{ show_border | json }},
+        "announcement_blocks_size": {{ announcement_blocks.size | json }},
+        "enable_live_search": {{ settings.enable_live_search | json }}
+      }
+    }
+  </script>
+
+  <section-wrapper width="wide">
+    {% if announcement_blocks.size > 0
+      or section.settings.enable_language_selector
+      or section.settings.enable_country_selector
+    %}
+      {% assign show_header_toolbar = true %}
+    {% elsif section.settings.show_social_icons %}
+      {% if settings.social_twitter_link != blank
+        or settings.social_facebook_link != blank
+        or settings.social_pinterest_link != blank
+        or settings.social_instagram_link != blank
+        or settings.social_tiktok_link != blank
+        or settings.social_tumblr_link != blank
+        or settings.social_snapchat_link != blank
+        or settings.social_youtube_link != blank
+        or settings.social_vimeo_link != blank
+      %}
+        {% assign show_header_toolbar = true %}
+      {% endif %}
+    {% endif %}
+    {% if show_header_toolbar %}
+      {% comment %}Component header-toolbar:default:1.0.0-pre.10 begin{% endcomment %}
+      {% assign announcement_blocks = section.blocks | where: 'type', 'announcement' %}
+      
+      <div
+        data-component="header-tool-bar"
+        data-component-type="component"
+        {% if tag != blank %}data-component-tag="{{ tag }}"
+        {% endif %}class="
+          header-toolbar
+          {% if section.blocks.size == 0 %}
+            header-toolbar--no-mobile-content
+          {% endif %}
+        "
+        style="
+          --toolbar-text-color: {{ section.settings.toolbar_text_color }};
+          --toolbar-text-color-transparent: {{ section.settings.toolbar_text_color | color_modify: 'alpha', 0.15 }};
+          --toolbar-bg-color: {{ section.settings.toolbar_bg_color }};
+        "
+      >
+        <script
+          type="application/json"
+          data-component-data
+        >
+          {
+            "settings": {
+              "block_size": {{ announcement_blocks.size | json }}
+            }
+          }
+        </script>
+        <div class="header-toolbar__content">
+          <div class="header-toolbar__content-links">
+            {% if section.settings.show_social_icons %}
+              {% comment %}Component social-media-links:default:1.0.0-pre.10 begin{% endcomment %}
+              {% comment %}
+                @param use_mobile_spacing {Boolean}} [Optional]
+                  Changes the spacing to allow for bigger touch targets on mobile if true.
+              {% endcomment %}
+              
+              {% assign use_mobile_spacing = use_mobile_spacing | default: false %}
+              
+              <ul data-component="social-media-links" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="social-media-links {% if use_mobile_spacing %}social-media-links--mobile-spacing{% endif %}">
+                {% if settings.social_facebook_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_facebook_link }}"
+                      aria-label="{{ shop.name }} on Facebook"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon facebook:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.591.077a7.981 7.981 0 0 0-5.247 2.329A7.925 7.925 0 0 0 .392 5.573a8 8 0 0 0 .248 5.604c.072.17.254.543.347.71.243.44.542.876.862 1.258a7.984 7.984 0 0 0 4.886 2.78l.016.002v-5.576H4.719V8.04H6.75L6.753 7c.003-1.107.002-1.082.04-1.341.138-.952.594-1.67 1.327-2.084.336-.19.758-.319 1.211-.369.46-.05 1.219-.012 2.02.102l.212.03c.002 0 .003.441.003.982v.983l-.598.003c-.64.003-.669.005-.838.044-.437.101-.728.384-.832.806-.041.17-.042.185-.042 1.07v.814h1.106c.999 0 1.107.002 1.107.012 0 .013-.343 2.244-.35 2.279l-.004.02H9.256v5.573l.04-.005a7.9 7.9 0 0 0 2.286-.738 8.013 8.013 0 0 0 3.837-4.142c.33-.813.517-1.647.572-2.561.012-.186.012-.679 0-.864a7.95 7.95 0 0 0-.497-2.37A8.02 8.02 0 0 0 10.9.607 8.088 8.088 0 0 0 8.532.084a16.32 16.32 0 0 0-.941-.007Z" fill="currentColor"/></svg>
+                      {% comment %}Icon facebook:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_twitter_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_twitter_link }}"
+                      aria-label="{{ shop.name }} on Twitter"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon twitter:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.71 2.01a3.343 3.343 0 0 0-1.73.735 3.285 3.285 0 0 0-1.152 1.99c-.055.304-.047.841.018 1.148a.44.44 0 0 1 .015.114c-.005.004-.108 0-.231-.01a9.372 9.372 0 0 1-5.3-2.155 13.8 13.8 0 0 1-1.23-1.23c-.022-.009-.209.393-.277.597-.305.912-.196 1.9.3 2.722.229.378.494.663.926.993l.047.036-.133-.01A3.245 3.245 0 0 1 .79 6.624l-.16-.078c-.02-.008 0 .32.03.526C.852 8.35 1.824 9.43 3.069 9.745c.08.02.145.041.145.046 0 .01-.174.05-.344.077a4.07 4.07 0 0 1-1.012-.01l-.083-.01.041.114c.066.184.229.505.346.682.569.856 1.481 1.384 2.535 1.469l.133.01-.055.046c-.083.07-.567.388-.74.486a6.683 6.683 0 0 1-2.605.825 8.518 8.518 0 0 1-1.237.008A1.268 1.268 0 0 0 0 13.475c-.01.01.368.233.627.37a9.49 9.49 0 0 0 3.007.99c.74.111 1.634.132 2.406.056 2.116-.208 3.968-1.052 5.45-2.484 1.532-1.48 2.55-3.533 2.82-5.684a7.65 7.65 0 0 0 .063-1.066v-.444l.085-.06c.258-.186.66-.547.905-.814.24-.26.67-.808.635-.808-.005 0-.123.045-.262.1a6.1 6.1 0 0 1-.843.266c-.224.055-.688.138-.717.128-.009-.003.032-.037.09-.076.455-.3.851-.748 1.1-1.24.098-.196.198-.446.184-.46a.462.462 0 0 0-.133.062 6.79 6.79 0 0 1-1.724.664l-.215.05-.162-.155a3.296 3.296 0 0 0-1.72-.839 5.271 5.271 0 0 0-.885-.02Z" fill="currentColor"/></svg>
+                      {% comment %}Icon twitter:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_instagram_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_instagram_link }}"
+                      aria-label="{{ shop.name }} on Instagram"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon instagram:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.121.005c-.523.02-1.155.082-1.478.144C1.775.507.505 1.777.148 3.644.012 4.356 0 4.704 0 8.001s.012 3.644.148 4.356c.357 1.867 1.628 3.138 3.495 3.495.712.136 1.06.148 4.357.148 3.298 0 3.645-.012 4.357-.148 1.867-.357 3.138-1.628 3.495-3.495.136-.712.148-1.059.148-4.356 0-3.298-.012-3.645-.148-4.357C15.493 1.77 14.214.497 12.34.147 11.655.02 11.387.01 8.334.002a281.625 281.625 0 0 0-3.213.003Zm6.505 1.503c.652.085 1.14.23 1.517.452.238.14.758.66.898.898.232.395.373.882.454 1.564.06.504.06 6.653 0 7.157-.08.682-.222 1.17-.454 1.564-.14.239-.66.758-.898.898-.395.232-.882.373-1.565.454-.503.06-6.653.06-7.157 0-.682-.08-1.169-.222-1.564-.454-.238-.14-.758-.66-.898-.898-.232-.395-.373-.882-.454-1.564-.06-.504-.06-6.653 0-7.157.058-.491.122-.783.242-1.103.137-.366.275-.59.54-.875.591-.636 1.265-.892 2.532-.963.692-.039 6.48-.015 6.807.027Zm.334 1.298c-.238.082-.526.38-.602.626a.968.968 0 0 0 1.211 1.21c.264-.081.547-.364.63-.629a.997.997 0 0 0-.048-.701 1.217 1.217 0 0 0-.496-.48 1.157 1.157 0 0 0-.695-.026Zm-4.342 1.09A4.14 4.14 0 0 0 5.09 5.091a4.113 4.113 0 0 0 1.661 6.833 4.147 4.147 0 0 0 2.498 0 4.138 4.138 0 0 0 2.675-2.675 4.147 4.147 0 0 0 0-2.497 4.138 4.138 0 0 0-2.675-2.675 4.387 4.387 0 0 0-1.63-.18Zm1.018 1.516c.29.07.806.327 1.043.522.294.24.532.545.707.906.21.437.265.673.265 1.16 0 .488-.054.725-.265 1.162a2.51 2.51 0 0 1-1.225 1.223c-.436.212-.673.266-1.161.266s-.725-.054-1.161-.265a2.51 2.51 0 0 1-1.225-1.224 3.556 3.556 0 0 1-.21-.541c-.075-.304-.075-.937 0-1.24.078-.309.333-.82.529-1.06a2.773 2.773 0 0 1 1.69-.96 3.472 3.472 0 0 1 1.013.05Z" fill="currentColor"/></svg>
+                      {% comment %}Icon instagram:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_pinterest_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_pinterest_link }}"
+                      aria-label="{{ shop.name }} on Pinterest"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon pinterest:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 .587a7.485 7.485 0 0 1 5.244 2.178 7.484 7.484 0 0 1 1.182 8.96A7.36 7.36 0 0 1 8 15.422a7.558 7.558 0 0 1-2.107-.284c.373-.604.622-1.147.756-1.6l.524-2.036c.125.25.364.463.711.65a2.41 2.41 0 0 0 1.102.275c.774 0 1.467-.222 2.08-.667a4.329 4.329 0 0 0 1.423-1.822 6.49 6.49 0 0 0 .497-2.604c0-1.156-.444-2.143-1.324-2.987a4.684 4.684 0 0 0-3.378-1.271c-.827 0-1.6.142-2.293.426a4.649 4.649 0 0 0-2.996 4.214c0 .666.125 1.253.382 1.76.25.498.623.853 1.13 1.066.088.036.168.036.23 0 .063-.026.107-.088.134-.177l.16-.605c.044-.133.018-.266-.098-.4a2.089 2.089 0 0 1-.507-1.449 3.52 3.52 0 0 1 3.68-3.573c.97 0 1.725.267 2.258.791.542.533.818 1.218.818 2.062a6.28 6.28 0 0 1-.293 1.965 3.528 3.528 0 0 1-.827 1.44c-.356.355-.773.533-1.244.533-.383 0-.694-.133-.943-.418a1.098 1.098 0 0 1-.23-1.004c.135-.475.274-.95.417-1.422l.16-.65c.053-.23.08-.417.08-.577 0-.32-.089-.587-.249-.791-.178-.205-.418-.311-.738-.311-.4 0-.738.178-1.004.55-.267.365-.41.828-.41 1.388.005.346.06.69.16 1.022l.054.133c-.533 2.293-.844 3.645-.96 4.036-.106.488-.142 1.066-.115 1.724a7.467 7.467 0 0 1-4.445-6.8c0-2.044.72-3.804 2.17-5.244A7.147 7.147 0 0 1 8 .578v.009Z" fill="currentColor"/></svg>
+                      {% comment %}Icon pinterest:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_youtube_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_youtube_link }}"
+                      aria-label="{{ shop.name }} on YouTube"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon youtube:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.68 4.729C16 5.939 16 8.5 16 8.5s0 2.561-.32 3.771c-.09.341-.27.652-.523.901a2.01 2.01 0 0 1-.917.514C13.008 14 8 14 8 14s-5.008 0-6.24-.314a2.01 2.01 0 0 1-.917-.514 1.956 1.956 0 0 1-.523-.9C0 11.061 0 8.5 0 8.5s0-2.561.32-3.771a2.027 2.027 0 0 1 1.44-1.415C2.992 3 8 3 8 3s5.008 0 6.24.314a2.027 2.027 0 0 1 1.44 1.415ZM6.4 10.857 10.56 8.5 6.4 6.143v4.714Z" fill="currentColor"/></svg>
+                      {% comment %}Icon youtube:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_vimeo_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_vimeo_link }}"
+                      aria-label="{{ shop.name }} on Vimeo"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon vimeo:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.994 4.236c-.08 1.568-1.167 3.717-3.262 6.465C10.556 13.56 8.716 15 7.197 15c-.927 0-1.71-.873-2.35-2.618L3.55 7.598C3.07 5.852 2.559 4.98 2.015 4.98c-.128 0-.544.258-1.263.76L0 4.77l2.335-2.102c1.056-.937 1.84-1.422 2.367-1.454 1.248-.146 2.016.71 2.304 2.553.32 1.988.527 3.233.64 3.718.367 1.648.751 2.472 1.183 2.472.336 0 .848-.533 1.52-1.616a6.368 6.368 0 0 0 1.071-2.424c.096-.937-.272-1.406-1.072-1.406a2.93 2.93 0 0 0-1.183.275c.783-2.603 2.287-3.863 4.494-3.782 1.648.048 2.415 1.131 2.335 3.232Z" fill="currentColor"/></svg>
+                      {% comment %}Icon vimeo:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_tiktok_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_tiktok_link }}"
+                      aria-label="{{ shop.name }} on TikTok"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon tiktok:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.423 0h2.738s-.156 3.51 3.796 3.768v2.711s-2.114.129-3.796-1.158l.028 5.606a5.073 5.073 0 1 1-5.064-5.073h.708V8.64a2.298 2.298 0 1 0 1.617 2.205L8.423 0Z" fill="currentColor"/></svg>
+                      {% comment %}Icon tiktok:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_snapchat_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_snapchat_link }}"
+                      aria-label="{{ shop.name }} on Snapchat"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon snapchat:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.945 11.241a.982.982 0 0 0-.493-.534l-.107-.058-.193-.098a4.203 4.203 0 0 1-1.527-1.329 3.013 3.013 0 0 1-.261-.472c-.029-.087-.029-.138-.008-.181a.26.26 0 0 1 .086-.091c.21-.144.42-.286.633-.425.237-.158.433-.37.572-.621a1.236 1.236 0 0 0-.032-1.229 1.21 1.21 0 0 0-.458-.434 1.187 1.187 0 0 0-.611-.142c-.143 0-.284.02-.422.058.004-.327 0-.675-.032-1.013a3.855 3.855 0 0 0-.56-1.797 3.781 3.781 0 0 0-1.34-1.304A4.31 4.31 0 0 0 7.998 1c-.804 0-1.537.192-2.192.57a3.766 3.766 0 0 0-1.342 1.303 3.84 3.84 0 0 0-.56 1.798c-.029.341-.036.69-.029 1.013a1.579 1.579 0 0 0-.429-.058 1.19 1.19 0 0 0-.61.144 1.213 1.213 0 0 0-.456.434 1.238 1.238 0 0 0-.035 1.227c.14.252.337.466.575.624l.326.218.297.196a.303.303 0 0 1 .092.099c.026.047.026.098-.007.192a2.95 2.95 0 0 1-.26.465c-.385.55-.892.997-1.481 1.307-.34.182-.69.302-.837.708-.11.309-.036.661.247.955.103.11.221.204.357.276.276.153.569.273.873.356a.57.57 0 0 1 .179.08c.103.091.086.229.225.436.072.102.157.193.257.265.29.204.616.218.959.229.311.01.661.025 1.066.16.168.054.34.163.54.29.66.465 1.443.713 2.245.712 1.102 0 1.767-.414 2.253-.715.167-.115.346-.212.533-.287.4-.135.751-.146 1.066-.16.343-.015.668-.025.958-.229a.985.985 0 0 0 .293-.327c.1-.17.097-.29.19-.374a.485.485 0 0 1 .164-.076 3.86 3.86 0 0 0 .887-.36 1.42 1.42 0 0 0 .38-.297l.003-.004c.268-.29.336-.632.225-.93h-.004Zm-.98.534c-.6.334-.997.302-1.305.501-.264.175-.107.545-.3.676-.232.167-.93-.011-1.824.29-.736.247-1.208.963-2.539.963-1.326 0-1.788-.712-2.539-.966-.894-.298-1.587-.124-1.824-.29-.189-.132-.035-.502-.296-.673-.311-.203-.708-.167-1.306-.5-.382-.215-.164-.346-.039-.408 2.167-1.067 2.514-2.712 2.528-2.832.018-.15.04-.265-.121-.418-.154-.145-.84-.574-1.034-.712-.314-.221-.45-.446-.35-.719.071-.192.247-.261.429-.261.057 0 .114.007.172.018.346.076.683.254.876.301l.071.008c.108 0 .143-.051.136-.171-.025-.385-.079-1.137-.018-1.838a2.93 2.93 0 0 1 .751-1.863A3.35 3.35 0 0 1 6.6 2.058a3.306 3.306 0 0 1 1.397-.259c1.567 0 2.389.875 2.564 1.079.461.51.728 1.17.751 1.863.061.7.007 1.452-.018 1.834-.007.127.032.174.136.174.022 0 .047 0 .072-.01.193-.048.529-.222.876-.299a.67.67 0 0 1 .172-.018c.182 0 .357.073.429.262.1.272-.036.497-.354.719-.19.134-.877.566-1.03.712-.161.152-.143.268-.122.414.014.127.358 1.772 2.528 2.832.13.066.344.2-.035.414Z" fill="currentColor" stroke="currentColor" stroke-width=".5"/></svg>
+                      {% comment %}Icon snapchat:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_tumblr_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_tumblr_link }}"
+                      aria-label="{{ shop.name }} on Tumblr"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon tumblr:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.062 16c-2.66 0-4.656-1.235-4.656-4.198V7.06H3V4.49C5.66 3.867 6.77 1.788 6.902 0h2.761v4.068h3.215V7.06H9.663v4.128c0 1.235.687 1.667 1.785 1.667H13V16h-2.938Z" fill="currentColor"/></svg>
+                      {% comment %}Icon tumblr:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+              
+              {% comment %}Component social-media-links:default:1.0.0-pre.10 end{% endcomment %}
+            {% endif %}
+          </div>
+          {% if announcement_blocks.size > 0 %}
+            <div
+              class="header-toolbar__content-announcement"
+              data-announcement-slider
+            >
+              <ul
+                class="header-toolbar__slides"
+                aria-label="{{ section.slideshow.title | t }}"
+                tabindex="0"
+                data-header-toolbar-list
+              >
+                {% for block in announcement_blocks %}
+                  {% if block.settings.text != '' %}
+                    {% comment %}Component block-announcement:default:1.0.0-pre.10 begin{% endcomment %}
+                    <li
+                      data-component="block-announcement"
+                      data-component-type="block"
+                      {% if tag != blank %}data-component-tag="{{ tag }}"
+                      {% endif %}id="header-toolbar-{{ section.id }}-slide-{{ forloop.index }}"
+                      class="block-announcement"
+                      data-announcement-block
+                      data-slide-index="{{ forloop.index }}"
+                      {{ block.shopify_attributes }}
+                    >
+                    
+                      {% assign url = block.settings.url %}
+                      {% unless url == nil or block.settings.text contains '</a>' %}
+                        <a class="block-announcement__link" href="{{ url }}">
+                      {% endunless %}
+                    
+                        {{ block.settings.text }}
+                    
+                      {% unless url == nil or block.settings.text contains '</a>' %}
+                        </a>
+                      {% endunless %}
+                    </li>
+                    
+                    {% comment %}Component block-announcement:default:1.0.0-pre.10 end{% endcomment %}
+                  {% endif %}
+                {% endfor %}
+              </ul>
+              {% if announcement_blocks.size > 1 %}
+                <div
+                  class="header-toolbar__controls"
+                  data-header-toolbar-controls
+                >
+                  <a
+                    class="header-toolbar__controls-button"
+                    href="#header-toolbar-{{ section.id }}-slide"
+                    aria-label="{{ general.accessibility.previous_slide | t }}"
+                    {% if forloop.index == 1 %}data-active="true"{% endif %}
+                    data-header-toolbar-direction="previous"
+                    data-header-toolbar-control-button
+                  >
+                    {% comment %}Icon chevron-small:default:1.0.0-pre.0 begin{% endcomment %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"><path stroke="currentColor" stroke-width="1.75" d="m1 5 7 7 7-7"/></svg>
+                    {% comment %}Icon chevron-small:default:1.0.0-pre.0 end{% endcomment %}
+                  </a>
+                  <a
+                    class="header-toolbar__controls-button"
+                    href="#header-toolbar-{{ section.id }}-slide"
+                    aria-label="{{ general.accessibility.next_slide | t }}"
+                    {% if forloop.index == 1 %}data-active="true"{% endif %}
+                    data-header-toolbar-direction="next"
+                    data-header-toolbar-control-button
+                  >
+                    {% comment %}Icon chevron-small:default:1.0.0-pre.0 begin{% endcomment %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"><path stroke="currentColor" stroke-width="1.75" d="m1 5 7 7 7-7"/></svg>
+                    {% comment %}Icon chevron-small:default:1.0.0-pre.0 end{% endcomment %}
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+      
+          <div class="header-toolbar__content-cross-border">
+            {% comment %}Component cross-border:default:1.0.0-pre.10 begin{% endcomment %}
+            <div data-component="cross-border" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="cross-border">
+              {% if section.settings.enable_language_selector and localization.available_languages.size > 1 %}
+                {%- form 'localization', data-cross-border-form: '' -%}
+                  {% capture current_name %}
+                    {{ form.current_locale.endonym_name | capitalize }}
+                  {% endcapture %}
+            
+                  {% assign heading = 'general.components.cross_border.language_dropdown_label' | t %}
+                  {% assign button_label = 'general.components.cross_border.language_submit_button_label' | t %}
+                  {% comment %}Component disclosure:default:1.0.0-pre.10 begin{% endcomment %}
+                  {% liquid
+                    assign namespace_185548cb = namespace
+                    assign namespace = 'lang'
+                    assign value_list_185548cb = value_list
+                    assign value_list = form.available_locales
+                    assign value_key_185548cb = value_key
+                    assign value_key = 'iso_code'
+                    assign name_key_185548cb = name_key
+                    assign name_key = 'endonym_name'
+                    assign current_value_185548cb = current_value
+                    assign current_value = form.current_locale.iso_code
+                    assign input_name_185548cb = input_name
+                    assign input_name = 'locale_code'
+                  %}
+                  {%- comment -%}
+                    @param namespace [Required]
+                      The namespace that is used for aria-attributes.
+                  
+                    @param heading [Required]
+                      The heading/text that is shown when opening the disclosure on mobile. Also used by screen readers to describe the contents of the disclosure.
+                  
+                    @param button_label [Optional]
+                      Label for the no-js button.
+                  
+                    @param current_value [Required]
+                      The currently selected value.
+                  
+                    @param value_list [Required]
+                      The object that contains the list items to be rendered.
+                  
+                    @param value_key [Required]
+                      The key that is used while looping over value_list to access the value of the item.
+                  
+                    @param name_key [Required - unless using is_country_selector]
+                      The key that is used while looping over value_list to access the display name of the item.
+                  
+                    @param is_country_selector [Optional]
+                      If true, this disclosure uses the fields for country localization (instead of making an entirely new component just for currency)
+                  
+                    @param input_name [Optional]
+                      Used to specify the "name" attribute for the <input> element.
+                  
+                    @param fill_container [Optional]
+                      If true, the disclocure toggle button will fill its parent container.
+                  
+                    @param always_show_heading [Optional]
+                      If true, will always show the heading inside the button, instead of the selected value.
+                  {%- endcomment -%}
+                  
+                  {% liquid
+                    assign is_country_selector = is_country_selector | default: false
+                    assign always_show_heading = always_show_heading | default: false
+                  
+                    assign current_name = blank
+                    if is_country_selector
+                      assign current_name = localization.country.name | append: ' (' | append: localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol | append: ')'
+                    else
+                      for value_item in value_list
+                        if value_item[value_key] == current_value
+                          assign current_name = value_item[name_key]
+                        endif
+                      endfor
+                    endif
+                  %}
+                  
+                  <div data-component="disclosure" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="disclosure{% if fill_container %} disclosure--fill{% endif %}">
+                    <script
+                      type="application/json"
+                      data-component-data
+                    >
+                      {
+                        "inputName": "{{ input_name }}",
+                        "inputValue": "{{ current_value }}",
+                        "alwaysShowHeading": {{ always_show_heading }}
+                      }
+                    </script>
+                    <noscript>
+                      <div class="disclosure__select-list">
+                        <label class="visually-hidden" for="{{ namespace }}-select-{{ unique_id }}">
+                          {{ heading | escape }}
+                        </label>
+                        <select
+                          class="disclosure__select"
+                          id="{{ namespace }}-select-{{ unique_id }}"
+                          name="{{ input_name }}"
+                        >
+                          {% for value_item in value_list %}
+                            <option
+                              class="disclosure__option"
+                              value="{{ value_item[value_key] }}"
+                              {% if value_item[value_key] == current_value %}
+                                selected
+                              {% endif %}
+                            >
+                              {% if is_country_selector %}
+                                {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                              {% else %}
+                                {{ value_item[name_key] }}
+                              {% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign style_9829271c = style
+                          assign style = 'primary'
+                          assign size_9829271c = size
+                          assign size = 'small'
+                          assign text_9829271c = text
+                          assign text = button_label
+                        %}
+                        {% comment %}
+                          @param style [Required]
+                            This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                        
+                          @param size [Required]
+                            This defines the size of the button: small, medium, or large. Default medium.
+                        
+                          @param text [Required]
+                            This is the text to be included in the button.
+                        
+                          @param attributes [Optional]
+                            This will include any additional attributes that the button needs. For example, aria-controls.
+                        {% endcomment %}
+                        
+                        <button
+                          data-component="button"
+                          data-component-type="component"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                          {{ attributes }}
+                        >
+                          {{ text }}
+                        </button>
+                        
+                        {% liquid
+                          assign style = style_9829271c
+                          assign style_9829271c = nil
+                          assign size = size_9829271c
+                          assign size_9829271c = nil
+                          assign text = text_9829271c
+                          assign text_9829271c = nil
+                        %}
+                        {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                      </div>
+                    </noscript>
+                  
+                    <div class="disclosure__wrapper disclosure--no-js-hidden">
+                      {% assign unique_id = "now" | date: "%N" | modulo: 1000 %}
+                      <h2 class="visually-hidden" id="{{ namespace }}-heading-{{ unique_id }}">
+                        {{ heading | escape }}
+                      </h2>
+                      <button
+                        class="disclosure__toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="{{ namespace }}-list-{{ unique_id }}"
+                        aria-describedby="{{ namespace }}-heading-{{ unique_id }}"
+                        data-disclosure-toggle
+                      >
+                        {% if always_show_heading %}
+                          {{ heading }}
+                        {% else %}
+                          {{ current_name }}
+                        {% endif %}
+                      </button>
+                      <div
+                        class="disclosure__modal"
+                        id="{{ namespace }}-list-{{ unique_id }}"
+                        data-disclosure-modal
+                      >
+                        <h2 class="disclosure__heading">{{ heading }}</h2>
+                        <button
+                          class="disclosure__close"
+                          data-disclosure-close
+                        >
+                          <span class="visually-hidden">{{ 'general.close' | t }}</span>
+                        </button>
+                        <ul class="disclosure__list">
+                          {% for value_item in value_list %}
+                            <li class="disclosure__list-item">
+                              <a
+                                class="
+                                  disclosure__link
+                                  {% if value_item[value_key] == current_value %}disclosure__link--selected{% endif %}
+                                "
+                                href="#"
+                                data-value="{{ value_item[value_key] }}"
+                                {% if value_item[value_key] == current_value %}
+                                  aria-current="true"
+                                {% endif %}
+                                data-disclosure-option
+                              >
+                                {% if is_country_selector %}
+                                  {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                                {% else %}
+                                  {{ value_item[name_key] }}
+                                {% endif %}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {% liquid
+                    assign namespace = namespace_185548cb
+                    assign namespace_185548cb = nil
+                    assign value_list = value_list_185548cb
+                    assign value_list_185548cb = nil
+                    assign value_key = value_key_185548cb
+                    assign value_key_185548cb = nil
+                    assign name_key = name_key_185548cb
+                    assign name_key_185548cb = nil
+                    assign current_value = current_value_185548cb
+                    assign current_value_185548cb = nil
+                    assign input_name = input_name_185548cb
+                    assign input_name_185548cb = nil
+                  %}
+                  {% comment %}Component disclosure:default:1.0.0-pre.10 end{% endcomment %}
+                {%- endform -%}
+              {% endif %}
+            
+              {% if section.settings.enable_country_selector and localization.available_countries.size > 1 %}
+                {%- form 'localization', data-cross-border-form: '' -%}
+                  {% capture current_name %}
+                    {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+                  {% endcapture %}
+                  {% assign heading = 'general.components.cross_border.currency_dropdown_label' | t %}
+                  {% assign button_label = 'general.components.cross_border.currency_submit_button_label' | t %}
+                  {% comment %}Component disclosure:default:1.0.0-pre.10 begin{% endcomment %}
+                  {% liquid
+                    assign namespace_708d3cf7 = namespace
+                    assign namespace = 'currency'
+                    assign value_list_708d3cf7 = value_list
+                    assign value_list = localization.available_countries
+                    assign value_key_708d3cf7 = value_key
+                    assign value_key = 'iso_code'
+                    assign is_country_selector_708d3cf7 = is_country_selector
+                    assign is_country_selector = true
+                    assign current_value_708d3cf7 = current_value
+                    assign current_value = localization.country.iso_code
+                    assign input_name_708d3cf7 = input_name
+                    assign input_name = 'country_code'
+                  %}
+                  {%- comment -%}
+                    @param namespace [Required]
+                      The namespace that is used for aria-attributes.
+                  
+                    @param heading [Required]
+                      The heading/text that is shown when opening the disclosure on mobile. Also used by screen readers to describe the contents of the disclosure.
+                  
+                    @param button_label [Optional]
+                      Label for the no-js button.
+                  
+                    @param current_value [Required]
+                      The currently selected value.
+                  
+                    @param value_list [Required]
+                      The object that contains the list items to be rendered.
+                  
+                    @param value_key [Required]
+                      The key that is used while looping over value_list to access the value of the item.
+                  
+                    @param name_key [Required - unless using is_country_selector]
+                      The key that is used while looping over value_list to access the display name of the item.
+                  
+                    @param is_country_selector [Optional]
+                      If true, this disclosure uses the fields for country localization (instead of making an entirely new component just for currency)
+                  
+                    @param input_name [Optional]
+                      Used to specify the "name" attribute for the <input> element.
+                  
+                    @param fill_container [Optional]
+                      If true, the disclocure toggle button will fill its parent container.
+                  
+                    @param always_show_heading [Optional]
+                      If true, will always show the heading inside the button, instead of the selected value.
+                  {%- endcomment -%}
+                  
+                  {% liquid
+                    assign is_country_selector = is_country_selector | default: false
+                    assign always_show_heading = always_show_heading | default: false
+                  
+                    assign current_name = blank
+                    if is_country_selector
+                      assign current_name = localization.country.name | append: ' (' | append: localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol | append: ')'
+                    else
+                      for value_item in value_list
+                        if value_item[value_key] == current_value
+                          assign current_name = value_item[name_key]
+                        endif
+                      endfor
+                    endif
+                  %}
+                  
+                  <div data-component="disclosure" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="disclosure{% if fill_container %} disclosure--fill{% endif %}">
+                    <script
+                      type="application/json"
+                      data-component-data
+                    >
+                      {
+                        "inputName": "{{ input_name }}",
+                        "inputValue": "{{ current_value }}",
+                        "alwaysShowHeading": {{ always_show_heading }}
+                      }
+                    </script>
+                    <noscript>
+                      <div class="disclosure__select-list">
+                        <label class="visually-hidden" for="{{ namespace }}-select-{{ unique_id }}">
+                          {{ heading | escape }}
+                        </label>
+                        <select
+                          class="disclosure__select"
+                          id="{{ namespace }}-select-{{ unique_id }}"
+                          name="{{ input_name }}"
+                        >
+                          {% for value_item in value_list %}
+                            <option
+                              class="disclosure__option"
+                              value="{{ value_item[value_key] }}"
+                              {% if value_item[value_key] == current_value %}
+                                selected
+                              {% endif %}
+                            >
+                              {% if is_country_selector %}
+                                {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                              {% else %}
+                                {{ value_item[name_key] }}
+                              {% endif %}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign style_31f17014 = style
+                          assign style = 'primary'
+                          assign size_31f17014 = size
+                          assign size = 'small'
+                          assign text_31f17014 = text
+                          assign text = button_label
+                        %}
+                        {% comment %}
+                          @param style [Required]
+                            This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                        
+                          @param size [Required]
+                            This defines the size of the button: small, medium, or large. Default medium.
+                        
+                          @param text [Required]
+                            This is the text to be included in the button.
+                        
+                          @param attributes [Optional]
+                            This will include any additional attributes that the button needs. For example, aria-controls.
+                        {% endcomment %}
+                        
+                        <button
+                          data-component="button"
+                          data-component-type="component"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                          {{ attributes }}
+                        >
+                          {{ text }}
+                        </button>
+                        
+                        {% liquid
+                          assign style = style_31f17014
+                          assign style_31f17014 = nil
+                          assign size = size_31f17014
+                          assign size_31f17014 = nil
+                          assign text = text_31f17014
+                          assign text_31f17014 = nil
+                        %}
+                        {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                      </div>
+                    </noscript>
+                  
+                    <div class="disclosure__wrapper disclosure--no-js-hidden">
+                      {% assign unique_id = "now" | date: "%N" | modulo: 1000 %}
+                      <h2 class="visually-hidden" id="{{ namespace }}-heading-{{ unique_id }}">
+                        {{ heading | escape }}
+                      </h2>
+                      <button
+                        class="disclosure__toggle"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="{{ namespace }}-list-{{ unique_id }}"
+                        aria-describedby="{{ namespace }}-heading-{{ unique_id }}"
+                        data-disclosure-toggle
+                      >
+                        {% if always_show_heading %}
+                          {{ heading }}
+                        {% else %}
+                          {{ current_name }}
+                        {% endif %}
+                      </button>
+                      <div
+                        class="disclosure__modal"
+                        id="{{ namespace }}-list-{{ unique_id }}"
+                        data-disclosure-modal
+                      >
+                        <h2 class="disclosure__heading">{{ heading }}</h2>
+                        <button
+                          class="disclosure__close"
+                          data-disclosure-close
+                        >
+                          <span class="visually-hidden">{{ 'general.close' | t }}</span>
+                        </button>
+                        <ul class="disclosure__list">
+                          {% for value_item in value_list %}
+                            <li class="disclosure__list-item">
+                              <a
+                                class="
+                                  disclosure__link
+                                  {% if value_item[value_key] == current_value %}disclosure__link--selected{% endif %}
+                                "
+                                href="#"
+                                data-value="{{ value_item[value_key] }}"
+                                {% if value_item[value_key] == current_value %}
+                                  aria-current="true"
+                                {% endif %}
+                                data-disclosure-option
+                              >
+                                {% if is_country_selector %}
+                                  {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                                {% else %}
+                                  {{ value_item[name_key] }}
+                                {% endif %}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {% liquid
+                    assign namespace = namespace_708d3cf7
+                    assign namespace_708d3cf7 = nil
+                    assign value_list = value_list_708d3cf7
+                    assign value_list_708d3cf7 = nil
+                    assign value_key = value_key_708d3cf7
+                    assign value_key_708d3cf7 = nil
+                    assign is_country_selector = is_country_selector_708d3cf7
+                    assign is_country_selector_708d3cf7 = nil
+                    assign current_value = current_value_708d3cf7
+                    assign current_value_708d3cf7 = nil
+                    assign input_name = input_name_708d3cf7
+                    assign input_name_708d3cf7 = nil
+                  %}
+                  {% comment %}Component disclosure:default:1.0.0-pre.10 end{% endcomment %}
+                {%- endform -%}
+              {% endif %}
+            </div>
+            
+            {% comment %}Component cross-border:default:1.0.0-pre.10 end{% endcomment %}
+          </div>
+        </div>
+      </div>
+      
+      {% comment %}Component header-toolbar:default:1.0.0-pre.10 end{% endcomment %}
+    {% endif %}
+
+    <header
+      class="header__header"
+      data-header
+      {{ section_attributes }}
+    >
+
+      <div
+        class="
+          header__wrapper
+          {{ wrapper_classes }}
+        "
+        data-header-wrapper
+      >
+
+        <div
+          class="header__heading"
+          style="
+            --logo-width: {{ logo_width }}px;
+            --logo-width-mobile: {{ logo_width_mobile }}px;
+          "
+          >
+          {% if template contains 'index' %}
+            <h1 class="header__title">
+          {% else %}
+            <h2 class="header__title">
+          {% endif %}
+            <a
+              href="{{ routes.root_url }}"
+              class="
+                header__logo
+                {% if logo %}header__logo--has-image{% endif %}
+                {% if logo_mobile %}header__logo--has-mobile-image{% endif %}
+              "
+              aria-label="{{ shop.name }}"
+              data-header-logo
+            >
+              {% if logo %}
+                <div class="header__logo-image" data-logo-image>
+                  {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+                  {% render 'lazy-img', img: logo, size: logo_width_size, lazy: true, canvas: true %}
+                  {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+                </div>
+              {% endif %}
+
+              {% if logo_mobile %}
+                <div class="header__mobile-image" data-logo-image-mobile>
+                  {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+                  {% render 'lazy-img', img: logo_mobile, size: logo_width_mobile_size, lazy: true, canvas: true %}
+                  {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+                </div>
+              {% endif %}
+
+              <span class="header__site-name">{{ shop.name }}</span>
+            </a>
+          {% if template contains 'index' %}
+            </h1>
+          {% else %}
+            </h2>
+          {% endif %}
+        </div>
+
+        <div
+          class="header__controls header__controls--first"
+          data-header-controls
+        >
+          <button
+            class="header__menu-button"
+            data-menu-button
+            aria-haspopup="true"
+          >
+            {% comment %}Icon menu:default:1.0.0-pre.0 begin{% endcomment %}
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 4h-17V2.25h17V4Zm0 7h-17V9.25h17V11Zm-17 7h17v-1.75h-17V18Z" fill="currentColor"/></svg>
+            {% comment %}Icon menu:default:1.0.0-pre.0 end{% endcomment %}
+            <span class="visually-hidden">{{ 'navigation.header.menu' | t }}</span>
+          </button>
+          <button
+            class="header__menu-close-button hidden"
+            data-menu-close-button
+          >
+            {% comment %}Icon close:default:1.0.0-pre.0 begin{% endcomment %}
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="m1 1 8 8m8-8L9 9m8 8L9 9m-8 8 8-8" stroke="currentColor" stroke-width="1.75"/></svg>
+            {% comment %}Icon close:default:1.0.0-pre.0 end{% endcomment %}
+            <span class="visually-hidden">{{ 'general.close' | t }}</span>
+          </button>
+
+          {% comment %}Component navigation-desktop:default:1.0.0-pre.10 begin{% endcomment %}
+          {% liquid
+            assign additional_class_41ad93de = additional_class
+            assign additional_class = 'header__controls--first-navigation'
+          %}
+          {% comment %}
+            @param additional_class [Optional]
+              Additional classes for the component
+          {% endcomment %}
+          
+          {% assign menu = section.settings.menu %}
+          
+          <nav
+            data-component="navigation-desktop"
+            data-component-type="component"
+            {% if tag != blank %}data-component-tag="{{ tag }}"
+            {% endif %}class="nav-desktop {{ additional_class }}"
+            data-nav-desktop
+            aria-label="{{ 'navigation.header.main_nav' | t }}"
+          >
+            <ul
+              class="nav-desktop__tier-1"
+              data-nav-desktop-tier-1
+            >
+              {% for link_tier_1 in linklists[menu].links %}
+                {% assign tier_id = 'nav-tier-' | append: forloop.index %}
+                {% assign has_tier_2 = false %}
+                {% if link_tier_1.links.size > 0 %}
+                  {% assign has_tier_2 = true %}
+          
+                  {% if section.blocks.size > 0 %}
+                    {% assign has_mega_nav = false %}
+                    {% assign meganav_block = nil %}
+          
+                    {% for block in section.blocks %}
+                      {% if block.type contains 'meganav' %}
+                        {% assign meganav_trigger = block.settings.trigger | handle %}
+                        {% if link_tier_1.handle == meganav_trigger %}
+                          {% assign has_mega_nav = true %}
+                          {% assign meganav_block = block %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endif %}
+          
+                <li
+                  class="
+                    nav-desktop__tier-1-item
+                    {% if has_mega_nav %}
+                      nav-desktop__tier-1-item--meganav-parent
+                    {% elsif has_tier_2 %}
+                      nav-desktop__tier-1-item--dropdown-parent
+                    {% endif %}
+                  "
+                  {% if has_tier_2 %}data-nav-desktop-parent{% endif %}
+                >
+                  {% if has_tier_2 %}
+                  <details data-nav-desktop-details>
+                    <summary data-href="{{ link_tier_1.url }}"
+                  {% else %}
+                    <a href="{{ link_tier_1.url }}"
+                  {% endif %}
+                    class="
+                      nav-desktop__tier-1-link
+                      {% if has_tier_2 %}nav-desktop__tier-1-link--parent{% endif %}
+                    "
+                    data-nav-desktop-link
+                    {% if has_tier_2 %}
+                      aria-expanded="false"
+                      aria-controls="{{ tier_id }}"
+                      role="button"
+                    {% endif %}
+                  >
+                    <span>{{ link_tier_1.title | escape }}</span>
+                  {% if has_tier_2 %}
+                    </summary>
+                  {% else %}
+                    </a>
+                  {% endif %}
+          
+                  {% if has_tier_2 %}
+                    {% if has_mega_nav %}
+                      <div
+                    {% else %}
+                      <ul
+                    {% endif %}
+                      id="{{ tier_id }}"
+                      class="
+                        nav-desktop__tier-2
+                        {% if has_mega_nav %}
+                          nav-desktop__tier-2--meganav
+                        {% else has_tier_2 %}
+                          nav-desktop__tier-2--dropdown
+                        {% endif %}
+                      "
+                      tabindex="-1"
+                      data-nav-desktop-tier-2
+                      data-nav-desktop-submenu
+                      {% if has_mega_nav %}data-nav-desktop-meganav{% endif %}
+                    >
+                      {% if has_mega_nav %}
+                        {% comment %}Component block-meganav:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign menu_2a4ba5df = menu
+                          assign menu = link_tier_1
+                          assign block_2a4ba5df = block
+                          assign block = meganav_block
+                        %}
+                        {% comment %}
+                        
+                          @param menu {Linklist} [Optional] Linklist for which to render nav items.
+                        
+                          @param block {Block} Block associated with this meganav block
+                        
+                          @param hide_shopify_attributes {Boolean} If true, block will not output block.shopify_attributes.
+                          Useful if component is used twice in reference to the same block (ie in desktop and mobile navigation).
+                        
+                        {% endcomment %}
+                        
+                        {% liquid
+                          assign menu = menu | default: nil
+                          assign block = block | default: nil
+                          assign hide_shopify_attributes = hide_shopify_attributes | default: false
+                        
+                          assign has_promo_block_1 = false
+                          assign has_promo_block_2 = false
+                        
+                          if block.settings.image_1 or block.settings.preheading_1 != blank or block.settings.heading_1 != blank or block.settings.subheading_1 != blank
+                            assign has_promo_block_1 = true
+                          endif
+                        
+                          if block.settings.image_2 or block.settings.preheading_2 != blank or block.settings.heading_2 != blank or block.settings.subheading_2 != blank
+                            assign has_promo_block_2 = true
+                          endif
+                        
+                          assign aspect_ratio = '2 / 3'
+                          assign columns = 4
+                        
+                          if has_promo_block_1 and has_promo_block_2 and block.settings.position_1 == block.settings.position_2
+                            assign aspect_ratio = '16 / 9'
+                            assign columns = 3
+                          elsif has_promo_block_1 and has_promo_block_2
+                            assign columns = 2
+                          elsif has_promo_block_1 or has_promo_block_2
+                            assign columns = 3
+                          endif
+                        %}
+                        {% capture promo_block_1 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% render 'responsive-image-promo', image: block.settings.image_1, link: block.settings.link_1, preheading: block.settings.preheading_1, heading: block.settings.heading_1, subheading: block.settings.subheading_1, aspect_ratio: aspect_ratio, crop_focus: block.settings.crop_1, text_color: block.settings.color_1, background: block.settings.background_1 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 end{% endcomment %}
+                        {% endcapture %}
+                        
+                        {% capture promo_block_2 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% render 'responsive-image-promo', image: block.settings.image_2, link: block.settings.link_2, preheading: block.settings.preheading_2, heading: block.settings.heading_2, subheading: block.settings.subheading_2, aspect_ratio: aspect_ratio, crop_focus: block.settings.crop_2, text_color: block.settings.color_2, background: block.settings.background_2 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 end{% endcomment %}
+                        {% endcapture %}
+                        
+                        {% capture promo_blocks_first %}
+                          {% if has_promo_block_1 and block.settings.position_1 == 'first' %}
+                            {{ promo_block_1 }}
+                          {% endif %}
+                          {% if has_promo_block_2 and block.settings.position_2 == 'first' %}
+                            {{ promo_block_2 }}
+                          {% endif %}
+                        {% endcapture %}
+                        
+                        {% capture promo_blocks_last %}
+                          {% if has_promo_block_1 and block.settings.position_1 == 'last' %}
+                            {{ promo_block_1 }}
+                          {% endif %}
+                          {% if has_promo_block_2 and block.settings.position_2 == 'last' %}
+                            {{ promo_block_2 }}
+                          {% endif %}
+                        {% endcapture %}
+                        
+                        <div
+                          data-component="block-meganav"
+                          data-component-type="block"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="block-meganav"
+                          {% unless hide_shopify_attributes %}
+                            {{ block.shopify_attributes }}
+                          {% endunless %}
+                        >
+                          {% unless promo_blocks_first == blank %}
+                            <div class="block-meganav__promos">
+                              {{ promo_blocks_first }}
+                            </div>
+                          {% endunless %}
+                          {% if menu %}
+                            <ul class="block-meganav__menus" style="--block-meganav-column-count: {{ columns }};">
+                              {% for menu_item in menu.links %}
+                                {% if linklists[menu_item.handle].links.size > 0 %}
+                                  <li class="block-meganav__submenu">
+                                    <a href="{{ menu_item.url }}" class="block-meganav__submenu-heading block-meganav__link">
+                                      {{ menu_item.title | escape }}
+                                    </a>
+                                    <ul class="block-meganav__submenu-items">
+                                    {% for sub_item in linklists[menu_item.handle].links %}
+                                      <li class="block-meganav__submenu-item">
+                                        <a href="{{ sub_item.url }}" class="block-meganav__submenu-item-link block-meganav__link">
+                                          {{ sub_item.title | escape }}
+                                        </a>
+                                      </li>
+                                    {% endfor %}
+                                    </ul>
+                                  </li>
+                                {% else %}
+                                  <li class="block-meganav__item">
+                                    <a href="{{ menu_item.url }}" class="block-meganav__item-heading block-meganav__link">
+                                      {{ menu_item.title | escape }}
+                                    </a>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                          {% unless promo_blocks_last == blank %}
+                            <div class="block-meganav__promos">
+                              {{ promo_blocks_last }}
+                            </div>
+                          {% endunless %}
+                        </div>
+                        
+                        {% liquid
+                          assign menu = menu_2a4ba5df
+                          assign menu_2a4ba5df = nil
+                          assign block = block_2a4ba5df
+                          assign block_2a4ba5df = nil
+                        %}
+                        {% comment %}Component block-meganav:default:1.0.0-pre.10 end{% endcomment %}
+                      {% else %}
+                        {% for link_tier_2 in link_tier_1.links %}
+                          {% assign tier_id = tier_id | append: '-' | append: forloop.index %}
+                          {% assign has_tier_3 = false %}
+                          {% if link_tier_2.links.size > 0 %}
+                            {% assign has_tier_3 = true %}
+                          {% endif %}
+                          <li
+                            class="nav-desktop__tier-2-item"
+                            {% if has_tier_3 %}data-nav-desktop-parent{% endif %}
+                          >
+                            {% if has_tier_3 %}
+                              <details data-nav-desktop-details>
+                                <summary data-href="{{ link_tier_2.url }}"
+                            {% else %}
+                              <a href="{{ link_tier_2.url }}"
+                            {% endif %}
+                              class="
+                                nav-desktop__tier-2-link
+                                {% if has_tier_3 %}nav-desktop__tier-2-link--parent{% endif %}
+                              "
+                              data-nav-desktop-link
+                              {% if has_tier_3 %}
+                                aria-expanded="false"
+                                aria-controls="{{ tier_id }}"
+                                role="button"
+                              {% endif %}
+                            >
+                              <span>{{ link_tier_2.title | escape }}</span>
+                            {% if has_tier_3 %}
+                              </summary>
+                            {% else %}
+                              </a>
+                            {% endif %}
+          
+                            {% if has_tier_3 %}
+                              <ul
+                                id="{{ tier_id }}"
+                                class="nav-desktop__tier-3"
+                                tabindex="-1"
+                                data-nav-desktop-tier-3
+                                data-nav-desktop-submenu
+                              >
+                                {% for link_tier_3 in link_tier_2.links %}
+                                  {% assign tier_id = tier_id | append: '-' | append: forloop.index %}
+                                  <li class="nav-desktop__tier-3-item">
+                                    <a
+                                      href="{{ link_tier_3.url }}"
+                                      class="nav-desktop__tier-3-link"
+                                    >
+                                      <span>{{ link_tier_3.title | escape }}</span>
+                                    </a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                              </details>
+                            {% endif %}
+                          </li>
+                        {% endfor %}
+                      {% endif %}
+                    {% if has_mega_nav %}
+                      </div>
+                    {% else %}
+                      </ul>
+                    {% endif %}
+                  </details>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+          
+          {% liquid
+            assign additional_class = additional_class_41ad93de
+            assign additional_class_41ad93de = nil
+          %}
+          {% comment %}Component navigation-desktop:default:1.0.0-pre.10 end{% endcomment %}
+
+          {% if nav_position == 'center-below' %}
+            <a
+              href="{{ routes.search_url }}"
+              class="header__search-button"
+              data-search-button
+              aria-label="{{ 'navigation.header.search' | t }}"
+            >
+              {% comment %}Icon search:default:1.0.0-pre.0 begin{% endcomment %}
+              <svg width="20" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.25 8.25H1.5h.75Zm6-6V1.5v.75Zm7.941 16 .5.559 1.118-1-.5-.56-1.118 1.001ZM13.06 12.5a.75.75 0 1 0-1.118 1l1.118-1ZM1.5 8.25a6.75 6.75 0 0 0 1.977 4.773l1.06-1.06A5.25 5.25 0 0 1 3 8.25H1.5Zm1.977 4.773A6.75 6.75 0 0 0 8.25 15v-1.5a5.25 5.25 0 0 1-3.712-1.538l-1.061 1.061ZM8.25 15a6.75 6.75 0 0 0 4.773-1.977l-1.06-1.06A5.25 5.25 0 0 1 8.25 13.5V15Zm4.773-1.977A6.75 6.75 0 0 0 15 8.25h-1.5a5.25 5.25 0 0 1-1.538 3.712l1.061 1.061ZM15 8.25a6.75 6.75 0 0 0-1.977-4.773l-1.06 1.06A5.25 5.25 0 0 1 13.5 8.25H15Zm-1.977-4.773A6.75 6.75 0 0 0 8.25 1.5V3a5.25 5.25 0 0 1 3.712 1.538l1.061-1.061ZM8.25 1.5a6.75 6.75 0 0 0-4.773 1.977l1.06 1.06A5.25 5.25 0 0 1 8.25 3V1.5ZM3.477 3.477A6.75 6.75 0 0 0 1.5 8.25H3a5.25 5.25 0 0 1 1.538-3.712L3.477 3.477ZM11.941 13.5l4.25 4.75 1.118-1-4.25-4.75-1.118 1Z" fill="currentColor"/></svg>
+              {% comment %}Icon search:default:1.0.0-pre.0 end{% endcomment %}
+              <span class="header__search-text">{{ 'navigation.header.search' | t }}</span>
+            </a>
+          {% endif %}
+        </div>
+        <div
+          class="header__controls header__controls--last"
+          data-header-controls
+        >
+          <a
+            href="{{ routes.search_url }}"
+            class="header__search-button"
+            data-search-button
+            aria-label="{{ 'navigation.header.search' | t }}"
+          >
+            {% comment %}Icon search:default:1.0.0-pre.0 begin{% endcomment %}
+            <svg width="20" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.25 8.25H1.5h.75Zm6-6V1.5v.75Zm7.941 16 .5.559 1.118-1-.5-.56-1.118 1.001ZM13.06 12.5a.75.75 0 1 0-1.118 1l1.118-1ZM1.5 8.25a6.75 6.75 0 0 0 1.977 4.773l1.06-1.06A5.25 5.25 0 0 1 3 8.25H1.5Zm1.977 4.773A6.75 6.75 0 0 0 8.25 15v-1.5a5.25 5.25 0 0 1-3.712-1.538l-1.061 1.061ZM8.25 15a6.75 6.75 0 0 0 4.773-1.977l-1.06-1.06A5.25 5.25 0 0 1 8.25 13.5V15Zm4.773-1.977A6.75 6.75 0 0 0 15 8.25h-1.5a5.25 5.25 0 0 1-1.538 3.712l1.061 1.061ZM15 8.25a6.75 6.75 0 0 0-1.977-4.773l-1.06 1.06A5.25 5.25 0 0 1 13.5 8.25H15Zm-1.977-4.773A6.75 6.75 0 0 0 8.25 1.5V3a5.25 5.25 0 0 1 3.712 1.538l1.061-1.061ZM8.25 1.5a6.75 6.75 0 0 0-4.773 1.977l1.06 1.06A5.25 5.25 0 0 1 8.25 3V1.5ZM3.477 3.477A6.75 6.75 0 0 0 1.5 8.25H3a5.25 5.25 0 0 1 1.538-3.712L3.477 3.477ZM11.941 13.5l4.25 4.75 1.118-1-4.25-4.75-1.118 1Z" fill="currentColor"/></svg>
+            {% comment %}Icon search:default:1.0.0-pre.0 end{% endcomment %}
+            <span class="header__search-text">{{ 'navigation.header.search' | t }}</span>
+          </a>
+          {% if show_account and shop.customer_accounts_enabled %}
+            <a
+              href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+              class="header__account-button"
+              data-account-button
+            >
+              {% comment %}Icon user:default:1.0.0-pre.0 begin{% endcomment %}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.625 6.125a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM10 1.25a4.875 4.875 0 0 0-2.646 8.97c-1.333.492-2.468 1.334-3.356 2.349C2.578 14.192 1.75 16.3 1.75 18.25V19h16.5v-.75c0-1.949-.828-4.058-2.248-5.681-.888-1.015-2.023-1.857-3.356-2.349A4.875 4.875 0 0 0 10 1.25Zm4.873 12.306c1.014 1.16 1.651 2.594 1.827 3.944H3.3c.176-1.35.813-2.785 1.827-3.944C6.323 12.19 8.002 11.25 10 11.25c1.998 0 3.677.94 4.873 2.306Z" fill="currentColor"/></svg>
+              {% comment %}Icon user:default:1.0.0-pre.0 end{% endcomment %}
+              <span class="header__account-text">{{ 'navigation.header.account' | t }}</span>
+            </a>
+          {% endif %}
+
+          <a
+            href="{{ routes.cart_url }}"
+            class="header__cart-button {% if cart.item_count == 0 %}header__cart-button--is-zero{% endif %}"
+            data-cart-button
+            aria-label="{{ 'navigation.header.cart' | t }}"
+          >
+            {% comment %}Icon bag:default:1.0.0-pre.0 begin{% endcomment %}
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.75 4.5a2.25 2.25 0 0 1 4.5 0V5h1.5v-.5a3.75 3.75 0 1 0-7.5 0V5h1.5v-.5ZM3.706 5a1.75 1.75 0 0 0-1.75 1.75v10.5c0 .966.783 1.75 1.75 1.75h12.588a1.75 1.75 0 0 0 1.75-1.75V6.75A1.75 1.75 0 0 0 16.294 5H3.706Zm-.25 1.75a.25.25 0 0 1 .25-.25h12.588a.25.25 0 0 1 .25.25v10.5a.25.25 0 0 1-.25.25H3.706a.25.25 0 0 1-.25-.25V6.75Z" fill="currentColor"/></svg>
+            {% comment %}Icon bag:default:1.0.0-pre.0 end{% endcomment %}
+            <span
+              class="header__cart-count"
+              data-cart-count
+            >
+              {{ cart.item_count }}
+            </span>
+          </a>
+        </div>
+
+        {%- if nav_position == 'center-below' -%}
+        <div class="header__navigation">
+          {% comment %}Component navigation-desktop:default:1.0.0-pre.10 begin{% endcomment %}
+          {% liquid
+            assign additional_class_e52d9e90 = additional_class
+            assign additional_class = 'header__navigation-navigation'
+          %}
+          {% comment %}
+            @param additional_class [Optional]
+              Additional classes for the component
+          {% endcomment %}
+          
+          {% assign menu = section.settings.menu %}
+          
+          <nav
+            data-component="navigation-desktop"
+            data-component-type="component"
+            {% if tag != blank %}data-component-tag="{{ tag }}"
+            {% endif %}class="nav-desktop {{ additional_class }}"
+            data-nav-desktop
+            aria-label="{{ 'navigation.header.main_nav' | t }}"
+          >
+            <ul
+              class="nav-desktop__tier-1"
+              data-nav-desktop-tier-1
+            >
+              {% for link_tier_1 in linklists[menu].links %}
+                {% assign tier_id = 'nav-tier-' | append: forloop.index %}
+                {% assign has_tier_2 = false %}
+                {% if link_tier_1.links.size > 0 %}
+                  {% assign has_tier_2 = true %}
+          
+                  {% if section.blocks.size > 0 %}
+                    {% assign has_mega_nav = false %}
+                    {% assign meganav_block = nil %}
+          
+                    {% for block in section.blocks %}
+                      {% if block.type contains 'meganav' %}
+                        {% assign meganav_trigger = block.settings.trigger | handle %}
+                        {% if link_tier_1.handle == meganav_trigger %}
+                          {% assign has_mega_nav = true %}
+                          {% assign meganav_block = block %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endif %}
+          
+                <li
+                  class="
+                    nav-desktop__tier-1-item
+                    {% if has_mega_nav %}
+                      nav-desktop__tier-1-item--meganav-parent
+                    {% elsif has_tier_2 %}
+                      nav-desktop__tier-1-item--dropdown-parent
+                    {% endif %}
+                  "
+                  {% if has_tier_2 %}data-nav-desktop-parent{% endif %}
+                >
+                  {% if has_tier_2 %}
+                  <details data-nav-desktop-details>
+                    <summary data-href="{{ link_tier_1.url }}"
+                  {% else %}
+                    <a href="{{ link_tier_1.url }}"
+                  {% endif %}
+                    class="
+                      nav-desktop__tier-1-link
+                      {% if has_tier_2 %}nav-desktop__tier-1-link--parent{% endif %}
+                    "
+                    data-nav-desktop-link
+                    {% if has_tier_2 %}
+                      aria-expanded="false"
+                      aria-controls="{{ tier_id }}"
+                      role="button"
+                    {% endif %}
+                  >
+                    <span>{{ link_tier_1.title | escape }}</span>
+                  {% if has_tier_2 %}
+                    </summary>
+                  {% else %}
+                    </a>
+                  {% endif %}
+          
+                  {% if has_tier_2 %}
+                    {% if has_mega_nav %}
+                      <div
+                    {% else %}
+                      <ul
+                    {% endif %}
+                      id="{{ tier_id }}"
+                      class="
+                        nav-desktop__tier-2
+                        {% if has_mega_nav %}
+                          nav-desktop__tier-2--meganav
+                        {% else has_tier_2 %}
+                          nav-desktop__tier-2--dropdown
+                        {% endif %}
+                      "
+                      tabindex="-1"
+                      data-nav-desktop-tier-2
+                      data-nav-desktop-submenu
+                      {% if has_mega_nav %}data-nav-desktop-meganav{% endif %}
+                    >
+                      {% if has_mega_nav %}
+                        {% comment %}Component block-meganav:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign menu_e162fc9c = menu
+                          assign menu = link_tier_1
+                          assign block_e162fc9c = block
+                          assign block = meganav_block
+                        %}
+                        {% comment %}
+                        
+                          @param menu {Linklist} [Optional] Linklist for which to render nav items.
+                        
+                          @param block {Block} Block associated with this meganav block
+                        
+                          @param hide_shopify_attributes {Boolean} If true, block will not output block.shopify_attributes.
+                          Useful if component is used twice in reference to the same block (ie in desktop and mobile navigation).
+                        
+                        {% endcomment %}
+                        
+                        {% liquid
+                          assign menu = menu | default: nil
+                          assign block = block | default: nil
+                          assign hide_shopify_attributes = hide_shopify_attributes | default: false
+                        
+                          assign has_promo_block_1 = false
+                          assign has_promo_block_2 = false
+                        
+                          if block.settings.image_1 or block.settings.preheading_1 != blank or block.settings.heading_1 != blank or block.settings.subheading_1 != blank
+                            assign has_promo_block_1 = true
+                          endif
+                        
+                          if block.settings.image_2 or block.settings.preheading_2 != blank or block.settings.heading_2 != blank or block.settings.subheading_2 != blank
+                            assign has_promo_block_2 = true
+                          endif
+                        
+                          assign aspect_ratio = '2 / 3'
+                          assign columns = 4
+                        
+                          if has_promo_block_1 and has_promo_block_2 and block.settings.position_1 == block.settings.position_2
+                            assign aspect_ratio = '16 / 9'
+                            assign columns = 3
+                          elsif has_promo_block_1 and has_promo_block_2
+                            assign columns = 2
+                          elsif has_promo_block_1 or has_promo_block_2
+                            assign columns = 3
+                          endif
+                        %}
+                        {% capture promo_block_1 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% render 'responsive-image-promo', image: block.settings.image_1, link: block.settings.link_1, preheading: block.settings.preheading_1, heading: block.settings.heading_1, subheading: block.settings.subheading_1, aspect_ratio: aspect_ratio, crop_focus: block.settings.crop_1, text_color: block.settings.color_1, background: block.settings.background_1 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 end{% endcomment %}
+                        {% endcapture %}
+                        
+                        {% capture promo_block_2 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% render 'responsive-image-promo', image: block.settings.image_2, link: block.settings.link_2, preheading: block.settings.preheading_2, heading: block.settings.heading_2, subheading: block.settings.subheading_2, aspect_ratio: aspect_ratio, crop_focus: block.settings.crop_2, text_color: block.settings.color_2, background: block.settings.background_2 %}
+                          {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 end{% endcomment %}
+                        {% endcapture %}
+                        
+                        {% capture promo_blocks_first %}
+                          {% if has_promo_block_1 and block.settings.position_1 == 'first' %}
+                            {{ promo_block_1 }}
+                          {% endif %}
+                          {% if has_promo_block_2 and block.settings.position_2 == 'first' %}
+                            {{ promo_block_2 }}
+                          {% endif %}
+                        {% endcapture %}
+                        
+                        {% capture promo_blocks_last %}
+                          {% if has_promo_block_1 and block.settings.position_1 == 'last' %}
+                            {{ promo_block_1 }}
+                          {% endif %}
+                          {% if has_promo_block_2 and block.settings.position_2 == 'last' %}
+                            {{ promo_block_2 }}
+                          {% endif %}
+                        {% endcapture %}
+                        
+                        <div
+                          data-component="block-meganav"
+                          data-component-type="block"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="block-meganav"
+                          {% unless hide_shopify_attributes %}
+                            {{ block.shopify_attributes }}
+                          {% endunless %}
+                        >
+                          {% unless promo_blocks_first == blank %}
+                            <div class="block-meganav__promos">
+                              {{ promo_blocks_first }}
+                            </div>
+                          {% endunless %}
+                          {% if menu %}
+                            <ul class="block-meganav__menus" style="--block-meganav-column-count: {{ columns }};">
+                              {% for menu_item in menu.links %}
+                                {% if linklists[menu_item.handle].links.size > 0 %}
+                                  <li class="block-meganav__submenu">
+                                    <a href="{{ menu_item.url }}" class="block-meganav__submenu-heading block-meganav__link">
+                                      {{ menu_item.title | escape }}
+                                    </a>
+                                    <ul class="block-meganav__submenu-items">
+                                    {% for sub_item in linklists[menu_item.handle].links %}
+                                      <li class="block-meganav__submenu-item">
+                                        <a href="{{ sub_item.url }}" class="block-meganav__submenu-item-link block-meganav__link">
+                                          {{ sub_item.title | escape }}
+                                        </a>
+                                      </li>
+                                    {% endfor %}
+                                    </ul>
+                                  </li>
+                                {% else %}
+                                  <li class="block-meganav__item">
+                                    <a href="{{ menu_item.url }}" class="block-meganav__item-heading block-meganav__link">
+                                      {{ menu_item.title | escape }}
+                                    </a>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                          {% unless promo_blocks_last == blank %}
+                            <div class="block-meganav__promos">
+                              {{ promo_blocks_last }}
+                            </div>
+                          {% endunless %}
+                        </div>
+                        
+                        {% liquid
+                          assign menu = menu_e162fc9c
+                          assign menu_e162fc9c = nil
+                          assign block = block_e162fc9c
+                          assign block_e162fc9c = nil
+                        %}
+                        {% comment %}Component block-meganav:default:1.0.0-pre.10 end{% endcomment %}
+                      {% else %}
+                        {% for link_tier_2 in link_tier_1.links %}
+                          {% assign tier_id = tier_id | append: '-' | append: forloop.index %}
+                          {% assign has_tier_3 = false %}
+                          {% if link_tier_2.links.size > 0 %}
+                            {% assign has_tier_3 = true %}
+                          {% endif %}
+                          <li
+                            class="nav-desktop__tier-2-item"
+                            {% if has_tier_3 %}data-nav-desktop-parent{% endif %}
+                          >
+                            {% if has_tier_3 %}
+                              <details data-nav-desktop-details>
+                                <summary data-href="{{ link_tier_2.url }}"
+                            {% else %}
+                              <a href="{{ link_tier_2.url }}"
+                            {% endif %}
+                              class="
+                                nav-desktop__tier-2-link
+                                {% if has_tier_3 %}nav-desktop__tier-2-link--parent{% endif %}
+                              "
+                              data-nav-desktop-link
+                              {% if has_tier_3 %}
+                                aria-expanded="false"
+                                aria-controls="{{ tier_id }}"
+                                role="button"
+                              {% endif %}
+                            >
+                              <span>{{ link_tier_2.title | escape }}</span>
+                            {% if has_tier_3 %}
+                              </summary>
+                            {% else %}
+                              </a>
+                            {% endif %}
+          
+                            {% if has_tier_3 %}
+                              <ul
+                                id="{{ tier_id }}"
+                                class="nav-desktop__tier-3"
+                                tabindex="-1"
+                                data-nav-desktop-tier-3
+                                data-nav-desktop-submenu
+                              >
+                                {% for link_tier_3 in link_tier_2.links %}
+                                  {% assign tier_id = tier_id | append: '-' | append: forloop.index %}
+                                  <li class="nav-desktop__tier-3-item">
+                                    <a
+                                      href="{{ link_tier_3.url }}"
+                                      class="nav-desktop__tier-3-link"
+                                    >
+                                      <span>{{ link_tier_3.title | escape }}</span>
+                                    </a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                              </details>
+                            {% endif %}
+                          </li>
+                        {% endfor %}
+                      {% endif %}
+                    {% if has_mega_nav %}
+                      </div>
+                    {% else %}
+                      </ul>
+                    {% endif %}
+                  </details>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+          
+          {% liquid
+            assign additional_class = additional_class_e52d9e90
+            assign additional_class_e52d9e90 = nil
+          %}
+          {% comment %}Component navigation-desktop:default:1.0.0-pre.10 end{% endcomment %}
+        </div>
+        {%- endif -%}
+
+      </div>
+      {% if settings.enable_live_search %}
+        <div
+          class="header__live-search-takeover"
+          data-live-search-takeover
+          tabindex="-1"
+        >
+          <div class="header__live-search-container" >
+            {% comment %}Component live-search:default:1.0.0-pre.10 begin{% endcomment %}
+            {% comment %}Reference this here so the setting shows up while editing the section{% endcomment %}
+            {% assign predictive_search_show_product_images = settings.predictive_search_show_product_images %}
+            <div
+              data-component="live-search"
+              data-component-type="component"
+              {% if tag != blank %}data-component-tag="{{ tag }}"
+              {% endif %}class="
+                live-search
+                {% if settings.predictive_search_show_posts_and_pages %}live-search--show-posts-pages{% endif %}
+              "
+              role="dialog"
+              aria-modal="true"
+              aria-label="{{ 'search.search' | t }}"
+            >
+              <script
+                type="application/json"
+                data-component-data
+              >
+                {
+                  "settings": {
+                    "show_posts_and_pages": {{ settings.predictive_search_show_posts_and_pages }}
+                  },
+                  "loading_text": "{{ 'accessibility.loading' | t }}"
+                }
+              </script>
+              <form action="{{ routes.search_url }}" method="get" role="search" class="live-search__form" data-live-search-form>
+                {% unless settings.predictive_search_show_posts_and_pages %}
+                  <input type="hidden" name="type" value="product" />
+                {% endunless %}
+                <div class="live-search__input-wrapper">
+                  <input class="live-search__query-input"
+                    id="Search-In-Modal-1"
+                    type="search"
+                    name="q"
+                    value=""
+                    placeholder="{{ 'search.search' | t }}"
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-owns="predictive-search-results-list"
+                    aria-controls="predictive-search-results-list"
+                    aria-haspopup="listbox"
+                    aria-autocomplete="list"
+                    autocorrect="off"
+                    autocomplete="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    data-live-search-query-input
+                  >
+                  <input type="hidden" name="options[prefix]" value="last">
+                  {% comment %}Icon search:default:1.0.0-pre.0 begin{% endcomment %}
+                  <svg width="20" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.25 8.25H1.5h.75Zm6-6V1.5v.75Zm7.941 16 .5.559 1.118-1-.5-.56-1.118 1.001ZM13.06 12.5a.75.75 0 1 0-1.118 1l1.118-1ZM1.5 8.25a6.75 6.75 0 0 0 1.977 4.773l1.06-1.06A5.25 5.25 0 0 1 3 8.25H1.5Zm1.977 4.773A6.75 6.75 0 0 0 8.25 15v-1.5a5.25 5.25 0 0 1-3.712-1.538l-1.061 1.061ZM8.25 15a6.75 6.75 0 0 0 4.773-1.977l-1.06-1.06A5.25 5.25 0 0 1 8.25 13.5V15Zm4.773-1.977A6.75 6.75 0 0 0 15 8.25h-1.5a5.25 5.25 0 0 1-1.538 3.712l1.061 1.061ZM15 8.25a6.75 6.75 0 0 0-1.977-4.773l-1.06 1.06A5.25 5.25 0 0 1 13.5 8.25H15Zm-1.977-4.773A6.75 6.75 0 0 0 8.25 1.5V3a5.25 5.25 0 0 1 3.712 1.538l1.061-1.061ZM8.25 1.5a6.75 6.75 0 0 0-4.773 1.977l1.06 1.06A5.25 5.25 0 0 1 8.25 3V1.5ZM3.477 3.477A6.75 6.75 0 0 0 1.5 8.25H3a5.25 5.25 0 0 1 1.538-3.712L3.477 3.477ZM11.941 13.5l4.25 4.75 1.118-1-4.25-4.75-1.118 1Z" fill="currentColor"/></svg>
+                  {% comment %}Icon search:default:1.0.0-pre.0 end{% endcomment %}
+                </div>
+                <div
+                  class="live-search__results-container"
+                  data-live-search-results-container
+                  tabindex="-1"
+                >
+                  <div class="live-search__loading-state">
+                    {% comment %}Icon spinner:default:1.0.0-pre.0 begin{% endcomment %}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22"><path stroke="currentColor" stroke-width="1.5" d="M21 11c0-5.523-4.477-10-10-10S1 5.477 1 11s4.477 10 10 10"/></svg>
+                    {% comment %}Icon spinner:default:1.0.0-pre.0 end{% endcomment %}
+                  </div>
+                  <div class="live-search__results" data-live-search-results></div>
+                </div>
+                <span class="visually-hidden" role="status" aria-hidden="true" data-live-search-status></span>
+              </form>
+            </div>
+            
+            {% comment %}Component live-search:default:1.0.0-pre.10 end{% endcomment %}
+            {% assign cancel_button_text = 'general.cancel' | t %}
+            {% comment %}Component button-text:default:1.0.0-pre.10 begin{% endcomment %}
+            {% liquid
+              assign text_43e0b064 = text
+              assign text = cancel_button_text
+              assign attributes_43e0b064 = attributes
+              assign attributes = 'data-search-cancel-button'
+            %}
+            {% comment %}
+              @param text [Required]
+                This is the text to be included in the button.
+            
+              @param attributes [Optional]
+                This will include any additional attributes that the button needs. For example, aria-controls.
+            {% endcomment %}
+            
+            <button
+              data-component="button-text"
+              data-component-type="component"
+              {% if tag != blank %}data-component-tag="{{ tag }}"
+              {% endif %}class="button-text"
+              {{ attributes }}
+            >
+              {{ text }}
+            </button>
+            
+            {% liquid
+              assign text = text_43e0b064
+              assign text_43e0b064 = nil
+              assign attributes = attributes_43e0b064
+              assign attributes_43e0b064 = nil
+            %}
+            {% comment %}Component button-text:default:1.0.0-pre.10 end{% endcomment %}
+          </div>
+        </div>
+      {% endif %}
+    </header>
+
+    <div data-header-scroll-observer></div>
+
+    {% comment %}Component navigation-drawer:default:1.0.0-pre.10 begin{% endcomment %}
+    {% assign menu = section.settings.menu | default: 'main-menu' %}
+    
+    <div data-component="navigation-drawer" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="nav-drawer" tabindex="-1">
+      <div class="nav-drawer__navigation" data-nav-drawer-navigation>
+        <div
+          class="nav-drawer__tier-1"
+          data-navigation-tier-1
+          data-index="0"
+          data-navigation-pane
+        >
+        <ul class="nav-drawer__tier-1-list">
+          {% for link_tier_1 in linklists[menu].links %}
+            {% assign has_tier_2 = false %}
+            {% if link_tier_1.links.size > 0 %}
+              {% assign has_tier_2 = true %}
+    
+              {% if section.blocks.size > 0 %}
+                {% assign has_mega_nav = false %}
+                {% assign meganav_block = nil %}
+    
+                {% for block in section.blocks %}
+                  {% if block.type contains 'meganav' %}
+                    {% assign meganav_trigger = block.settings.trigger | handle %}
+                    {% if link_tier_1.handle == meganav_trigger %}
+                      {% assign has_mega_nav = true %}
+                      {% assign meganav_block = block %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            {% endif %}
+            {% assign tier_1_position = forloop.index %}
+    
+            <li class="nav-drawer__tier-1-item">
+              {% if has_tier_2 %}
+                <details data-nav-drawer-details>
+                  <summary
+                    data-index="0-{{ tier_1_position }}"
+                    aria-expanded="false"
+                    aria-controls="drawer-nav-tier-2-{{ tier_1_position }}"
+                    role="button"
+                    data-nav-drawer-summary
+              {% else %}
+                <a
+                  href="{{ link_tier_1.url }}"
+                  data-nav-drawer-link
+              {% endif %}
+                class="
+                  nav-drawer__tier-1-link
+                  {% if has_tier_2 %}nav-drawer__tier-1-link--parent{% endif %}
+                "
+              >
+                <span>{{ link_tier_1.title | escape }}</span>
+              {% if has_tier_2 %}
+                </summary>
+              {% else %}
+                </a>
+              {% endif %}
+    
+              {% if has_tier_2 %}
+                <div
+                  class="nav-drawer__tier-2"
+                  id="drawer-nav-tier-2-{{ tier_1_position }}"
+                  tabindex="-1"
+                  data-index="0-{{ tier_1_position }}"
+                  data-navigation-pane
+                >
+                  <button
+                    class="nav-drawer__back-button"
+                    data-nav-drawer-back-button
+                  >
+                    {{ menu.title | escape }}
+                  </button>
+                  <a
+                    class="nav-drawer__title-link"
+                    href="{{ link_tier_1.url }}"
+                  >
+                    {{ link_tier_1.title | escape }}
+                  </a>
+                  <ul class="nav-drawer__tier-2-list">
+                    {% for link_tier_2 in link_tier_1.links %}
+                      {% assign has_tier_3 = false %}
+                      {% if link_tier_2.links.size > 0 %}
+                        {% assign has_tier_3 = true %}
+                      {% endif %}
+                      <li
+                        class="nav-drawer__tier-2-item"
+                        {% if has_tier_3 %}data-nav-drawer-parent{% endif %}
+                      >
+                        {% if has_tier_3 %}
+                          <details data-nav-drawer-details>
+                            <summary
+                              data-index="{{ tier_1_position }}-{{ forloop.index }}"
+                              aria-expanded="false"
+                              aria-controls="drawer-nav-tier-3-{{ tier_1_position }}-{{ forloop.index }}"
+                              role="button"
+                              data-nav-drawer-summary
+                        {% else %}
+                          <a href="{{ link_tier_2.url }}"
+                        {% endif %}
+                          class="
+                            nav-drawer__tier-2-link
+                            {% if has_tier_3 %}nav-drawer__tier-2-link--parent{% endif %}
+                          "
+                        >
+                          <span>{{ link_tier_2.title | escape }}</span>
+                        {% if has_tier_3 %}
+                          </summary>
+                        {% else %}
+                          </a>
+                        {% endif %}
+    
+                        {% if has_tier_3 %}
+                          <div
+                            class="nav-drawer__tier-3"
+                            id="drawer-nav-tier-3-{{ tier_1_position }}-{{ forloop.index }}"
+                            tabindex="-1"
+                            data-index="{{ tier_1_position }}-{{ forloop.index }}"
+                            data-navigation-pane
+                          >
+                            <button
+                              class="nav-drawer__back-button"
+                              data-nav-drawer-back-button
+                            >
+                              {{ link_tier_1.title | escape }}
+                            </button>
+                            <a
+                              class="nav-drawer__title-link"
+                              href="{{ link_tier_2.url }}"
+                            >
+                              {{ link_tier_2.title | escape }}
+                            </a>
+                            <ul class="nav-drawer__tier-3-list">
+                              {% for link_tier_3 in link_tier_2.links %}
+                                <li class="nav-drawer__tier-3-item">
+                                  <a
+                                    href="{{ link_tier_3.url }}"
+                                    class="nav-drawer__tier-3-link"
+                                  >
+                                    <span>{{ link_tier_3.title | escape }}</span>
+                                  </a>
+                                </li>
+                              {% endfor %}
+                            </ul>
+                          </div>
+                          </details>
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                  {% if has_mega_nav %}
+                    <div class="nav-drawer__tier-2-promos">
+                      {% comment %}Component block-meganav:default:1.0.0-pre.10 begin{% endcomment %}
+                      {% liquid
+                        assign menu_2e7b3de7 = menu
+                        assign menu = nil
+                        assign block_2e7b3de7 = block
+                        assign block = meganav_block
+                        assign hide_shopify_attributes_2e7b3de7 = hide_shopify_attributes
+                        assign hide_shopify_attributes = true
+                      %}
+                      {% comment %}
+                      
+                        @param menu {Linklist} [Optional] Linklist for which to render nav items.
+                      
+                        @param block {Block} Block associated with this meganav block
+                      
+                        @param hide_shopify_attributes {Boolean} If true, block will not output block.shopify_attributes.
+                        Useful if component is used twice in reference to the same block (ie in desktop and mobile navigation).
+                      
+                      {% endcomment %}
+                      
+                      {% liquid
+                        assign menu = menu | default: nil
+                        assign block = block | default: nil
+                        assign hide_shopify_attributes = hide_shopify_attributes | default: false
+                      
+                        assign has_promo_block_1 = false
+                        assign has_promo_block_2 = false
+                      
+                        if block.settings.image_1 or block.settings.preheading_1 != blank or block.settings.heading_1 != blank or block.settings.subheading_1 != blank
+                          assign has_promo_block_1 = true
+                        endif
+                      
+                        if block.settings.image_2 or block.settings.preheading_2 != blank or block.settings.heading_2 != blank or block.settings.subheading_2 != blank
+                          assign has_promo_block_2 = true
+                        endif
+                      
+                        assign aspect_ratio = '2 / 3'
+                        assign columns = 4
+                      
+                        if has_promo_block_1 and has_promo_block_2 and block.settings.position_1 == block.settings.position_2
+                          assign aspect_ratio = '16 / 9'
+                          assign columns = 3
+                        elsif has_promo_block_1 and has_promo_block_2
+                          assign columns = 2
+                        elsif has_promo_block_1 or has_promo_block_2
+                          assign columns = 3
+                        endif
+                      %}
+                      {% capture promo_block_1 %}
+                        {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% render 'responsive-image-promo', image: block.settings.image_1, link: block.settings.link_1, preheading: block.settings.preheading_1, heading: block.settings.heading_1, subheading: block.settings.subheading_1, aspect_ratio: aspect_ratio, crop_focus: block.settings.crop_1, text_color: block.settings.color_1, background: block.settings.background_1 %}
+                        {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 end{% endcomment %}
+                      {% endcapture %}
+                      
+                      {% capture promo_block_2 %}
+                        {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% render 'responsive-image-promo', image: block.settings.image_2, link: block.settings.link_2, preheading: block.settings.preheading_2, heading: block.settings.heading_2, subheading: block.settings.subheading_2, aspect_ratio: aspect_ratio, crop_focus: block.settings.crop_2, text_color: block.settings.color_2, background: block.settings.background_2 %}
+                        {% comment %}Component responsive-image-promo:default:1.0.0-pre.10 end{% endcomment %}
+                      {% endcapture %}
+                      
+                      {% capture promo_blocks_first %}
+                        {% if has_promo_block_1 and block.settings.position_1 == 'first' %}
+                          {{ promo_block_1 }}
+                        {% endif %}
+                        {% if has_promo_block_2 and block.settings.position_2 == 'first' %}
+                          {{ promo_block_2 }}
+                        {% endif %}
+                      {% endcapture %}
+                      
+                      {% capture promo_blocks_last %}
+                        {% if has_promo_block_1 and block.settings.position_1 == 'last' %}
+                          {{ promo_block_1 }}
+                        {% endif %}
+                        {% if has_promo_block_2 and block.settings.position_2 == 'last' %}
+                          {{ promo_block_2 }}
+                        {% endif %}
+                      {% endcapture %}
+                      
+                      <div
+                        data-component="block-meganav"
+                        data-component-type="block"
+                        {% if tag != blank %}data-component-tag="{{ tag }}"
+                        {% endif %}class="block-meganav"
+                        {% unless hide_shopify_attributes %}
+                          {{ block.shopify_attributes }}
+                        {% endunless %}
+                      >
+                        {% unless promo_blocks_first == blank %}
+                          <div class="block-meganav__promos">
+                            {{ promo_blocks_first }}
+                          </div>
+                        {% endunless %}
+                        {% if menu %}
+                          <ul class="block-meganav__menus" style="--block-meganav-column-count: {{ columns }};">
+                            {% for menu_item in menu.links %}
+                              {% if linklists[menu_item.handle].links.size > 0 %}
+                                <li class="block-meganav__submenu">
+                                  <a href="{{ menu_item.url }}" class="block-meganav__submenu-heading block-meganav__link">
+                                    {{ menu_item.title | escape }}
+                                  </a>
+                                  <ul class="block-meganav__submenu-items">
+                                  {% for sub_item in linklists[menu_item.handle].links %}
+                                    <li class="block-meganav__submenu-item">
+                                      <a href="{{ sub_item.url }}" class="block-meganav__submenu-item-link block-meganav__link">
+                                        {{ sub_item.title | escape }}
+                                      </a>
+                                    </li>
+                                  {% endfor %}
+                                  </ul>
+                                </li>
+                              {% else %}
+                                <li class="block-meganav__item">
+                                  <a href="{{ menu_item.url }}" class="block-meganav__item-heading block-meganav__link">
+                                    {{ menu_item.title | escape }}
+                                  </a>
+                                </li>
+                              {% endif %}
+                            {% endfor %}
+                          </ul>
+                        {% endif %}
+                        {% unless promo_blocks_last == blank %}
+                          <div class="block-meganav__promos">
+                            {{ promo_blocks_last }}
+                          </div>
+                        {% endunless %}
+                      </div>
+                      
+                      {% liquid
+                        assign menu = menu_2e7b3de7
+                        assign menu_2e7b3de7 = nil
+                        assign block = block_2e7b3de7
+                        assign block_2e7b3de7 = nil
+                        assign hide_shopify_attributes = hide_shopify_attributes_2e7b3de7
+                        assign hide_shopify_attributes_2e7b3de7 = nil
+                      %}
+                      {% comment %}Component block-meganav:default:1.0.0-pre.10 end{% endcomment %}
+                    </div>
+                  {% endif %}
+                </div>
+                </details>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+        </div>
+      </div>
+    
+      {% if shop.customer_accounts_enabled or section.settings.show_social_icons %}
+        <div class="nav-drawer__bottom">
+          {% if shop.customer_accounts_enabled %}
+            <div class="nav-drawer__account">
+              {% if customer %}
+                <a href="{{ routes.account_url }}" class="navigation-mobile__account-link">
+                  {{ 'navigation.header.account_with_name' | t: name: customer.name }}
+                </a>
+                <a href="{{ routes.account_logout_url }}" class="navigation-mobile__account-link">
+                  {{ 'navigation.header.logout' | t }}
+                </a>
+              {% else %}
+                <a href="{{ routes.account_login_url }}" class="navigation-mobile__account-link">
+                  {{ 'navigation.header.login' | t }}
+                </a>
+                <a href="{{ routes.account_register_url }}" class="navigation-mobile__account-link">
+                  {{ 'navigation.header.sign_up' | t }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+    
+          {% if section.settings.show_social_icons %}
+            <div class="nav-drawer__social-links">
+              {% comment %}Component social-media-links:default:1.0.0-pre.10 begin{% endcomment %}
+              {% liquid
+                assign use_mobile_spacing_1681089b = use_mobile_spacing
+                assign use_mobile_spacing = true
+              %}
+              {% comment %}
+                @param use_mobile_spacing {Boolean}} [Optional]
+                  Changes the spacing to allow for bigger touch targets on mobile if true.
+              {% endcomment %}
+              
+              {% assign use_mobile_spacing = use_mobile_spacing | default: false %}
+              
+              <ul data-component="social-media-links" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="social-media-links {% if use_mobile_spacing %}social-media-links--mobile-spacing{% endif %}">
+                {% if settings.social_facebook_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_facebook_link }}"
+                      aria-label="{{ shop.name }} on Facebook"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon facebook:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.591.077a7.981 7.981 0 0 0-5.247 2.329A7.925 7.925 0 0 0 .392 5.573a8 8 0 0 0 .248 5.604c.072.17.254.543.347.71.243.44.542.876.862 1.258a7.984 7.984 0 0 0 4.886 2.78l.016.002v-5.576H4.719V8.04H6.75L6.753 7c.003-1.107.002-1.082.04-1.341.138-.952.594-1.67 1.327-2.084.336-.19.758-.319 1.211-.369.46-.05 1.219-.012 2.02.102l.212.03c.002 0 .003.441.003.982v.983l-.598.003c-.64.003-.669.005-.838.044-.437.101-.728.384-.832.806-.041.17-.042.185-.042 1.07v.814h1.106c.999 0 1.107.002 1.107.012 0 .013-.343 2.244-.35 2.279l-.004.02H9.256v5.573l.04-.005a7.9 7.9 0 0 0 2.286-.738 8.013 8.013 0 0 0 3.837-4.142c.33-.813.517-1.647.572-2.561.012-.186.012-.679 0-.864a7.95 7.95 0 0 0-.497-2.37A8.02 8.02 0 0 0 10.9.607 8.088 8.088 0 0 0 8.532.084a16.32 16.32 0 0 0-.941-.007Z" fill="currentColor"/></svg>
+                      {% comment %}Icon facebook:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_twitter_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_twitter_link }}"
+                      aria-label="{{ shop.name }} on Twitter"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon twitter:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.71 2.01a3.343 3.343 0 0 0-1.73.735 3.285 3.285 0 0 0-1.152 1.99c-.055.304-.047.841.018 1.148a.44.44 0 0 1 .015.114c-.005.004-.108 0-.231-.01a9.372 9.372 0 0 1-5.3-2.155 13.8 13.8 0 0 1-1.23-1.23c-.022-.009-.209.393-.277.597-.305.912-.196 1.9.3 2.722.229.378.494.663.926.993l.047.036-.133-.01A3.245 3.245 0 0 1 .79 6.624l-.16-.078c-.02-.008 0 .32.03.526C.852 8.35 1.824 9.43 3.069 9.745c.08.02.145.041.145.046 0 .01-.174.05-.344.077a4.07 4.07 0 0 1-1.012-.01l-.083-.01.041.114c.066.184.229.505.346.682.569.856 1.481 1.384 2.535 1.469l.133.01-.055.046c-.083.07-.567.388-.74.486a6.683 6.683 0 0 1-2.605.825 8.518 8.518 0 0 1-1.237.008A1.268 1.268 0 0 0 0 13.475c-.01.01.368.233.627.37a9.49 9.49 0 0 0 3.007.99c.74.111 1.634.132 2.406.056 2.116-.208 3.968-1.052 5.45-2.484 1.532-1.48 2.55-3.533 2.82-5.684a7.65 7.65 0 0 0 .063-1.066v-.444l.085-.06c.258-.186.66-.547.905-.814.24-.26.67-.808.635-.808-.005 0-.123.045-.262.1a6.1 6.1 0 0 1-.843.266c-.224.055-.688.138-.717.128-.009-.003.032-.037.09-.076.455-.3.851-.748 1.1-1.24.098-.196.198-.446.184-.46a.462.462 0 0 0-.133.062 6.79 6.79 0 0 1-1.724.664l-.215.05-.162-.155a3.296 3.296 0 0 0-1.72-.839 5.271 5.271 0 0 0-.885-.02Z" fill="currentColor"/></svg>
+                      {% comment %}Icon twitter:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_instagram_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_instagram_link }}"
+                      aria-label="{{ shop.name }} on Instagram"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon instagram:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.121.005c-.523.02-1.155.082-1.478.144C1.775.507.505 1.777.148 3.644.012 4.356 0 4.704 0 8.001s.012 3.644.148 4.356c.357 1.867 1.628 3.138 3.495 3.495.712.136 1.06.148 4.357.148 3.298 0 3.645-.012 4.357-.148 1.867-.357 3.138-1.628 3.495-3.495.136-.712.148-1.059.148-4.356 0-3.298-.012-3.645-.148-4.357C15.493 1.77 14.214.497 12.34.147 11.655.02 11.387.01 8.334.002a281.625 281.625 0 0 0-3.213.003Zm6.505 1.503c.652.085 1.14.23 1.517.452.238.14.758.66.898.898.232.395.373.882.454 1.564.06.504.06 6.653 0 7.157-.08.682-.222 1.17-.454 1.564-.14.239-.66.758-.898.898-.395.232-.882.373-1.565.454-.503.06-6.653.06-7.157 0-.682-.08-1.169-.222-1.564-.454-.238-.14-.758-.66-.898-.898-.232-.395-.373-.882-.454-1.564-.06-.504-.06-6.653 0-7.157.058-.491.122-.783.242-1.103.137-.366.275-.59.54-.875.591-.636 1.265-.892 2.532-.963.692-.039 6.48-.015 6.807.027Zm.334 1.298c-.238.082-.526.38-.602.626a.968.968 0 0 0 1.211 1.21c.264-.081.547-.364.63-.629a.997.997 0 0 0-.048-.701 1.217 1.217 0 0 0-.496-.48 1.157 1.157 0 0 0-.695-.026Zm-4.342 1.09A4.14 4.14 0 0 0 5.09 5.091a4.113 4.113 0 0 0 1.661 6.833 4.147 4.147 0 0 0 2.498 0 4.138 4.138 0 0 0 2.675-2.675 4.147 4.147 0 0 0 0-2.497 4.138 4.138 0 0 0-2.675-2.675 4.387 4.387 0 0 0-1.63-.18Zm1.018 1.516c.29.07.806.327 1.043.522.294.24.532.545.707.906.21.437.265.673.265 1.16 0 .488-.054.725-.265 1.162a2.51 2.51 0 0 1-1.225 1.223c-.436.212-.673.266-1.161.266s-.725-.054-1.161-.265a2.51 2.51 0 0 1-1.225-1.224 3.556 3.556 0 0 1-.21-.541c-.075-.304-.075-.937 0-1.24.078-.309.333-.82.529-1.06a2.773 2.773 0 0 1 1.69-.96 3.472 3.472 0 0 1 1.013.05Z" fill="currentColor"/></svg>
+                      {% comment %}Icon instagram:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_pinterest_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_pinterest_link }}"
+                      aria-label="{{ shop.name }} on Pinterest"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon pinterest:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 .587a7.485 7.485 0 0 1 5.244 2.178 7.484 7.484 0 0 1 1.182 8.96A7.36 7.36 0 0 1 8 15.422a7.558 7.558 0 0 1-2.107-.284c.373-.604.622-1.147.756-1.6l.524-2.036c.125.25.364.463.711.65a2.41 2.41 0 0 0 1.102.275c.774 0 1.467-.222 2.08-.667a4.329 4.329 0 0 0 1.423-1.822 6.49 6.49 0 0 0 .497-2.604c0-1.156-.444-2.143-1.324-2.987a4.684 4.684 0 0 0-3.378-1.271c-.827 0-1.6.142-2.293.426a4.649 4.649 0 0 0-2.996 4.214c0 .666.125 1.253.382 1.76.25.498.623.853 1.13 1.066.088.036.168.036.23 0 .063-.026.107-.088.134-.177l.16-.605c.044-.133.018-.266-.098-.4a2.089 2.089 0 0 1-.507-1.449 3.52 3.52 0 0 1 3.68-3.573c.97 0 1.725.267 2.258.791.542.533.818 1.218.818 2.062a6.28 6.28 0 0 1-.293 1.965 3.528 3.528 0 0 1-.827 1.44c-.356.355-.773.533-1.244.533-.383 0-.694-.133-.943-.418a1.098 1.098 0 0 1-.23-1.004c.135-.475.274-.95.417-1.422l.16-.65c.053-.23.08-.417.08-.577 0-.32-.089-.587-.249-.791-.178-.205-.418-.311-.738-.311-.4 0-.738.178-1.004.55-.267.365-.41.828-.41 1.388.005.346.06.69.16 1.022l.054.133c-.533 2.293-.844 3.645-.96 4.036-.106.488-.142 1.066-.115 1.724a7.467 7.467 0 0 1-4.445-6.8c0-2.044.72-3.804 2.17-5.244A7.147 7.147 0 0 1 8 .578v.009Z" fill="currentColor"/></svg>
+                      {% comment %}Icon pinterest:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_youtube_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_youtube_link }}"
+                      aria-label="{{ shop.name }} on YouTube"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon youtube:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.68 4.729C16 5.939 16 8.5 16 8.5s0 2.561-.32 3.771c-.09.341-.27.652-.523.901a2.01 2.01 0 0 1-.917.514C13.008 14 8 14 8 14s-5.008 0-6.24-.314a2.01 2.01 0 0 1-.917-.514 1.956 1.956 0 0 1-.523-.9C0 11.061 0 8.5 0 8.5s0-2.561.32-3.771a2.027 2.027 0 0 1 1.44-1.415C2.992 3 8 3 8 3s5.008 0 6.24.314a2.027 2.027 0 0 1 1.44 1.415ZM6.4 10.857 10.56 8.5 6.4 6.143v4.714Z" fill="currentColor"/></svg>
+                      {% comment %}Icon youtube:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_vimeo_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_vimeo_link }}"
+                      aria-label="{{ shop.name }} on Vimeo"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon vimeo:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.994 4.236c-.08 1.568-1.167 3.717-3.262 6.465C10.556 13.56 8.716 15 7.197 15c-.927 0-1.71-.873-2.35-2.618L3.55 7.598C3.07 5.852 2.559 4.98 2.015 4.98c-.128 0-.544.258-1.263.76L0 4.77l2.335-2.102c1.056-.937 1.84-1.422 2.367-1.454 1.248-.146 2.016.71 2.304 2.553.32 1.988.527 3.233.64 3.718.367 1.648.751 2.472 1.183 2.472.336 0 .848-.533 1.52-1.616a6.368 6.368 0 0 0 1.071-2.424c.096-.937-.272-1.406-1.072-1.406a2.93 2.93 0 0 0-1.183.275c.783-2.603 2.287-3.863 4.494-3.782 1.648.048 2.415 1.131 2.335 3.232Z" fill="currentColor"/></svg>
+                      {% comment %}Icon vimeo:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_tiktok_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_tiktok_link }}"
+                      aria-label="{{ shop.name }} on TikTok"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon tiktok:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.423 0h2.738s-.156 3.51 3.796 3.768v2.711s-2.114.129-3.796-1.158l.028 5.606a5.073 5.073 0 1 1-5.064-5.073h.708V8.64a2.298 2.298 0 1 0 1.617 2.205L8.423 0Z" fill="currentColor"/></svg>
+                      {% comment %}Icon tiktok:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_snapchat_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_snapchat_link }}"
+                      aria-label="{{ shop.name }} on Snapchat"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon snapchat:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.945 11.241a.982.982 0 0 0-.493-.534l-.107-.058-.193-.098a4.203 4.203 0 0 1-1.527-1.329 3.013 3.013 0 0 1-.261-.472c-.029-.087-.029-.138-.008-.181a.26.26 0 0 1 .086-.091c.21-.144.42-.286.633-.425.237-.158.433-.37.572-.621a1.236 1.236 0 0 0-.032-1.229 1.21 1.21 0 0 0-.458-.434 1.187 1.187 0 0 0-.611-.142c-.143 0-.284.02-.422.058.004-.327 0-.675-.032-1.013a3.855 3.855 0 0 0-.56-1.797 3.781 3.781 0 0 0-1.34-1.304A4.31 4.31 0 0 0 7.998 1c-.804 0-1.537.192-2.192.57a3.766 3.766 0 0 0-1.342 1.303 3.84 3.84 0 0 0-.56 1.798c-.029.341-.036.69-.029 1.013a1.579 1.579 0 0 0-.429-.058 1.19 1.19 0 0 0-.61.144 1.213 1.213 0 0 0-.456.434 1.238 1.238 0 0 0-.035 1.227c.14.252.337.466.575.624l.326.218.297.196a.303.303 0 0 1 .092.099c.026.047.026.098-.007.192a2.95 2.95 0 0 1-.26.465c-.385.55-.892.997-1.481 1.307-.34.182-.69.302-.837.708-.11.309-.036.661.247.955.103.11.221.204.357.276.276.153.569.273.873.356a.57.57 0 0 1 .179.08c.103.091.086.229.225.436.072.102.157.193.257.265.29.204.616.218.959.229.311.01.661.025 1.066.16.168.054.34.163.54.29.66.465 1.443.713 2.245.712 1.102 0 1.767-.414 2.253-.715.167-.115.346-.212.533-.287.4-.135.751-.146 1.066-.16.343-.015.668-.025.958-.229a.985.985 0 0 0 .293-.327c.1-.17.097-.29.19-.374a.485.485 0 0 1 .164-.076 3.86 3.86 0 0 0 .887-.36 1.42 1.42 0 0 0 .38-.297l.003-.004c.268-.29.336-.632.225-.93h-.004Zm-.98.534c-.6.334-.997.302-1.305.501-.264.175-.107.545-.3.676-.232.167-.93-.011-1.824.29-.736.247-1.208.963-2.539.963-1.326 0-1.788-.712-2.539-.966-.894-.298-1.587-.124-1.824-.29-.189-.132-.035-.502-.296-.673-.311-.203-.708-.167-1.306-.5-.382-.215-.164-.346-.039-.408 2.167-1.067 2.514-2.712 2.528-2.832.018-.15.04-.265-.121-.418-.154-.145-.84-.574-1.034-.712-.314-.221-.45-.446-.35-.719.071-.192.247-.261.429-.261.057 0 .114.007.172.018.346.076.683.254.876.301l.071.008c.108 0 .143-.051.136-.171-.025-.385-.079-1.137-.018-1.838a2.93 2.93 0 0 1 .751-1.863A3.35 3.35 0 0 1 6.6 2.058a3.306 3.306 0 0 1 1.397-.259c1.567 0 2.389.875 2.564 1.079.461.51.728 1.17.751 1.863.061.7.007 1.452-.018 1.834-.007.127.032.174.136.174.022 0 .047 0 .072-.01.193-.048.529-.222.876-.299a.67.67 0 0 1 .172-.018c.182 0 .357.073.429.262.1.272-.036.497-.354.719-.19.134-.877.566-1.03.712-.161.152-.143.268-.122.414.014.127.358 1.772 2.528 2.832.13.066.344.2-.035.414Z" fill="currentColor" stroke="currentColor" stroke-width=".5"/></svg>
+                      {% comment %}Icon snapchat:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              
+                {% if settings.social_tumblr_link != '' %}
+                  <li class="social-media-links__item">
+                    <a
+                      class="social-media-links__link"
+                      href="{{ settings.social_tumblr_link }}"
+                      aria-label="{{ shop.name }} on Tumblr"
+                      rel="me"
+                      target="_blank"
+                    >
+                      {% comment %}Icon tumblr:default:1.0.0-pre.0 begin{% endcomment %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.062 16c-2.66 0-4.656-1.235-4.656-4.198V7.06H3V4.49C5.66 3.867 6.77 1.788 6.902 0h2.761v4.068h3.215V7.06H9.663v4.128c0 1.235.687 1.667 1.785 1.667H13V16h-2.938Z" fill="currentColor"/></svg>
+                      {% comment %}Icon tumblr:default:1.0.0-pre.0 end{% endcomment %}
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+              
+              {% liquid
+                assign use_mobile_spacing = use_mobile_spacing_1681089b
+                assign use_mobile_spacing_1681089b = nil
+              %}
+              {% comment %}Component social-media-links:default:1.0.0-pre.10 end{% endcomment %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+      <div class="nav-drawer__cross-border">
+        {% comment %}Component cross-border:default:1.0.0-pre.10 begin{% endcomment %}
+        <div data-component="cross-border" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="cross-border">
+          {% if section.settings.enable_language_selector and localization.available_languages.size > 1 %}
+            {%- form 'localization', data-cross-border-form: '' -%}
+              {% capture current_name %}
+                {{ form.current_locale.endonym_name | capitalize }}
+              {% endcapture %}
+        
+              {% assign heading = 'general.components.cross_border.language_dropdown_label' | t %}
+              {% assign button_label = 'general.components.cross_border.language_submit_button_label' | t %}
+              {% comment %}Component disclosure:default:1.0.0-pre.10 begin{% endcomment %}
+              {% liquid
+                assign namespace_0a764fe3 = namespace
+                assign namespace = 'lang'
+                assign value_list_0a764fe3 = value_list
+                assign value_list = form.available_locales
+                assign value_key_0a764fe3 = value_key
+                assign value_key = 'iso_code'
+                assign name_key_0a764fe3 = name_key
+                assign name_key = 'endonym_name'
+                assign current_value_0a764fe3 = current_value
+                assign current_value = form.current_locale.iso_code
+                assign input_name_0a764fe3 = input_name
+                assign input_name = 'locale_code'
+              %}
+              {%- comment -%}
+                @param namespace [Required]
+                  The namespace that is used for aria-attributes.
+              
+                @param heading [Required]
+                  The heading/text that is shown when opening the disclosure on mobile. Also used by screen readers to describe the contents of the disclosure.
+              
+                @param button_label [Optional]
+                  Label for the no-js button.
+              
+                @param current_value [Required]
+                  The currently selected value.
+              
+                @param value_list [Required]
+                  The object that contains the list items to be rendered.
+              
+                @param value_key [Required]
+                  The key that is used while looping over value_list to access the value of the item.
+              
+                @param name_key [Required - unless using is_country_selector]
+                  The key that is used while looping over value_list to access the display name of the item.
+              
+                @param is_country_selector [Optional]
+                  If true, this disclosure uses the fields for country localization (instead of making an entirely new component just for currency)
+              
+                @param input_name [Optional]
+                  Used to specify the "name" attribute for the <input> element.
+              
+                @param fill_container [Optional]
+                  If true, the disclocure toggle button will fill its parent container.
+              
+                @param always_show_heading [Optional]
+                  If true, will always show the heading inside the button, instead of the selected value.
+              {%- endcomment -%}
+              
+              {% liquid
+                assign is_country_selector = is_country_selector | default: false
+                assign always_show_heading = always_show_heading | default: false
+              
+                assign current_name = blank
+                if is_country_selector
+                  assign current_name = localization.country.name | append: ' (' | append: localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol | append: ')'
+                else
+                  for value_item in value_list
+                    if value_item[value_key] == current_value
+                      assign current_name = value_item[name_key]
+                    endif
+                  endfor
+                endif
+              %}
+              
+              <div data-component="disclosure" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="disclosure{% if fill_container %} disclosure--fill{% endif %}">
+                <script
+                  type="application/json"
+                  data-component-data
+                >
+                  {
+                    "inputName": "{{ input_name }}",
+                    "inputValue": "{{ current_value }}",
+                    "alwaysShowHeading": {{ always_show_heading }}
+                  }
+                </script>
+                <noscript>
+                  <div class="disclosure__select-list">
+                    <label class="visually-hidden" for="{{ namespace }}-select-{{ unique_id }}">
+                      {{ heading | escape }}
+                    </label>
+                    <select
+                      class="disclosure__select"
+                      id="{{ namespace }}-select-{{ unique_id }}"
+                      name="{{ input_name }}"
+                    >
+                      {% for value_item in value_list %}
+                        <option
+                          class="disclosure__option"
+                          value="{{ value_item[value_key] }}"
+                          {% if value_item[value_key] == current_value %}
+                            selected
+                          {% endif %}
+                        >
+                          {% if is_country_selector %}
+                            {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                          {% else %}
+                            {{ value_item[name_key] }}
+                          {% endif %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                    {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                    {% liquid
+                      assign style_5a3f2079 = style
+                      assign style = 'primary'
+                      assign size_5a3f2079 = size
+                      assign size = 'small'
+                      assign text_5a3f2079 = text
+                      assign text = button_label
+                    %}
+                    {% comment %}
+                      @param style [Required]
+                        This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                    
+                      @param size [Required]
+                        This defines the size of the button: small, medium, or large. Default medium.
+                    
+                      @param text [Required]
+                        This is the text to be included in the button.
+                    
+                      @param attributes [Optional]
+                        This will include any additional attributes that the button needs. For example, aria-controls.
+                    {% endcomment %}
+                    
+                    <button
+                      data-component="button"
+                      data-component-type="component"
+                      {% if tag != blank %}data-component-tag="{{ tag }}"
+                      {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                      {{ attributes }}
+                    >
+                      {{ text }}
+                    </button>
+                    
+                    {% liquid
+                      assign style = style_5a3f2079
+                      assign style_5a3f2079 = nil
+                      assign size = size_5a3f2079
+                      assign size_5a3f2079 = nil
+                      assign text = text_5a3f2079
+                      assign text_5a3f2079 = nil
+                    %}
+                    {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                  </div>
+                </noscript>
+              
+                <div class="disclosure__wrapper disclosure--no-js-hidden">
+                  {% assign unique_id = "now" | date: "%N" | modulo: 1000 %}
+                  <h2 class="visually-hidden" id="{{ namespace }}-heading-{{ unique_id }}">
+                    {{ heading | escape }}
+                  </h2>
+                  <button
+                    class="disclosure__toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="{{ namespace }}-list-{{ unique_id }}"
+                    aria-describedby="{{ namespace }}-heading-{{ unique_id }}"
+                    data-disclosure-toggle
+                  >
+                    {% if always_show_heading %}
+                      {{ heading }}
+                    {% else %}
+                      {{ current_name }}
+                    {% endif %}
+                  </button>
+                  <div
+                    class="disclosure__modal"
+                    id="{{ namespace }}-list-{{ unique_id }}"
+                    data-disclosure-modal
+                  >
+                    <h2 class="disclosure__heading">{{ heading }}</h2>
+                    <button
+                      class="disclosure__close"
+                      data-disclosure-close
+                    >
+                      <span class="visually-hidden">{{ 'general.close' | t }}</span>
+                    </button>
+                    <ul class="disclosure__list">
+                      {% for value_item in value_list %}
+                        <li class="disclosure__list-item">
+                          <a
+                            class="
+                              disclosure__link
+                              {% if value_item[value_key] == current_value %}disclosure__link--selected{% endif %}
+                            "
+                            href="#"
+                            data-value="{{ value_item[value_key] }}"
+                            {% if value_item[value_key] == current_value %}
+                              aria-current="true"
+                            {% endif %}
+                            data-disclosure-option
+                          >
+                            {% if is_country_selector %}
+                              {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                            {% else %}
+                              {{ value_item[name_key] }}
+                            {% endif %}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              {% liquid
+                assign namespace = namespace_0a764fe3
+                assign namespace_0a764fe3 = nil
+                assign value_list = value_list_0a764fe3
+                assign value_list_0a764fe3 = nil
+                assign value_key = value_key_0a764fe3
+                assign value_key_0a764fe3 = nil
+                assign name_key = name_key_0a764fe3
+                assign name_key_0a764fe3 = nil
+                assign current_value = current_value_0a764fe3
+                assign current_value_0a764fe3 = nil
+                assign input_name = input_name_0a764fe3
+                assign input_name_0a764fe3 = nil
+              %}
+              {% comment %}Component disclosure:default:1.0.0-pre.10 end{% endcomment %}
+            {%- endform -%}
+          {% endif %}
+        
+          {% if section.settings.enable_country_selector and localization.available_countries.size > 1 %}
+            {%- form 'localization', data-cross-border-form: '' -%}
+              {% capture current_name %}
+                {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+              {% endcapture %}
+              {% assign heading = 'general.components.cross_border.currency_dropdown_label' | t %}
+              {% assign button_label = 'general.components.cross_border.currency_submit_button_label' | t %}
+              {% comment %}Component disclosure:default:1.0.0-pre.10 begin{% endcomment %}
+              {% liquid
+                assign namespace_52ac00bd = namespace
+                assign namespace = 'currency'
+                assign value_list_52ac00bd = value_list
+                assign value_list = localization.available_countries
+                assign value_key_52ac00bd = value_key
+                assign value_key = 'iso_code'
+                assign is_country_selector_52ac00bd = is_country_selector
+                assign is_country_selector = true
+                assign current_value_52ac00bd = current_value
+                assign current_value = localization.country.iso_code
+                assign input_name_52ac00bd = input_name
+                assign input_name = 'country_code'
+              %}
+              {%- comment -%}
+                @param namespace [Required]
+                  The namespace that is used for aria-attributes.
+              
+                @param heading [Required]
+                  The heading/text that is shown when opening the disclosure on mobile. Also used by screen readers to describe the contents of the disclosure.
+              
+                @param button_label [Optional]
+                  Label for the no-js button.
+              
+                @param current_value [Required]
+                  The currently selected value.
+              
+                @param value_list [Required]
+                  The object that contains the list items to be rendered.
+              
+                @param value_key [Required]
+                  The key that is used while looping over value_list to access the value of the item.
+              
+                @param name_key [Required - unless using is_country_selector]
+                  The key that is used while looping over value_list to access the display name of the item.
+              
+                @param is_country_selector [Optional]
+                  If true, this disclosure uses the fields for country localization (instead of making an entirely new component just for currency)
+              
+                @param input_name [Optional]
+                  Used to specify the "name" attribute for the <input> element.
+              
+                @param fill_container [Optional]
+                  If true, the disclocure toggle button will fill its parent container.
+              
+                @param always_show_heading [Optional]
+                  If true, will always show the heading inside the button, instead of the selected value.
+              {%- endcomment -%}
+              
+              {% liquid
+                assign is_country_selector = is_country_selector | default: false
+                assign always_show_heading = always_show_heading | default: false
+              
+                assign current_name = blank
+                if is_country_selector
+                  assign current_name = localization.country.name | append: ' (' | append: localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol | append: ')'
+                else
+                  for value_item in value_list
+                    if value_item[value_key] == current_value
+                      assign current_name = value_item[name_key]
+                    endif
+                  endfor
+                endif
+              %}
+              
+              <div data-component="disclosure" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="disclosure{% if fill_container %} disclosure--fill{% endif %}">
+                <script
+                  type="application/json"
+                  data-component-data
+                >
+                  {
+                    "inputName": "{{ input_name }}",
+                    "inputValue": "{{ current_value }}",
+                    "alwaysShowHeading": {{ always_show_heading }}
+                  }
+                </script>
+                <noscript>
+                  <div class="disclosure__select-list">
+                    <label class="visually-hidden" for="{{ namespace }}-select-{{ unique_id }}">
+                      {{ heading | escape }}
+                    </label>
+                    <select
+                      class="disclosure__select"
+                      id="{{ namespace }}-select-{{ unique_id }}"
+                      name="{{ input_name }}"
+                    >
+                      {% for value_item in value_list %}
+                        <option
+                          class="disclosure__option"
+                          value="{{ value_item[value_key] }}"
+                          {% if value_item[value_key] == current_value %}
+                            selected
+                          {% endif %}
+                        >
+                          {% if is_country_selector %}
+                            {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                          {% else %}
+                            {{ value_item[name_key] }}
+                          {% endif %}
+                        </option>
+                      {% endfor %}
+                    </select>
+                    {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                    {% liquid
+                      assign style_5c2f7123 = style
+                      assign style = 'primary'
+                      assign size_5c2f7123 = size
+                      assign size = 'small'
+                      assign text_5c2f7123 = text
+                      assign text = button_label
+                    %}
+                    {% comment %}
+                      @param style [Required]
+                        This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                    
+                      @param size [Required]
+                        This defines the size of the button: small, medium, or large. Default medium.
+                    
+                      @param text [Required]
+                        This is the text to be included in the button.
+                    
+                      @param attributes [Optional]
+                        This will include any additional attributes that the button needs. For example, aria-controls.
+                    {% endcomment %}
+                    
+                    <button
+                      data-component="button"
+                      data-component-type="component"
+                      {% if tag != blank %}data-component-tag="{{ tag }}"
+                      {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                      {{ attributes }}
+                    >
+                      {{ text }}
+                    </button>
+                    
+                    {% liquid
+                      assign style = style_5c2f7123
+                      assign style_5c2f7123 = nil
+                      assign size = size_5c2f7123
+                      assign size_5c2f7123 = nil
+                      assign text = text_5c2f7123
+                      assign text_5c2f7123 = nil
+                    %}
+                    {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                  </div>
+                </noscript>
+              
+                <div class="disclosure__wrapper disclosure--no-js-hidden">
+                  {% assign unique_id = "now" | date: "%N" | modulo: 1000 %}
+                  <h2 class="visually-hidden" id="{{ namespace }}-heading-{{ unique_id }}">
+                    {{ heading | escape }}
+                  </h2>
+                  <button
+                    class="disclosure__toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="{{ namespace }}-list-{{ unique_id }}"
+                    aria-describedby="{{ namespace }}-heading-{{ unique_id }}"
+                    data-disclosure-toggle
+                  >
+                    {% if always_show_heading %}
+                      {{ heading }}
+                    {% else %}
+                      {{ current_name }}
+                    {% endif %}
+                  </button>
+                  <div
+                    class="disclosure__modal"
+                    id="{{ namespace }}-list-{{ unique_id }}"
+                    data-disclosure-modal
+                  >
+                    <h2 class="disclosure__heading">{{ heading }}</h2>
+                    <button
+                      class="disclosure__close"
+                      data-disclosure-close
+                    >
+                      <span class="visually-hidden">{{ 'general.close' | t }}</span>
+                    </button>
+                    <ul class="disclosure__list">
+                      {% for value_item in value_list %}
+                        <li class="disclosure__list-item">
+                          <a
+                            class="
+                              disclosure__link
+                              {% if value_item[value_key] == current_value %}disclosure__link--selected{% endif %}
+                            "
+                            href="#"
+                            data-value="{{ value_item[value_key] }}"
+                            {% if value_item[value_key] == current_value %}
+                              aria-current="true"
+                            {% endif %}
+                            data-disclosure-option
+                          >
+                            {% if is_country_selector %}
+                              {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                            {% else %}
+                              {{ value_item[name_key] }}
+                            {% endif %}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              {% liquid
+                assign namespace = namespace_52ac00bd
+                assign namespace_52ac00bd = nil
+                assign value_list = value_list_52ac00bd
+                assign value_list_52ac00bd = nil
+                assign value_key = value_key_52ac00bd
+                assign value_key_52ac00bd = nil
+                assign is_country_selector = is_country_selector_52ac00bd
+                assign is_country_selector_52ac00bd = nil
+                assign current_value = current_value_52ac00bd
+                assign current_value_52ac00bd = nil
+                assign input_name = input_name_52ac00bd
+                assign input_name_52ac00bd = nil
+              %}
+              {% comment %}Component disclosure:default:1.0.0-pre.10 end{% endcomment %}
+            {%- endform -%}
+          {% endif %}
+        </div>
+        
+        {% comment %}Component cross-border:default:1.0.0-pre.10 end{% endcomment %}
+      </div>
+    </div>
+    
+    {% comment %}Component navigation-drawer:default:1.0.0-pre.10 end{% endcomment %}
+  </section-wrapper>
+</section>
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_logo",
+      "label": "Logo image",
+      "info": "300 x 90px .png recommended."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_header_logo",
+      "label": "Mobile logo image",
+      "info": "200 x 90px .png recommended."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo max width",
+      "step": 5,
+      "min": 50,
+      "max": 300,
+      "default": 200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "logo_width_mobile",
+      "label": "Mobile logo max width",
+      "step": 5,
+      "min": 50,
+      "max": 200,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "nav_position",
+      "label": "Menu style",
+      "options": [
+        {
+          "value": "left-left",
+          "label": "Logo left, menu left"
+        },
+        {
+          "value": "left-center",
+          "label": "Logo left, menu center"
+        },
+        {
+          "value": "center-left",
+          "label": "Logo center, menu left"
+        },
+        {
+          "value": "center-below",
+          "label": "Logo center, menu below"
+        }
+      ],
+      "default": "left-left"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_sticky",
+      "label": "Enable sticky header",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Show separator line",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Toolbar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "toolbar_text_color",
+      "label": "Text",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "toolbar_bg_color",
+      "label": "Background",
+      "default": "#F0F0F0"
+    },
+    {
+      "type": "header",
+      "content": "Language selector",
+      "info": "To add a language, go to your [language settings](/admin/settings/languages)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": true,
+      "label": "Show language selector"
+    },
+    {
+      "type": "header",
+      "content": "Country/region selector",
+      "info": "To add a country/region, go to your [payment settings](/admin/settings/payments)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "Show country/region selector"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Call attention to a special discount, feature, or promotion here.</p>"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link",
+          "info": "Applies a click-through link on the entire text. If there are links inside the text, this will not be applied."
+        }
+      ]
+    },
+    {
+      "type": "meganav_default",
+      "name": "Mega menu",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "trigger",
+          "label": "Mega menu trigger",
+          "info": "Add the menu item that you want to turn into a mega menu. [Learn more](https://support.pixelunion.net/hc/en-us/articles/4462025870099)."
+        },
+        {
+          "type": "header",
+          "content": "Promotion 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_1",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "crop_1",
+          "label": "Image focal point",
+          "options": [
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "color_background",
+          "id": "background_1",
+          "label": "Background",
+          "info": "Used when no image is selected."
+        },
+        {
+          "type": "color",
+          "id": "color_1",
+          "label": "Text color",
+          "default": "#DEDEDE"
+        },
+        {
+          "type": "text",
+          "id": "preheading_1",
+          "label": "Preheading",
+          "default": "Preheading"
+        },
+        {
+          "type": "text",
+          "id": "heading_1",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "subheading_1",
+          "label": "Subheading",
+          "default": "Subheading"
+        },
+        {
+          "type": "url",
+          "id": "link_1",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "position_1",
+          "label": "Position",
+          "options": [
+            {
+              "value": "first",
+              "label": "First column"
+            },
+            {
+              "value": "last",
+              "label": "Last column"
+            }
+          ],
+          "default": "first"
+        },
+        {
+          "type": "header",
+          "content": "Promotion 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "crop_2",
+          "label": "Image focal point",
+          "options": [
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "color_background",
+          "id": "background_2",
+          "label": "Background",
+          "info": "Used when no image is selected."
+        },
+        {
+          "type": "color",
+          "id": "color_2",
+          "label": "Text color",
+          "default": "#DEDEDE"
+        },
+        {
+          "type": "text",
+          "id": "preheading_2",
+          "label": "Preheading",
+          "default": "Preheading"
+        },
+        {
+          "type": "text",
+          "id": "heading_2",
+          "label": "Heading",
+          "default": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "subheading_2",
+          "label": "Subheading",
+          "default": "Subheading"
+        },
+        {
+          "type": "url",
+          "id": "link_2",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "position_2",
+          "label": "Position",
+          "options": [
+            {
+              "value": "first",
+              "label": "First column"
+            },
+            {
+              "value": "last",
+              "label": "Last column"
+            }
+          ],
+          "default": "first"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

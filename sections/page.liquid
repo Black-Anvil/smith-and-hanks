@@ -1,0 +1,54 @@
+<section data-component="page" data-component-type="section" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="page">
+  {% if section.settings.page.title != blank %}
+    <section-wrapper {% if section.settings.width == 'content' %}width="content"{% endif %}>
+      <section-header>
+        <h2 class="page__title">
+          {{ section.settings.page.title | escape }}
+        </h2>
+      </section-header>
+    </section-wrapper>
+  {% endif %}
+  <section-wrapper {% if section.settings.width == 'content' %}width="content"{% endif %}>
+    <section-content>
+      <div class="page__content">
+        {% if section.settings.page.content != blank %}
+          {{ section.settings.page.content }}
+        {% else %}
+          {{ 'page' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+        </div>
+    </section-content>
+  </section-wrapper>
+</section>
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "content",
+          "label": "Centered"
+        },
+        {
+          "value": "site_width",
+          "label": "Site width"
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "Page"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page"
+    }
+  ]
+}
+{% endschema %}

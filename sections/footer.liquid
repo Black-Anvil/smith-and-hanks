@@ -1,0 +1,1248 @@
+<footer
+  data-component="footer"
+  data-component-type="section"
+  {% if tag != blank %}data-component-tag="{{ tag }}"
+  {% endif %}class="footer"
+  style="
+  --color-footer-background: {{ settings.color_footer_background }};
+  --block-text-color: {{ settings.color_footer_text }};
+  "
+>
+  <section-wrapper>
+    <section-content>
+      <div class="footer__wrapper">
+        <div class="footer-top">
+          {% for block in section.blocks %}
+            {%- comment -%}
+              Between 720px and 1024px, the width of the column changes based on these rules:
+              1. Between 15% and 33% = 1 column
+              2. Between 34% and 66% = 2 columns
+              3. 67% and up = 3 columns
+            {%- endcomment -%}
+            {% liquid
+              assign block_width = 'one-column'
+              if block.settings.column_width > 33
+                if block.settings.column_width > 66
+                  assign block_width = 'three-column'
+                else
+                  assign block_width = 'two-column'
+                endif
+              endif
+            %}
+            <div
+              class="
+                footer-block
+                footer-block--size-{{ block_width }}
+              "
+              style="--column-width: {{ block.settings.column_width }}%;"
+            >
+              {% case block.type %}
+                {% when 'footer_email_form' %}
+                  {% comment %}Component block-footer-newsletter-form:default:1.0.0-pre.10 begin{% endcomment %}
+                  <div data-component="block-footer-newsletter-form" data-component-type="block" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="block-footer-newsletter-form" {{ block.shopify_attributes }}>
+                    {% if block.settings.heading != blank %}
+                      <h2 class="block-footer-newsletter-form__heading">
+                        {{ block.settings.heading | escape }}
+                      </h2>
+                    {% endif %}
+                  
+                    {% if block.settings.content != blank %}
+                      <div class="block-footer-newsletter-form__content">
+                        {{ block.settings.content }}
+                      </div>
+                    {% endif %}
+                  
+                    {% liquid
+                      assign label_text = 'navigation.footer.newsletter_form.label' | t
+                      assign button_text = 'navigation.footer.newsletter_form.button_label' | t
+                      assign placeholder_text = 'navigation.footer.newsletter_form.label' | t
+                    %}
+                  
+                    {%- capture input_attributes -%}
+                      required
+                      autocorrect="off"
+                      autocapitalize="off"
+                      autocomplete="email"
+                      aria-required="true"
+                      {% if form.errors %}
+                        autofocus
+                        aria-invalid="true"
+                        aria-describedby="newsletter-error--{{ section.id }}"
+                      {% elsif form.posted_successfully? %}
+                        aria-describedby="newsletter-success--{{ section.id }}"
+                      {% endif %}
+                    {%- endcapture -%}
+                  
+                    {%- capture button_attributes -%}
+                      aria-label="{{ button_label }}"
+                      data-newsletter-submit
+                    {%- endcapture -%}
+                    {% comment %}UUID newsletter_id begin{% endcomment %}
+                    {% assign newsletter_id = '8f826e90-c1b3-49d1-9923-ca1e29da4b2b' %}
+                    {% comment %}UUID newsletter_id end{% endcomment %}
+                    {% assign newsletter_id = newsletter_id | append: '-' | append: block.id %}
+                    {% form 'customer', id: newsletter_id, class: 'footer-newsletter-form', data-newsletter: '' %}
+                      {% if form.errors %}
+                        {% capture form_error_content %}
+                          <p
+                            id="newsletter-error--{{ section.id }}"
+                            tabindex="-1"
+                            autofocus
+                          >
+                            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+                          </p>
+                        {% endcapture %}
+                  
+                        {% comment %}Component notification:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign content_fc5eca09 = content
+                          assign content = form_error_content
+                          assign type_fc5eca09 = type
+                          assign type = 'error'
+                        %}
+                        {%- comment -%}
+                          @param content [Required]
+                            The content that goes in the notification banner
+                        
+                          @param type [Required]
+                            The type of notification banner ('error' or 'success')
+                        
+                          @param hidden [Optional]
+                            Whether the notification should be hidden
+                        {%- endcomment -%}
+                        
+                        <div
+                          data-component="notification"
+                          data-component-type="component"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="
+                            notification
+                            notification--{{ type }}
+                          "
+                          {% if type == 'error' %}
+                            role="alert"
+                          {% else %}
+                            role="status"
+                          {% endif %}
+                          {% if hidden %}hidden{% endif %}
+                        >
+                          {{ content }}
+                        </div>
+                        
+                        {% liquid
+                          assign content = content_fc5eca09
+                          assign content_fc5eca09 = nil
+                          assign type = type_fc5eca09
+                          assign type_fc5eca09 = nil
+                        %}
+                        {% comment %}Component notification:default:1.0.0-pre.10 end{% endcomment %}
+                      {% endif %}
+                      {%- if form.posted_successfully? -%}
+                        {% capture form_success_content %}
+                          <h3
+                            id="newsletter-success--{{ section.id }}"
+                            tabindex="-1"
+                            autofocus
+                          >
+                            {{ 'general.components.newsletter_form.success' | t }}
+                          </h3>
+                        {% endcapture %}
+                        {% comment %}Component notification:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign content_71f6c874 = content
+                          assign content = form_success_content
+                          assign type_71f6c874 = type
+                          assign type = 'success'
+                        %}
+                        {%- comment -%}
+                          @param content [Required]
+                            The content that goes in the notification banner
+                        
+                          @param type [Required]
+                            The type of notification banner ('error' or 'success')
+                        
+                          @param hidden [Optional]
+                            Whether the notification should be hidden
+                        {%- endcomment -%}
+                        
+                        <div
+                          data-component="notification"
+                          data-component-type="component"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="
+                            notification
+                            notification--{{ type }}
+                          "
+                          {% if type == 'error' %}
+                            role="alert"
+                          {% else %}
+                            role="status"
+                          {% endif %}
+                          {% if hidden %}hidden{% endif %}
+                        >
+                          {{ content }}
+                        </div>
+                        
+                        {% liquid
+                          assign content = content_71f6c874
+                          assign content_71f6c874 = nil
+                          assign type = type_71f6c874
+                          assign type_71f6c874 = nil
+                        %}
+                        {% comment %}Component notification:default:1.0.0-pre.10 end{% endcomment %}
+                      {%- endif -%}
+                      <div class="block-footer-newsletter-form__form-content">
+                        <input type="hidden" name="contact[tags]" value="newsletter">
+                        {% assign input_id = section.id | append: '-' | append: block.id | append: '-newsletter' %}
+                        {% comment %}Component input-field:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign input_type_be3d91c3 = input_type
+                          assign input_type = 'email'
+                          assign placeholder_be3d91c3 = placeholder
+                          assign placeholder = placeholder_text
+                          assign form_namespace_be3d91c3 = form_namespace
+                          assign form_namespace = 'contact'
+                          assign field_name_be3d91c3 = field_name
+                          assign field_name = 'email'
+                          assign attributes_be3d91c3 = attributes
+                          assign attributes = input_attributes
+                        %}
+                        {% comment %}
+                          @param form [Required]
+                            The form that the input lives in.
+                        
+                          @param form_namespace [Required]
+                            The form's namespace that is used in "name" attribute as form_namespace[field_name].
+                        
+                          @param field_name [Required]
+                            The field name for the form. Will be used for the "name" attribute.
+                        
+                          @param input_type [Required]
+                            The type of field that is being rendered. Usually text, password, number, etc.
+                        
+                          @param input_id [Optional]
+                            The type of field that is being rendered. Usually text, password, number, etc.
+                        
+                          @param label_text [Required]
+                            The text for the label to be included.
+                        
+                          @param placeholder [Optional]
+                            The placeholder for the input field.
+                        
+                          @param attributes [Optional]
+                            Additional attributes to append to the input field.
+                        {% endcomment %}
+                        
+                        {% if input_id == blank %}
+                          {% comment %}UUID input_id begin{% endcomment %}
+                          {% assign input_id = 'ccc38b4c-c4f6-49ca-a9bc-e866563f5242' %}
+                          {% comment %}UUID input_id end{% endcomment %}
+                        {% endif %}
+                        
+                        <div data-component="input-field" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="input-field">
+                          <label for="{{ input_id }}">{{ label_text }}</label>
+                          <input
+                            id="{{ input_id }}"
+                            type="{{ input_type }}"
+                            name="{% if form_namespace %}{{ form_namespace }}[{{ field_name }}]{% else %}{{ field_name }}{% endif %}"
+                            value="{{ form[field_name] }}"
+                            placeholder="{{ placeholder }}"
+                            {{ attributes }}
+                          >
+                        </div>
+                        
+                        {% liquid
+                          assign input_type = input_type_be3d91c3
+                          assign input_type_be3d91c3 = nil
+                          assign placeholder = placeholder_be3d91c3
+                          assign placeholder_be3d91c3 = nil
+                          assign form_namespace = form_namespace_be3d91c3
+                          assign form_namespace_be3d91c3 = nil
+                          assign field_name = field_name_be3d91c3
+                          assign field_name_be3d91c3 = nil
+                          assign attributes = attributes_be3d91c3
+                          assign attributes_be3d91c3 = nil
+                        %}
+                        {% comment %}Component input-field:default:1.0.0-pre.10 end{% endcomment %}
+                        {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                        {% liquid
+                          assign style_98e175c5 = style
+                          assign style = 'primary'
+                          assign size_98e175c5 = size
+                          assign size = 'small'
+                          assign text_98e175c5 = text
+                          assign text = button_text
+                          assign attributes_98e175c5 = attributes
+                          assign attributes = button_attributes
+                        %}
+                        {% comment %}
+                          @param style [Required]
+                            This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                        
+                          @param size [Required]
+                            This defines the size of the button: small, medium, or large. Default medium.
+                        
+                          @param text [Required]
+                            This is the text to be included in the button.
+                        
+                          @param attributes [Optional]
+                            This will include any additional attributes that the button needs. For example, aria-controls.
+                        {% endcomment %}
+                        
+                        <button
+                          data-component="button"
+                          data-component-type="component"
+                          {% if tag != blank %}data-component-tag="{{ tag }}"
+                          {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                          {{ attributes }}
+                        >
+                          {{ text }}
+                        </button>
+                        
+                        {% liquid
+                          assign style = style_98e175c5
+                          assign style_98e175c5 = nil
+                          assign size = size_98e175c5
+                          assign size_98e175c5 = nil
+                          assign text = text_98e175c5
+                          assign text_98e175c5 = nil
+                          assign attributes = attributes_98e175c5
+                          assign attributes_98e175c5 = nil
+                        %}
+                        {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                      </div>
+                    {% endform %}
+                  </div>
+                  
+                  {% comment %}Component block-footer-newsletter-form:default:1.0.0-pre.10 end{% endcomment %}
+                {% when 'menu' %}
+                  {% comment %}Component block-footer-menu:default:1.0.0-pre.10 begin{% endcomment %}
+                  <div data-component="block-footer-menu" data-component-type="block" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="block-footer-menu" {{ block.shopify_attributes }}>
+                    {% if block.settings.heading != blank %}
+                      <h2 class="block-footer-menu__heading">
+                        {{ block.settings.heading | escape }}
+                      </h2>
+                    {% endif %}
+                    {% if block.settings.linklist != blank %}
+                      <div class="block-footer-menu__content">
+                        <ul class="block-footer-menu__menu">
+                          {% for link in linklists[block.settings.linklist].links %}
+                            <li class="block-footer-menu__list-item">
+                              <a class="block-footer-menu__link" href="{{ link.url }}">
+                                {{ link.title | escape }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                  {% comment %}Component block-footer-menu:default:1.0.0-pre.10 end{% endcomment %}
+                {% when 'about' %}
+                  {% comment %}Component block-footer-about:default:1.0.0-pre.10 begin{% endcomment %}
+                  <div data-component="block-footer-about" data-component-type="block" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="block-footer-about" {{ block.shopify_attributes }}>
+                    {% if block.settings.heading != blank %}
+                      <h2 class="block-footer-about__heading">
+                        {{ block.settings.heading | escape }}
+                      </h2>
+                    {% endif %}
+                  
+                    {% if block.settings.content != blank %}
+                      <div class="block-footer-about__content">
+                        {{ block.settings.content }}
+                      </div>
+                    {% endif %}
+                    {% if block.settings.show_social_icons %}
+                      {% comment %}Component social-media-links:default:1.0.0-pre.10 begin{% endcomment %}
+                      {% comment %}
+                        @param use_mobile_spacing {Boolean}} [Optional]
+                          Changes the spacing to allow for bigger touch targets on mobile if true.
+                      {% endcomment %}
+                      
+                      {% assign use_mobile_spacing = use_mobile_spacing | default: false %}
+                      
+                      <ul data-component="social-media-links" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="social-media-links {% if use_mobile_spacing %}social-media-links--mobile-spacing{% endif %}">
+                        {% if settings.social_facebook_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_facebook_link }}"
+                              aria-label="{{ shop.name }} on Facebook"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon facebook:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.591.077a7.981 7.981 0 0 0-5.247 2.329A7.925 7.925 0 0 0 .392 5.573a8 8 0 0 0 .248 5.604c.072.17.254.543.347.71.243.44.542.876.862 1.258a7.984 7.984 0 0 0 4.886 2.78l.016.002v-5.576H4.719V8.04H6.75L6.753 7c.003-1.107.002-1.082.04-1.341.138-.952.594-1.67 1.327-2.084.336-.19.758-.319 1.211-.369.46-.05 1.219-.012 2.02.102l.212.03c.002 0 .003.441.003.982v.983l-.598.003c-.64.003-.669.005-.838.044-.437.101-.728.384-.832.806-.041.17-.042.185-.042 1.07v.814h1.106c.999 0 1.107.002 1.107.012 0 .013-.343 2.244-.35 2.279l-.004.02H9.256v5.573l.04-.005a7.9 7.9 0 0 0 2.286-.738 8.013 8.013 0 0 0 3.837-4.142c.33-.813.517-1.647.572-2.561.012-.186.012-.679 0-.864a7.95 7.95 0 0 0-.497-2.37A8.02 8.02 0 0 0 10.9.607 8.088 8.088 0 0 0 8.532.084a16.32 16.32 0 0 0-.941-.007Z" fill="currentColor"/></svg>
+                              {% comment %}Icon facebook:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_twitter_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_twitter_link }}"
+                              aria-label="{{ shop.name }} on Twitter"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon twitter:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.71 2.01a3.343 3.343 0 0 0-1.73.735 3.285 3.285 0 0 0-1.152 1.99c-.055.304-.047.841.018 1.148a.44.44 0 0 1 .015.114c-.005.004-.108 0-.231-.01a9.372 9.372 0 0 1-5.3-2.155 13.8 13.8 0 0 1-1.23-1.23c-.022-.009-.209.393-.277.597-.305.912-.196 1.9.3 2.722.229.378.494.663.926.993l.047.036-.133-.01A3.245 3.245 0 0 1 .79 6.624l-.16-.078c-.02-.008 0 .32.03.526C.852 8.35 1.824 9.43 3.069 9.745c.08.02.145.041.145.046 0 .01-.174.05-.344.077a4.07 4.07 0 0 1-1.012-.01l-.083-.01.041.114c.066.184.229.505.346.682.569.856 1.481 1.384 2.535 1.469l.133.01-.055.046c-.083.07-.567.388-.74.486a6.683 6.683 0 0 1-2.605.825 8.518 8.518 0 0 1-1.237.008A1.268 1.268 0 0 0 0 13.475c-.01.01.368.233.627.37a9.49 9.49 0 0 0 3.007.99c.74.111 1.634.132 2.406.056 2.116-.208 3.968-1.052 5.45-2.484 1.532-1.48 2.55-3.533 2.82-5.684a7.65 7.65 0 0 0 .063-1.066v-.444l.085-.06c.258-.186.66-.547.905-.814.24-.26.67-.808.635-.808-.005 0-.123.045-.262.1a6.1 6.1 0 0 1-.843.266c-.224.055-.688.138-.717.128-.009-.003.032-.037.09-.076.455-.3.851-.748 1.1-1.24.098-.196.198-.446.184-.46a.462.462 0 0 0-.133.062 6.79 6.79 0 0 1-1.724.664l-.215.05-.162-.155a3.296 3.296 0 0 0-1.72-.839 5.271 5.271 0 0 0-.885-.02Z" fill="currentColor"/></svg>
+                              {% comment %}Icon twitter:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_instagram_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_instagram_link }}"
+                              aria-label="{{ shop.name }} on Instagram"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon instagram:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.121.005c-.523.02-1.155.082-1.478.144C1.775.507.505 1.777.148 3.644.012 4.356 0 4.704 0 8.001s.012 3.644.148 4.356c.357 1.867 1.628 3.138 3.495 3.495.712.136 1.06.148 4.357.148 3.298 0 3.645-.012 4.357-.148 1.867-.357 3.138-1.628 3.495-3.495.136-.712.148-1.059.148-4.356 0-3.298-.012-3.645-.148-4.357C15.493 1.77 14.214.497 12.34.147 11.655.02 11.387.01 8.334.002a281.625 281.625 0 0 0-3.213.003Zm6.505 1.503c.652.085 1.14.23 1.517.452.238.14.758.66.898.898.232.395.373.882.454 1.564.06.504.06 6.653 0 7.157-.08.682-.222 1.17-.454 1.564-.14.239-.66.758-.898.898-.395.232-.882.373-1.565.454-.503.06-6.653.06-7.157 0-.682-.08-1.169-.222-1.564-.454-.238-.14-.758-.66-.898-.898-.232-.395-.373-.882-.454-1.564-.06-.504-.06-6.653 0-7.157.058-.491.122-.783.242-1.103.137-.366.275-.59.54-.875.591-.636 1.265-.892 2.532-.963.692-.039 6.48-.015 6.807.027Zm.334 1.298c-.238.082-.526.38-.602.626a.968.968 0 0 0 1.211 1.21c.264-.081.547-.364.63-.629a.997.997 0 0 0-.048-.701 1.217 1.217 0 0 0-.496-.48 1.157 1.157 0 0 0-.695-.026Zm-4.342 1.09A4.14 4.14 0 0 0 5.09 5.091a4.113 4.113 0 0 0 1.661 6.833 4.147 4.147 0 0 0 2.498 0 4.138 4.138 0 0 0 2.675-2.675 4.147 4.147 0 0 0 0-2.497 4.138 4.138 0 0 0-2.675-2.675 4.387 4.387 0 0 0-1.63-.18Zm1.018 1.516c.29.07.806.327 1.043.522.294.24.532.545.707.906.21.437.265.673.265 1.16 0 .488-.054.725-.265 1.162a2.51 2.51 0 0 1-1.225 1.223c-.436.212-.673.266-1.161.266s-.725-.054-1.161-.265a2.51 2.51 0 0 1-1.225-1.224 3.556 3.556 0 0 1-.21-.541c-.075-.304-.075-.937 0-1.24.078-.309.333-.82.529-1.06a2.773 2.773 0 0 1 1.69-.96 3.472 3.472 0 0 1 1.013.05Z" fill="currentColor"/></svg>
+                              {% comment %}Icon instagram:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_pinterest_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_pinterest_link }}"
+                              aria-label="{{ shop.name }} on Pinterest"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon pinterest:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 .587a7.485 7.485 0 0 1 5.244 2.178 7.484 7.484 0 0 1 1.182 8.96A7.36 7.36 0 0 1 8 15.422a7.558 7.558 0 0 1-2.107-.284c.373-.604.622-1.147.756-1.6l.524-2.036c.125.25.364.463.711.65a2.41 2.41 0 0 0 1.102.275c.774 0 1.467-.222 2.08-.667a4.329 4.329 0 0 0 1.423-1.822 6.49 6.49 0 0 0 .497-2.604c0-1.156-.444-2.143-1.324-2.987a4.684 4.684 0 0 0-3.378-1.271c-.827 0-1.6.142-2.293.426a4.649 4.649 0 0 0-2.996 4.214c0 .666.125 1.253.382 1.76.25.498.623.853 1.13 1.066.088.036.168.036.23 0 .063-.026.107-.088.134-.177l.16-.605c.044-.133.018-.266-.098-.4a2.089 2.089 0 0 1-.507-1.449 3.52 3.52 0 0 1 3.68-3.573c.97 0 1.725.267 2.258.791.542.533.818 1.218.818 2.062a6.28 6.28 0 0 1-.293 1.965 3.528 3.528 0 0 1-.827 1.44c-.356.355-.773.533-1.244.533-.383 0-.694-.133-.943-.418a1.098 1.098 0 0 1-.23-1.004c.135-.475.274-.95.417-1.422l.16-.65c.053-.23.08-.417.08-.577 0-.32-.089-.587-.249-.791-.178-.205-.418-.311-.738-.311-.4 0-.738.178-1.004.55-.267.365-.41.828-.41 1.388.005.346.06.69.16 1.022l.054.133c-.533 2.293-.844 3.645-.96 4.036-.106.488-.142 1.066-.115 1.724a7.467 7.467 0 0 1-4.445-6.8c0-2.044.72-3.804 2.17-5.244A7.147 7.147 0 0 1 8 .578v.009Z" fill="currentColor"/></svg>
+                              {% comment %}Icon pinterest:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_youtube_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_youtube_link }}"
+                              aria-label="{{ shop.name }} on YouTube"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon youtube:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.68 4.729C16 5.939 16 8.5 16 8.5s0 2.561-.32 3.771c-.09.341-.27.652-.523.901a2.01 2.01 0 0 1-.917.514C13.008 14 8 14 8 14s-5.008 0-6.24-.314a2.01 2.01 0 0 1-.917-.514 1.956 1.956 0 0 1-.523-.9C0 11.061 0 8.5 0 8.5s0-2.561.32-3.771a2.027 2.027 0 0 1 1.44-1.415C2.992 3 8 3 8 3s5.008 0 6.24.314a2.027 2.027 0 0 1 1.44 1.415ZM6.4 10.857 10.56 8.5 6.4 6.143v4.714Z" fill="currentColor"/></svg>
+                              {% comment %}Icon youtube:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_vimeo_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_vimeo_link }}"
+                              aria-label="{{ shop.name }} on Vimeo"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon vimeo:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.994 4.236c-.08 1.568-1.167 3.717-3.262 6.465C10.556 13.56 8.716 15 7.197 15c-.927 0-1.71-.873-2.35-2.618L3.55 7.598C3.07 5.852 2.559 4.98 2.015 4.98c-.128 0-.544.258-1.263.76L0 4.77l2.335-2.102c1.056-.937 1.84-1.422 2.367-1.454 1.248-.146 2.016.71 2.304 2.553.32 1.988.527 3.233.64 3.718.367 1.648.751 2.472 1.183 2.472.336 0 .848-.533 1.52-1.616a6.368 6.368 0 0 0 1.071-2.424c.096-.937-.272-1.406-1.072-1.406a2.93 2.93 0 0 0-1.183.275c.783-2.603 2.287-3.863 4.494-3.782 1.648.048 2.415 1.131 2.335 3.232Z" fill="currentColor"/></svg>
+                              {% comment %}Icon vimeo:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_tiktok_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_tiktok_link }}"
+                              aria-label="{{ shop.name }} on TikTok"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon tiktok:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.423 0h2.738s-.156 3.51 3.796 3.768v2.711s-2.114.129-3.796-1.158l.028 5.606a5.073 5.073 0 1 1-5.064-5.073h.708V8.64a2.298 2.298 0 1 0 1.617 2.205L8.423 0Z" fill="currentColor"/></svg>
+                              {% comment %}Icon tiktok:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_snapchat_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_snapchat_link }}"
+                              aria-label="{{ shop.name }} on Snapchat"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon snapchat:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.945 11.241a.982.982 0 0 0-.493-.534l-.107-.058-.193-.098a4.203 4.203 0 0 1-1.527-1.329 3.013 3.013 0 0 1-.261-.472c-.029-.087-.029-.138-.008-.181a.26.26 0 0 1 .086-.091c.21-.144.42-.286.633-.425.237-.158.433-.37.572-.621a1.236 1.236 0 0 0-.032-1.229 1.21 1.21 0 0 0-.458-.434 1.187 1.187 0 0 0-.611-.142c-.143 0-.284.02-.422.058.004-.327 0-.675-.032-1.013a3.855 3.855 0 0 0-.56-1.797 3.781 3.781 0 0 0-1.34-1.304A4.31 4.31 0 0 0 7.998 1c-.804 0-1.537.192-2.192.57a3.766 3.766 0 0 0-1.342 1.303 3.84 3.84 0 0 0-.56 1.798c-.029.341-.036.69-.029 1.013a1.579 1.579 0 0 0-.429-.058 1.19 1.19 0 0 0-.61.144 1.213 1.213 0 0 0-.456.434 1.238 1.238 0 0 0-.035 1.227c.14.252.337.466.575.624l.326.218.297.196a.303.303 0 0 1 .092.099c.026.047.026.098-.007.192a2.95 2.95 0 0 1-.26.465c-.385.55-.892.997-1.481 1.307-.34.182-.69.302-.837.708-.11.309-.036.661.247.955.103.11.221.204.357.276.276.153.569.273.873.356a.57.57 0 0 1 .179.08c.103.091.086.229.225.436.072.102.157.193.257.265.29.204.616.218.959.229.311.01.661.025 1.066.16.168.054.34.163.54.29.66.465 1.443.713 2.245.712 1.102 0 1.767-.414 2.253-.715.167-.115.346-.212.533-.287.4-.135.751-.146 1.066-.16.343-.015.668-.025.958-.229a.985.985 0 0 0 .293-.327c.1-.17.097-.29.19-.374a.485.485 0 0 1 .164-.076 3.86 3.86 0 0 0 .887-.36 1.42 1.42 0 0 0 .38-.297l.003-.004c.268-.29.336-.632.225-.93h-.004Zm-.98.534c-.6.334-.997.302-1.305.501-.264.175-.107.545-.3.676-.232.167-.93-.011-1.824.29-.736.247-1.208.963-2.539.963-1.326 0-1.788-.712-2.539-.966-.894-.298-1.587-.124-1.824-.29-.189-.132-.035-.502-.296-.673-.311-.203-.708-.167-1.306-.5-.382-.215-.164-.346-.039-.408 2.167-1.067 2.514-2.712 2.528-2.832.018-.15.04-.265-.121-.418-.154-.145-.84-.574-1.034-.712-.314-.221-.45-.446-.35-.719.071-.192.247-.261.429-.261.057 0 .114.007.172.018.346.076.683.254.876.301l.071.008c.108 0 .143-.051.136-.171-.025-.385-.079-1.137-.018-1.838a2.93 2.93 0 0 1 .751-1.863A3.35 3.35 0 0 1 6.6 2.058a3.306 3.306 0 0 1 1.397-.259c1.567 0 2.389.875 2.564 1.079.461.51.728 1.17.751 1.863.061.7.007 1.452-.018 1.834-.007.127.032.174.136.174.022 0 .047 0 .072-.01.193-.048.529-.222.876-.299a.67.67 0 0 1 .172-.018c.182 0 .357.073.429.262.1.272-.036.497-.354.719-.19.134-.877.566-1.03.712-.161.152-.143.268-.122.414.014.127.358 1.772 2.528 2.832.13.066.344.2-.035.414Z" fill="currentColor" stroke="currentColor" stroke-width=".5"/></svg>
+                              {% comment %}Icon snapchat:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      
+                        {% if settings.social_tumblr_link != '' %}
+                          <li class="social-media-links__item">
+                            <a
+                              class="social-media-links__link"
+                              href="{{ settings.social_tumblr_link }}"
+                              aria-label="{{ shop.name }} on Tumblr"
+                              rel="me"
+                              target="_blank"
+                            >
+                              {% comment %}Icon tumblr:default:1.0.0-pre.0 begin{% endcomment %}
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.062 16c-2.66 0-4.656-1.235-4.656-4.198V7.06H3V4.49C5.66 3.867 6.77 1.788 6.902 0h2.761v4.068h3.215V7.06H9.663v4.128c0 1.235.687 1.667 1.785 1.667H13V16h-2.938Z" fill="currentColor"/></svg>
+                              {% comment %}Icon tumblr:default:1.0.0-pre.0 end{% endcomment %}
+                            </a>
+                          </li>
+                        {% endif %}
+                      </ul>
+                      
+                      {% comment %}Component social-media-links:default:1.0.0-pre.10 end{% endcomment %}
+                    {% endif %}
+                  </div>
+                  
+                  {% comment %}Component block-footer-about:default:1.0.0-pre.10 end{% endcomment %}
+                {% when 'logo' %}
+                  {% comment %}Component block-footer-logo:default:1.0.0-pre.10 begin{% endcomment %}
+                  <div data-component="block-footer-logo" data-component-type="block" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="block-footer-logo" {{ block.shopify_attributes }}>
+                    {% liquid
+                      assign image_size = '50x'
+                  
+                      case section.settings.size
+                        when 'medium'
+                          assign image_size = '200x'
+                        when 'large'
+                          assign image_size = '300x'
+                      endcase
+                    %}
+                  
+                    <div
+                      class="
+                        block-footer-logo__image
+                        block-footer-logo__image--size-{{ block.settings.size }}
+                        block-footer-logo__image--alignment-{{ block.settings.alignment }}
+                      "
+                    >
+                      <a class="block-footer-logo__location" href="{{ shop.url }}" aria-label="{{ shop.name }}">
+                        {% if block.settings.image != blank %}
+                          {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% render 'lazy-img', img: block.settings.image, size: image_size, lazy: true, canvas: true %}
+                          {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+                        {% else %}
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        {% endif %}
+                      </a>
+                    </div>
+                  </div>
+                  
+                  {% comment %}Component block-footer-logo:default:1.0.0-pre.10 end{% endcomment %}
+              {% endcase %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-bottom__wrapper">
+            <div class="footer-bottom__left">
+              {% comment %}Component cross-border:default:1.0.0-pre.10 begin{% endcomment %}
+              <div data-component="cross-border" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="cross-border">
+                {% if section.settings.enable_language_selector and localization.available_languages.size > 1 %}
+                  {%- form 'localization', data-cross-border-form: '' -%}
+                    {% capture current_name %}
+                      {{ form.current_locale.endonym_name | capitalize }}
+                    {% endcapture %}
+              
+                    {% assign heading = 'general.components.cross_border.language_dropdown_label' | t %}
+                    {% assign button_label = 'general.components.cross_border.language_submit_button_label' | t %}
+                    {% comment %}Component disclosure:default:1.0.0-pre.10 begin{% endcomment %}
+                    {% liquid
+                      assign namespace_4a657fc3 = namespace
+                      assign namespace = 'lang'
+                      assign value_list_4a657fc3 = value_list
+                      assign value_list = form.available_locales
+                      assign value_key_4a657fc3 = value_key
+                      assign value_key = 'iso_code'
+                      assign name_key_4a657fc3 = name_key
+                      assign name_key = 'endonym_name'
+                      assign current_value_4a657fc3 = current_value
+                      assign current_value = form.current_locale.iso_code
+                      assign input_name_4a657fc3 = input_name
+                      assign input_name = 'locale_code'
+                    %}
+                    {%- comment -%}
+                      @param namespace [Required]
+                        The namespace that is used for aria-attributes.
+                    
+                      @param heading [Required]
+                        The heading/text that is shown when opening the disclosure on mobile. Also used by screen readers to describe the contents of the disclosure.
+                    
+                      @param button_label [Optional]
+                        Label for the no-js button.
+                    
+                      @param current_value [Required]
+                        The currently selected value.
+                    
+                      @param value_list [Required]
+                        The object that contains the list items to be rendered.
+                    
+                      @param value_key [Required]
+                        The key that is used while looping over value_list to access the value of the item.
+                    
+                      @param name_key [Required - unless using is_country_selector]
+                        The key that is used while looping over value_list to access the display name of the item.
+                    
+                      @param is_country_selector [Optional]
+                        If true, this disclosure uses the fields for country localization (instead of making an entirely new component just for currency)
+                    
+                      @param input_name [Optional]
+                        Used to specify the "name" attribute for the <input> element.
+                    
+                      @param fill_container [Optional]
+                        If true, the disclocure toggle button will fill its parent container.
+                    
+                      @param always_show_heading [Optional]
+                        If true, will always show the heading inside the button, instead of the selected value.
+                    {%- endcomment -%}
+                    
+                    {% liquid
+                      assign is_country_selector = is_country_selector | default: false
+                      assign always_show_heading = always_show_heading | default: false
+                    
+                      assign current_name = blank
+                      if is_country_selector
+                        assign current_name = localization.country.name | append: ' (' | append: localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol | append: ')'
+                      else
+                        for value_item in value_list
+                          if value_item[value_key] == current_value
+                            assign current_name = value_item[name_key]
+                          endif
+                        endfor
+                      endif
+                    %}
+                    
+                    <div data-component="disclosure" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="disclosure{% if fill_container %} disclosure--fill{% endif %}">
+                      <script
+                        type="application/json"
+                        data-component-data
+                      >
+                        {
+                          "inputName": "{{ input_name }}",
+                          "inputValue": "{{ current_value }}",
+                          "alwaysShowHeading": {{ always_show_heading }}
+                        }
+                      </script>
+                      <noscript>
+                        <div class="disclosure__select-list">
+                          <label class="visually-hidden" for="{{ namespace }}-select-{{ unique_id }}">
+                            {{ heading | escape }}
+                          </label>
+                          <select
+                            class="disclosure__select"
+                            id="{{ namespace }}-select-{{ unique_id }}"
+                            name="{{ input_name }}"
+                          >
+                            {% for value_item in value_list %}
+                              <option
+                                class="disclosure__option"
+                                value="{{ value_item[value_key] }}"
+                                {% if value_item[value_key] == current_value %}
+                                  selected
+                                {% endif %}
+                              >
+                                {% if is_country_selector %}
+                                  {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                                {% else %}
+                                  {{ value_item[name_key] }}
+                                {% endif %}
+                              </option>
+                            {% endfor %}
+                          </select>
+                          {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% liquid
+                            assign style_045145e7 = style
+                            assign style = 'primary'
+                            assign size_045145e7 = size
+                            assign size = 'small'
+                            assign text_045145e7 = text
+                            assign text = button_label
+                          %}
+                          {% comment %}
+                            @param style [Required]
+                              This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                          
+                            @param size [Required]
+                              This defines the size of the button: small, medium, or large. Default medium.
+                          
+                            @param text [Required]
+                              This is the text to be included in the button.
+                          
+                            @param attributes [Optional]
+                              This will include any additional attributes that the button needs. For example, aria-controls.
+                          {% endcomment %}
+                          
+                          <button
+                            data-component="button"
+                            data-component-type="component"
+                            {% if tag != blank %}data-component-tag="{{ tag }}"
+                            {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                            {{ attributes }}
+                          >
+                            {{ text }}
+                          </button>
+                          
+                          {% liquid
+                            assign style = style_045145e7
+                            assign style_045145e7 = nil
+                            assign size = size_045145e7
+                            assign size_045145e7 = nil
+                            assign text = text_045145e7
+                            assign text_045145e7 = nil
+                          %}
+                          {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                        </div>
+                      </noscript>
+                    
+                      <div class="disclosure__wrapper disclosure--no-js-hidden">
+                        {% assign unique_id = "now" | date: "%N" | modulo: 1000 %}
+                        <h2 class="visually-hidden" id="{{ namespace }}-heading-{{ unique_id }}">
+                          {{ heading | escape }}
+                        </h2>
+                        <button
+                          class="disclosure__toggle"
+                          type="button"
+                          aria-expanded="false"
+                          aria-controls="{{ namespace }}-list-{{ unique_id }}"
+                          aria-describedby="{{ namespace }}-heading-{{ unique_id }}"
+                          data-disclosure-toggle
+                        >
+                          {% if always_show_heading %}
+                            {{ heading }}
+                          {% else %}
+                            {{ current_name }}
+                          {% endif %}
+                        </button>
+                        <div
+                          class="disclosure__modal"
+                          id="{{ namespace }}-list-{{ unique_id }}"
+                          data-disclosure-modal
+                        >
+                          <h2 class="disclosure__heading">{{ heading }}</h2>
+                          <button
+                            class="disclosure__close"
+                            data-disclosure-close
+                          >
+                            <span class="visually-hidden">{{ 'general.close' | t }}</span>
+                          </button>
+                          <ul class="disclosure__list">
+                            {% for value_item in value_list %}
+                              <li class="disclosure__list-item">
+                                <a
+                                  class="
+                                    disclosure__link
+                                    {% if value_item[value_key] == current_value %}disclosure__link--selected{% endif %}
+                                  "
+                                  href="#"
+                                  data-value="{{ value_item[value_key] }}"
+                                  {% if value_item[value_key] == current_value %}
+                                    aria-current="true"
+                                  {% endif %}
+                                  data-disclosure-option
+                                >
+                                  {% if is_country_selector %}
+                                    {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                                  {% else %}
+                                    {{ value_item[name_key] }}
+                                  {% endif %}
+                                </a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {% liquid
+                      assign namespace = namespace_4a657fc3
+                      assign namespace_4a657fc3 = nil
+                      assign value_list = value_list_4a657fc3
+                      assign value_list_4a657fc3 = nil
+                      assign value_key = value_key_4a657fc3
+                      assign value_key_4a657fc3 = nil
+                      assign name_key = name_key_4a657fc3
+                      assign name_key_4a657fc3 = nil
+                      assign current_value = current_value_4a657fc3
+                      assign current_value_4a657fc3 = nil
+                      assign input_name = input_name_4a657fc3
+                      assign input_name_4a657fc3 = nil
+                    %}
+                    {% comment %}Component disclosure:default:1.0.0-pre.10 end{% endcomment %}
+                  {%- endform -%}
+                {% endif %}
+              
+                {% if section.settings.enable_country_selector and localization.available_countries.size > 1 %}
+                  {%- form 'localization', data-cross-border-form: '' -%}
+                    {% capture current_name %}
+                      {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+                    {% endcapture %}
+                    {% assign heading = 'general.components.cross_border.currency_dropdown_label' | t %}
+                    {% assign button_label = 'general.components.cross_border.currency_submit_button_label' | t %}
+                    {% comment %}Component disclosure:default:1.0.0-pre.10 begin{% endcomment %}
+                    {% liquid
+                      assign namespace_cbd0f161 = namespace
+                      assign namespace = 'currency'
+                      assign value_list_cbd0f161 = value_list
+                      assign value_list = localization.available_countries
+                      assign value_key_cbd0f161 = value_key
+                      assign value_key = 'iso_code'
+                      assign is_country_selector_cbd0f161 = is_country_selector
+                      assign is_country_selector = true
+                      assign current_value_cbd0f161 = current_value
+                      assign current_value = localization.country.iso_code
+                      assign input_name_cbd0f161 = input_name
+                      assign input_name = 'country_code'
+                    %}
+                    {%- comment -%}
+                      @param namespace [Required]
+                        The namespace that is used for aria-attributes.
+                    
+                      @param heading [Required]
+                        The heading/text that is shown when opening the disclosure on mobile. Also used by screen readers to describe the contents of the disclosure.
+                    
+                      @param button_label [Optional]
+                        Label for the no-js button.
+                    
+                      @param current_value [Required]
+                        The currently selected value.
+                    
+                      @param value_list [Required]
+                        The object that contains the list items to be rendered.
+                    
+                      @param value_key [Required]
+                        The key that is used while looping over value_list to access the value of the item.
+                    
+                      @param name_key [Required - unless using is_country_selector]
+                        The key that is used while looping over value_list to access the display name of the item.
+                    
+                      @param is_country_selector [Optional]
+                        If true, this disclosure uses the fields for country localization (instead of making an entirely new component just for currency)
+                    
+                      @param input_name [Optional]
+                        Used to specify the "name" attribute for the <input> element.
+                    
+                      @param fill_container [Optional]
+                        If true, the disclocure toggle button will fill its parent container.
+                    
+                      @param always_show_heading [Optional]
+                        If true, will always show the heading inside the button, instead of the selected value.
+                    {%- endcomment -%}
+                    
+                    {% liquid
+                      assign is_country_selector = is_country_selector | default: false
+                      assign always_show_heading = always_show_heading | default: false
+                    
+                      assign current_name = blank
+                      if is_country_selector
+                        assign current_name = localization.country.name | append: ' (' | append: localization.country.currency.iso_code | append: ' ' | append: localization.country.currency.symbol | append: ')'
+                      else
+                        for value_item in value_list
+                          if value_item[value_key] == current_value
+                            assign current_name = value_item[name_key]
+                          endif
+                        endfor
+                      endif
+                    %}
+                    
+                    <div data-component="disclosure" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="disclosure{% if fill_container %} disclosure--fill{% endif %}">
+                      <script
+                        type="application/json"
+                        data-component-data
+                      >
+                        {
+                          "inputName": "{{ input_name }}",
+                          "inputValue": "{{ current_value }}",
+                          "alwaysShowHeading": {{ always_show_heading }}
+                        }
+                      </script>
+                      <noscript>
+                        <div class="disclosure__select-list">
+                          <label class="visually-hidden" for="{{ namespace }}-select-{{ unique_id }}">
+                            {{ heading | escape }}
+                          </label>
+                          <select
+                            class="disclosure__select"
+                            id="{{ namespace }}-select-{{ unique_id }}"
+                            name="{{ input_name }}"
+                          >
+                            {% for value_item in value_list %}
+                              <option
+                                class="disclosure__option"
+                                value="{{ value_item[value_key] }}"
+                                {% if value_item[value_key] == current_value %}
+                                  selected
+                                {% endif %}
+                              >
+                                {% if is_country_selector %}
+                                  {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                                {% else %}
+                                  {{ value_item[name_key] }}
+                                {% endif %}
+                              </option>
+                            {% endfor %}
+                          </select>
+                          {% comment %}Component button:default:1.0.0-pre.10 begin{% endcomment %}
+                          {% liquid
+                            assign style_18d58e97 = style
+                            assign style = 'primary'
+                            assign size_18d58e97 = size
+                            assign size = 'small'
+                            assign text_18d58e97 = text
+                            assign text = button_label
+                          %}
+                          {% comment %}
+                            @param style [Required]
+                              This is the style of the button: primary, secondary, tertiary, or text. Default primary.
+                          
+                            @param size [Required]
+                              This defines the size of the button: small, medium, or large. Default medium.
+                          
+                            @param text [Required]
+                              This is the text to be included in the button.
+                          
+                            @param attributes [Optional]
+                              This will include any additional attributes that the button needs. For example, aria-controls.
+                          {% endcomment %}
+                          
+                          <button
+                            data-component="button"
+                            data-component-type="component"
+                            {% if tag != blank %}data-component-tag="{{ tag }}"
+                            {% endif %}class="button button--{{ style }} button--{{ size }}{% if style == 'primary' or style == 'secondary' %} button--shadow{% endif %%}"
+                            {{ attributes }}
+                          >
+                            {{ text }}
+                          </button>
+                          
+                          {% liquid
+                            assign style = style_18d58e97
+                            assign style_18d58e97 = nil
+                            assign size = size_18d58e97
+                            assign size_18d58e97 = nil
+                            assign text = text_18d58e97
+                            assign text_18d58e97 = nil
+                          %}
+                          {% comment %}Component button:default:1.0.0-pre.10 end{% endcomment %}
+                        </div>
+                      </noscript>
+                    
+                      <div class="disclosure__wrapper disclosure--no-js-hidden">
+                        {% assign unique_id = "now" | date: "%N" | modulo: 1000 %}
+                        <h2 class="visually-hidden" id="{{ namespace }}-heading-{{ unique_id }}">
+                          {{ heading | escape }}
+                        </h2>
+                        <button
+                          class="disclosure__toggle"
+                          type="button"
+                          aria-expanded="false"
+                          aria-controls="{{ namespace }}-list-{{ unique_id }}"
+                          aria-describedby="{{ namespace }}-heading-{{ unique_id }}"
+                          data-disclosure-toggle
+                        >
+                          {% if always_show_heading %}
+                            {{ heading }}
+                          {% else %}
+                            {{ current_name }}
+                          {% endif %}
+                        </button>
+                        <div
+                          class="disclosure__modal"
+                          id="{{ namespace }}-list-{{ unique_id }}"
+                          data-disclosure-modal
+                        >
+                          <h2 class="disclosure__heading">{{ heading }}</h2>
+                          <button
+                            class="disclosure__close"
+                            data-disclosure-close
+                          >
+                            <span class="visually-hidden">{{ 'general.close' | t }}</span>
+                          </button>
+                          <ul class="disclosure__list">
+                            {% for value_item in value_list %}
+                              <li class="disclosure__list-item">
+                                <a
+                                  class="
+                                    disclosure__link
+                                    {% if value_item[value_key] == current_value %}disclosure__link--selected{% endif %}
+                                  "
+                                  href="#"
+                                  data-value="{{ value_item[value_key] }}"
+                                  {% if value_item[value_key] == current_value %}
+                                    aria-current="true"
+                                  {% endif %}
+                                  data-disclosure-option
+                                >
+                                  {% if is_country_selector %}
+                                    {{ value_item.name }} ({{ value_item.currency.iso_code }} {{ value_item.currency.symbol }})
+                                  {% else %}
+                                    {{ value_item[name_key] }}
+                                  {% endif %}
+                                </a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {% liquid
+                      assign namespace = namespace_cbd0f161
+                      assign namespace_cbd0f161 = nil
+                      assign value_list = value_list_cbd0f161
+                      assign value_list_cbd0f161 = nil
+                      assign value_key = value_key_cbd0f161
+                      assign value_key_cbd0f161 = nil
+                      assign is_country_selector = is_country_selector_cbd0f161
+                      assign is_country_selector_cbd0f161 = nil
+                      assign current_value = current_value_cbd0f161
+                      assign current_value_cbd0f161 = nil
+                      assign input_name = input_name_cbd0f161
+                      assign input_name_cbd0f161 = nil
+                    %}
+                    {% comment %}Component disclosure:default:1.0.0-pre.10 end{% endcomment %}
+                  {%- endform -%}
+                {% endif %}
+              </div>
+              
+              {% comment %}Component cross-border:default:1.0.0-pre.10 end{% endcomment %}
+              <p class="footer-bottom__credits">
+                &copy; {{ "now" | date: "%Y" }} {{ shop.name | link_to: '/' }} /
+                {{ powered_by_link }}
+              </p>
+            </div>
+            <div class="footer-bottom__right">
+              {% if section.settings.show_payment_icons %}
+                <div class="footer-bottom__payment-methods">
+                  {% for type in shop.enabled_payment_types %}
+                    {{ type | payment_type_svg_tag: class:'payment-icon' }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section-content>
+  </section-wrapper>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Payment methods"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "default": true,
+      "label": "Show payment icons"
+    },
+    {
+      "type": "header",
+      "content": "Language selector",
+      "info": "To add a language, go to your [language settings](/admin/settings/languages)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": true,
+      "label": "Show language selector"
+    },
+    {
+      "type": "header",
+      "content": "Country/region selector",
+      "info": "To add a country/region, go to your [payment settings](/admin/settings/payments)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "Show country/region selector"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "footer_email_form",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Subscribe and save"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "default": "<p>Subscribe to get notified about product launches, special offers and company news.</p>"
+        },
+        {
+          "type": "range",
+          "id": "column_width",
+          "label": "Column width on large displays",
+          "step": 1,
+          "min": 15,
+          "max": 100,
+          "default": 20,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Footer menu"
+        },
+        {
+          "type": "link_list",
+          "id": "linklist",
+          "label": "Choose a menu",
+          "info": "This menu won't show drop-down items.",
+          "default": "footer"
+        },
+        {
+          "type": "range",
+          "id": "column_width",
+          "label": "Column width on large displays",
+          "step": 1,
+          "min": 15,
+          "max": 100,
+          "default": 20,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "type": "about",
+      "name": "About and social",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "About our store"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Shop description",
+          "default": "<p>Use this text area to tell your customers about your brand and vision.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_icons",
+          "label": "Show social icons",
+          "info": "Social networking links will appear here when added in your general theme settings under \"Social media\".",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "column_width",
+          "label": "Column width on large displays",
+          "step": 1,
+          "min": 15,
+          "max": 100,
+          "default": 20,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small 50px"
+            },
+            {
+              "value": "medium",
+              "label": "Medium 100px"
+            },
+            {
+              "value": "large",
+              "label": "Large 200px"
+            },
+            {
+              "value": "xl",
+              "label": "Extra large 300px"
+            },
+            {
+              "value": "fill",
+              "label": "Fill available space"
+            }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "column_width",
+          "label": "Column width on large displays",
+          "step": 1,
+          "min": 15,
+          "max": 100,
+          "default": 20,
+          "unit": "%"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

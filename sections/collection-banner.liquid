@@ -1,0 +1,185 @@
+<section
+  data-component="collection-banner"
+  data-component-type="section"
+  {% if tag != blank %}data-component-tag="{{ tag }}"
+  {% endif %}class="collection-banner"
+  style="
+    --local-image-column-width: {{ section.settings.image_width_large }}%;
+    {% if section.setting.image_height_large != 'natural' %}
+      --local-image-height-large: {{ section.settings.image_height_large }}px;
+    {% endif %}
+    {% if section.setting.image_height_small != 'natural' %}
+      --local-image-height-small: {{ section.settings.image_height_small }}px;
+    {% endif %}
+    --local-color-heading: {{ section.settings.color_heading }};
+    --local-color-text: {{ section.settings.color_text }};
+    --local-color-background: {{ section.settings.color_background }};
+  "
+>
+  <section-wrapper>
+    <section-content>
+      {% liquid
+        assign show_image = section.settings.show_image
+        if collection.image == blank
+          assign show_image = false
+        endif
+      %}
+      <div
+        class="
+          collection-banner__wrapper
+          {% unless show_image %}
+            collection-banner__wrapper--no-image
+          {% endunless %}
+        "
+      >
+        <div class="collection-banner__text">
+          <h1 class="collection-banner__title">
+            {{ collection.title | escape }}
+          </h1>
+          {% if section.settings.show_description and collection.description != blank %}
+            <div class="collection-banner__description">
+              {{ collection.description }}
+            </div>
+          {% endif %}
+        </div>
+        {% if show_image %}
+          <div
+            class="
+              collection-banner__image
+              collection-banner__image--position-{{ section.settings.image_position_small }}
+            "
+          >
+            {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+            {% render 'lazy-img', img: collection.featured_image, size: '2000x', lazy: true, canvas: true %}
+            {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+          </div>
+        {% endif %}
+      </div>
+    </section-content>
+  </section-wrapper>
+</section>
+{% schema %}
+{
+  "name": "Collection banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true,
+      "info": "For best results, use an image with a 16:9 aspect ratio. [Learn more about aspect ratios](https://help.shopify.com/en/manual/shopify-admin/productivity-tools/image-editor#understanding-image-aspect-ratio)."
+    },
+    {
+      "type": "select",
+      "id": "image_width_large",
+      "label": "Image width on large screens",
+      "options": [
+        {
+          "value": "50",
+          "label": "50%"
+        },
+        {
+          "value": "55",
+          "label": "55%"
+        },
+        {
+          "value": "60",
+          "label": "60%"
+        }
+      ],
+      "default": "50"
+    },
+    {
+      "type": "select",
+      "id": "image_height_large",
+      "label": "Image height on large screens",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "300",
+          "label": "300px"
+        },
+        {
+          "value": "400",
+          "label": "400px"
+        },
+        {
+          "value": "500",
+          "label": "500px"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "image_height_small",
+      "label": "Image height on small screens",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "200",
+          "label": "200px"
+        },
+        {
+          "value": "300",
+          "label": "300px"
+        },
+        {
+          "value": "400",
+          "label": "400px"
+        }
+      ],
+      "default": "200"
+    },
+    {
+      "type": "select",
+      "id": "image_position_small",
+      "label": "Image position on small screens",
+      "options": [
+        {
+          "value": "above",
+          "label": "Above text"
+        },
+        {
+          "value": "below",
+          "label": "Below text"
+        }
+      ],
+      "default": "above"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": "Background",
+      "default": "#000000"
+    }
+  ],
+  "templates": [
+    "collection"
+  ]
+}
+{% endschema %}

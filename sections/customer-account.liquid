@@ -1,0 +1,233 @@
+<section data-component="customer-account" data-component-type="section" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="customer-account">
+  <section-wrapper width="content">
+    <section-header class="customer-account__header">
+      <h1 class="customer-account__heading">{{ 'general.customer.title' | t }}</h1>
+
+      {% assign text = 'general.customer.logout' | t %}
+      {% comment %}Component button-link:default:1.0.0-pre.10 begin{% endcomment %}
+      {% liquid
+        assign style_91c068c8 = style
+        assign style = 'secondary'
+        assign size_91c068c8 = size
+        assign size = 'small'
+        assign href_91c068c8 = href
+        assign href = routes.account_logout_url
+      %}
+      {% comment %}
+        @param href [Required]
+          This is the anchor tag for the link button.
+      
+        @param style [Required]
+          This is the style of the button: primary, secondary, tertiary, or text.
+      
+        @param size [Required]
+          This defines the size of the button: small, medium, or large.
+      
+        @param text [Required]
+          This is the text to be included in the button.
+      
+        @param attributes [Optional]
+          Any additional attributes to add to the button-link tag.
+      {% endcomment %}
+      
+      <a
+        data-component="button-link"
+        data-component-type="component"
+        {% if tag != blank %}data-component-tag="{{ tag }}"
+        {% endif %}class="button-link button-link--{{ style }} button-link--{{ size }}{% if style == 'primary' or style == 'secondary' %} button-link--shadow{% endif %%}"
+        {% if href != blank %}
+          href="{{ href }}"
+        {% endif %}
+        {{ attributes }}
+      >
+        {{ text }}
+      </a>
+      
+      {% liquid
+        assign style = style_91c068c8
+        assign style_91c068c8 = nil
+        assign size = size_91c068c8
+        assign size_91c068c8 = nil
+        assign href = href_91c068c8
+        assign href_91c068c8 = nil
+      %}
+      {% comment %}Component button-link:default:1.0.0-pre.10 end{% endcomment %}
+    </section-header>
+  </section-wrapper>
+
+  <section-wrapper width="content">
+    <section-content class="customer-account__content">
+      <div class="customer-account-details">
+        <div class="customer-account-details__header">
+          <h2 class="customer-account-details__heading">{{ 'customer.account_details.header' | t }}</h2>
+        </div>
+
+        {% if customer.default_address %}
+          <div class="customer-account-details__address">
+            {% comment %}Component customer-address:default:1.0.0-pre.10 begin{% endcomment %}
+            {% liquid
+              assign address_26b8fb40 = address
+              assign address = customer.default_address
+            %}
+            {% comment %}
+              @param address
+                The address to be displayed.
+            {% endcomment %}
+            
+            <div data-component="customer-address" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="customer-address">
+              {{ address.first_name }} {{ address.last_name }}<br>
+              {% if address.company != blank %}{{ address.company }}<br>{% endif %}
+              {{ address.address1 }}<br>
+              {% if address.address2 != blank %}{{ address.address2 }}<br>{% endif %}
+              {{ address.city }} {% if address.province_code != blank %}{{ address.province_code }}{% endif %} {{ address.zip }}<br>
+              {{ address.country }}
+              {% if address.phone != blank %}<br>{{ address.phone }}{% endif %}
+            </div>
+            
+            {% liquid
+              assign address = address_26b8fb40
+              assign address_26b8fb40 = nil
+            %}
+            {% comment %}Component customer-address:default:1.0.0-pre.10 end{% endcomment %}
+          </div>
+        {% endif %}
+
+        {% assign text = 'customer.account_details.view_addresses' | t: count: customer.addresses_count %}
+        {% comment %}Component button-link:default:1.0.0-pre.10 begin{% endcomment %}
+        {% liquid
+          assign style_d6b5963e = style
+          assign style = 'primary'
+          assign size_d6b5963e = size
+          assign size = 'small'
+          assign href_d6b5963e = href
+          assign href = routes.account_addresses_url
+        %}
+        {% comment %}
+          @param href [Required]
+            This is the anchor tag for the link button.
+        
+          @param style [Required]
+            This is the style of the button: primary, secondary, tertiary, or text.
+        
+          @param size [Required]
+            This defines the size of the button: small, medium, or large.
+        
+          @param text [Required]
+            This is the text to be included in the button.
+        
+          @param attributes [Optional]
+            Any additional attributes to add to the button-link tag.
+        {% endcomment %}
+        
+        <a
+          data-component="button-link"
+          data-component-type="component"
+          {% if tag != blank %}data-component-tag="{{ tag }}"
+          {% endif %}class="button-link button-link--{{ style }} button-link--{{ size }}{% if style == 'primary' or style == 'secondary' %} button-link--shadow{% endif %%}"
+          {% if href != blank %}
+            href="{{ href }}"
+          {% endif %}
+          {{ attributes }}
+        >
+          {{ text }}
+        </a>
+        
+        {% liquid
+          assign style = style_d6b5963e
+          assign style_d6b5963e = nil
+          assign size = size_d6b5963e
+          assign size_d6b5963e = nil
+          assign href = href_d6b5963e
+          assign href_d6b5963e = nil
+        %}
+        {% comment %}Component button-link:default:1.0.0-pre.10 end{% endcomment %}
+      </div>
+
+      <div class="customer-account-history">
+        <div class="customer-account-history__header">
+          <h2 class="customer-account-history__heading">{{ 'customer.order_history.header' | t }}</h2>
+        </div>
+
+        {% paginate customer.orders by 20 %}
+        {% if customer.orders.size != 0 %}
+          <table role="table"  class="customer-account-history__table">
+            <caption class="visually-hidden">{{ 'customer.order_history.header' | t }}</caption>
+            <thead role="rowgroup">
+              <tr class="customer-account-history__row" role="row">
+                <th class="customer-account-history__order-number" id="column-order" scope="col" role="columnheader">{{ 'customer.order_history.order' | t }}</th>
+                <th class="customer-account-history__order-date" id="column-date" scope="col" role="columnheader">{{ 'customer.order_history.date' | t }}</th>
+                <th class="customer-account-history__payment-status" id="column-payment" scope="col" role="columnheader">{{ 'customer.order_history.payment' | t }}</th>
+                <th class="customer-account-history__fulfillment-status" id="column-fulfillment" scope="col" role="columnheader">{{ 'customer.order_history.fulfillment' | t }}</th>
+                <th class="customer-account-history__total" id="column-total" scope="col" role="columnheader">{{ 'customer.order_history.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              {% for order in customer.orders %}
+                <tr class="customer-account-history__row" role="row">
+                  <td
+                    class="customer-account-history__order-number"
+                    id="row-order"
+                    role="cell"
+                    headers="column-order"
+                  >
+                    <span class="customer-account-history__mobile-label">{{ 'customer.order_history.order' | t }}</span>
+                    <span class="customer-account-history__cell-value">{{ order.name | link_to: order.customer_url }}</span>
+                  </td>
+                  <td
+                    class="customer-account-history__order-date"
+                    role="cell"
+                    headers="row-order column-date"
+                  >
+                    <span class="customer-account-history__mobile-label">{{ 'customer.order_history.date' | t }}</span>
+                    <span class="customer-account-history__cell-value">{{ order.created_at | date: format: 'abbreviated_date' }}</span>
+                  </td>
+                  <td
+                    class="
+                      customer-account-history__payment-status
+                      customer-account-history__payment-status--{{ order.financial_status }}
+                    "
+                    role="cell"
+                    headers="row-order column-payment"
+                  >
+                    <span class="customer-account-history__mobile-label">{{ 'customer.order_history.payment' | t }}</span>
+                    <span class="customer-account-history__cell-value">{{ order.financial_status_label | capitalize }}</span>
+                  </td>
+                  <td
+                    class="
+                      customer-account-history__fulfillment-status
+                      customer-account-history__fulfillment-status--{{ order.fulfillment_status }}
+                    "
+                    role="cell"
+                    headers="row-order column-fulfillment"
+                  >
+                    <span class="customer-account-history__mobile-label">{{ 'customer.order_history.fulfillment' | t }}</span>
+                    <span class="customer-account-history__cell-value">{{ order.fulfillment_status_label | capitalize }}</span>
+                  </td>
+                  <td
+                    class="customer-account-history__total"
+                    role="cell"
+                    headers="row-order column-total"
+                  >
+                    <span class="customer-account-history__mobile-label">{{ 'customer.order_history.total' | t }}</span>
+                    <span class="customer-account-history__cell-value"><span class="money">{{ order.total_price | money }}</span></span>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="customer-account-history__no-orders">{{ 'customer.order_history.no_orders' | t }}</p>
+        {% endif %}
+
+          {% if paginate.parts.size > 1 %}
+            {% comment %}Component pagination:default:1.0.0-pre.10 begin{% endcomment %}
+            {% render 'pagination', paginate: paginate %}
+            {% comment %}Component pagination:default:1.0.0-pre.10 end{% endcomment %}
+          {% endif %}
+        {% endpaginate %}
+
+        {% comment %} Needs pagination here (and wrapping the whole section) {% endcomment %}
+      </div>
+    </section-content>
+  </section-wrapper>
+</section>

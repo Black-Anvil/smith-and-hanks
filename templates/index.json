@@ -1,0 +1,446 @@
+{
+  "sections": {
+    "spacer": {
+      "type": "spacer",
+      "settings": {
+        "spacing": "none"
+      }
+    },
+    "16467577644769665a": {
+      "type": "image-banner",
+      "blocks": {
+        "16467577639d7bbc16-1": {
+          "type": "heading",
+          "settings": {
+            "position": "center_center",
+            "content": "We bring the \"cool\" to wine and beverage coolers",
+            "size_desktop": "large",
+            "size_mobile": "medium"
+          }
+        },
+        "8c8d031f-ad81-4a2c-b8e6-8858a660966c": {
+          "type": "preheading",
+          "settings": {
+            "position": "center_center",
+            "content": "Make your home bar even better with a Smith & Hanks wine or beverage cooler",
+            "size": "large",
+            "bolder": false,
+            "uppercase": false
+          }
+        },
+        "16467577639d7bbc16-3": {
+          "type": "button",
+          "settings": {
+            "style": "primary",
+            "position": "center_center",
+            "text": "SHOP ALL",
+            "url": "shopify:\/\/collections\/all",
+            "color_main": "#af002b",
+            "color_contrast": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "16467577639d7bbc16-1",
+        "8c8d031f-ad81-4a2c-b8e6-8858a660966c",
+        "16467577639d7bbc16-3"
+      ],
+      "settings": {
+        "wide": true,
+        "desktop_height": "800",
+        "image": "shopify:\/\/shop_images\/smith_and_hanks_kitchen_wine_cooler_friends.jpg",
+        "image_1_focal_point": "center_center",
+        "image_2_focal_point": "center_center",
+        "image_mobile_focal_point": "center_center",
+        "text_alignment": "center",
+        "color_overlay_foreground": "#ffffff",
+        "overlay_color": "#000000",
+        "overlay_gradient": "",
+        "color_overlay_opacity": 30
+      }
+    },
+    "1646760728de6d39ef": {
+      "type": "spacer",
+      "settings": {
+        "spacing": "medium"
+      }
+    },
+    "164675949137807652": {
+      "type": "collection-list",
+      "blocks": {
+        "473402d2-a185-4d64-847f-1434d989d4dc": {
+          "type": "collection",
+          "settings": {
+            "collection": "free-standing-wine-coolers",
+            "use_custom_image": true,
+            "custom_image": "shopify:\/\/shop_images\/wine_cabinets_glass_door_main.jpg"
+          }
+        },
+        "200dd6bc-f43e-40ab-87c6-108ab1c13563": {
+          "type": "collection",
+          "settings": {
+            "collection": "under-counter-wine-coolers",
+            "use_custom_image": true,
+            "custom_image": "shopify:\/\/shop_images\/under_counter_wine_cooler_main_2.jpg"
+          }
+        },
+        "a7b4114b-d1da-4c2b-b067-3b8849ea92b9": {
+          "type": "collection",
+          "settings": {
+            "collection": "beverage-coolers",
+            "use_custom_image": true,
+            "custom_image": "shopify:\/\/shop_images\/beverage_cooler_under_counter_environment.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "473402d2-a185-4d64-847f-1434d989d4dc",
+        "200dd6bc-f43e-40ab-87c6-108ab1c13563",
+        "a7b4114b-d1da-4c2b-b067-3b8849ea92b9"
+      ],
+      "settings": {
+        "heading": "Our Signature Collections",
+        "subheading": "Wine and Beverage Coolers",
+        "collections_per_row": 3,
+        "show_title": true,
+        "show_description": false,
+        "show_product_count": false,
+        "collection_card_media_ratio": "natural",
+        "collection_card_crop_mode": "fill"
+      }
+    },
+    "16467598133da3236f": {
+      "type": "spacer",
+      "settings": {
+        "spacing": "medium"
+      }
+    },
+    "16502351829459f610": {
+      "type": "image-banner",
+      "blocks": {
+        "1650235181edcc8beb-0": {
+          "type": "preheading",
+          "settings": {
+            "position": "center_center",
+            "content": "choices",
+            "size": "large",
+            "bolder": false,
+            "uppercase": true
+          }
+        },
+        "1650235181edcc8beb-1": {
+          "type": "heading",
+          "settings": {
+            "position": "center_center",
+            "content": "Single or dual zone?",
+            "size_desktop": "large",
+            "size_mobile": "same_as_desktop"
+          }
+        },
+        "1650235181edcc8beb-2": {
+          "type": "text",
+          "settings": {
+            "position": "center_center",
+            "content": "<p>Single zone coolers are best for XXXXXXXXXX situations, whereas dual zone coolers are optimal for YYYYYYYYYY.<\/p>",
+            "size": "large"
+          }
+        },
+        "1650235181edcc8beb-3": {
+          "type": "button",
+          "settings": {
+            "style": "icon",
+            "position": "bottom_right",
+            "text": "",
+            "url": "",
+            "color_main": "#ffffff",
+            "color_contrast": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "1650235181edcc8beb-0",
+        "1650235181edcc8beb-1",
+        "1650235181edcc8beb-2",
+        "1650235181edcc8beb-3"
+      ],
+      "settings": {
+        "wide": true,
+        "desktop_height": "adapt",
+        "image": "shopify:\/\/shop_images\/single_zone_2_af416bc0-a51a-4654-8683-bcbdf44f0df3.jpg",
+        "image_1_focal_point": "center_center",
+        "image_2": "shopify:\/\/shop_images\/dual_zone_2_d929fce9-8ccf-4347-b517-587b4ac33933.jpg",
+        "image_2_focal_point": "center_center",
+        "image_mobile_focal_point": "center_center",
+        "text_alignment": "left",
+        "color_overlay_foreground": "#FFFFFF",
+        "overlay_color": "#000000",
+        "overlay_gradient": "",
+        "color_overlay_opacity": 50
+      }
+    },
+    "16467603271473fb9b": {
+      "type": "spacer",
+      "settings": {
+        "spacing": "medium"
+      }
+    },
+    "16467603298a5c3a73": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "Wine cabinets",
+        "subheading": "Single and Dual Zone models",
+        "collection": "large-collection-wine-cabinets",
+        "limit": 4,
+        "show_view_all_button": true,
+        "cards_per_group": "4"
+      }
+    },
+    "164676417611233456": {
+      "type": "spacer",
+      "disabled": true,
+      "settings": {
+        "spacing": "none"
+      }
+    },
+    "1646763770aab6318d": {
+      "type": "image-banner",
+      "blocks": {
+        "164676377007675a6a-0": {
+          "type": "preheading",
+          "settings": {
+            "position": "center_left",
+            "content": "",
+            "size": "large",
+            "bolder": true,
+            "uppercase": true
+          }
+        },
+        "164676377007675a6a-1": {
+          "type": "heading",
+          "settings": {
+            "position": "center_left",
+            "content": "Designs that fit your space",
+            "size_desktop": "large",
+            "size_mobile": "same_as_desktop"
+          }
+        },
+        "164676377007675a6a-3": {
+          "type": "button",
+          "settings": {
+            "style": "icon",
+            "position": "center_left",
+            "text": "Shop Under Counter Coolers",
+            "url": "shopify:\/\/collections\/beverage-coolers",
+            "color_main": "#ffffff",
+            "color_contrast": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "164676377007675a6a-0",
+        "164676377007675a6a-1",
+        "164676377007675a6a-3"
+      ],
+      "settings": {
+        "wide": true,
+        "desktop_height": "600",
+        "image": "shopify:\/\/shop_images\/collection-header-beverage-coolers.jpg",
+        "image_1_focal_point": "center_center",
+        "image_2_focal_point": "center_right",
+        "mobile_image": "shopify:\/\/shop_images\/under_counter_wine_cooler_main_2.jpg",
+        "image_mobile_focal_point": "center_center",
+        "text_alignment": "left",
+        "color_overlay_foreground": "#ffffff",
+        "overlay_color": "#584d48",
+        "overlay_gradient": "",
+        "color_overlay_opacity": 30
+      }
+    },
+    "164676112788ebc2b4": {
+      "type": "spacer",
+      "settings": {
+        "spacing": "medium"
+      }
+    },
+    "1646761136965a0511": {
+      "type": "featured-product",
+      "blocks": {
+        "1646761136c7b9cf90-0": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "1646761136c7b9cf90-1": {
+          "type": "price",
+          "settings": {
+            "show_label": true
+          }
+        },
+        "98bcce90-fb02-4aa1-8139-7a0d53fbf596": {
+          "type": "inventory_status",
+          "settings": {
+            "show_stock_available": true,
+            "show_stock_unavailable": true,
+            "show_stock_low": true,
+            "stock_low_threshold": 5,
+            "show_stock_incoming": true
+          }
+        },
+        "1646761136c7b9cf90-2": {
+          "type": "variant_picker",
+          "settings": {
+            "product_option_style": "radio",
+            "sold_out_options": "selectable",
+            "swatches_enable": true,
+            "swatches_option_style": "color_swatch"
+          }
+        },
+        "01c2c647-d997-47fe-af0f-33e0e75468b9": {
+          "type": "size_guide",
+          "disabled": true,
+          "settings": {
+            "text": "View size chart",
+            "icon": "coat-hanger",
+            "page": ""
+          }
+        },
+        "1646761136c7b9cf90-4": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
+        },
+        "1646761136c7b9cf90-5": {
+          "type": "product_details",
+          "settings": {
+          }
+        },
+        "74be804e-e322-4790-83b9-5d28ed7a59c8": {
+          "type": "product_upsell",
+          "disabled": true,
+          "settings": {
+            "show_as_tab": false,
+            "show_tab_as_open": false,
+            "heading": "Style with",
+            "product_1": "",
+            "product_2": "",
+            "product_3": "",
+            "product_4": ""
+          }
+        }
+      },
+      "block_order": [
+        "1646761136c7b9cf90-0",
+        "1646761136c7b9cf90-1",
+        "98bcce90-fb02-4aa1-8139-7a0d53fbf596",
+        "1646761136c7b9cf90-2",
+        "01c2c647-d997-47fe-af0f-33e0e75468b9",
+        "1646761136c7b9cf90-4",
+        "1646761136c7b9cf90-5",
+        "74be804e-e322-4790-83b9-5d28ed7a59c8"
+      ],
+      "settings": {
+        "product": "32-bottle-wine-cooler",
+        "select_first_available_variant": true,
+        "gallery_badges": "sale-custom",
+        "gallery_size": "small",
+        "show_gallery_thumbnails": true,
+        "gallery_thumbnail_size": "medium",
+        "enable_gallery_autoplay": false,
+        "media_ratio": "natural",
+        "media_crop": "fill",
+        "mobile_media_width": 90,
+        "enable_image_zoom": true,
+        "autoplay": false,
+        "autoloop": true,
+        "mute_video": false
+      }
+    },
+    "164676376837d6d553": {
+      "type": "spacer",
+      "settings": {
+        "spacing": "medium"
+      }
+    },
+    "1646760730a3948d41": {
+      "type": "image-banner",
+      "blocks": {
+        "1646760730c33ddf72-0": {
+          "type": "preheading",
+          "disabled": true,
+          "settings": {
+            "position": "center_center",
+            "content": "Preheading",
+            "size": "large",
+            "bolder": false,
+            "uppercase": true
+          }
+        },
+        "1646760730c33ddf72-1": {
+          "type": "heading",
+          "settings": {
+            "position": "center_center",
+            "content": "Function and Elegance",
+            "size_desktop": "large",
+            "size_mobile": "same_as_desktop"
+          }
+        },
+        "1646760730c33ddf72-2": {
+          "type": "text",
+          "settings": {
+            "position": "center_center",
+            "content": "<p>Our cooler designs are rich in both features and style<\/p>",
+            "size": "large"
+          }
+        },
+        "1646760730c33ddf72-3": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "style": "icon",
+            "position": "center_center",
+            "text": "Learn more",
+            "url": "",
+            "color_main": "#ffffff",
+            "color_contrast": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "1646760730c33ddf72-0",
+        "1646760730c33ddf72-1",
+        "1646760730c33ddf72-2",
+        "1646760730c33ddf72-3"
+      ],
+      "settings": {
+        "wide": true,
+        "desktop_height": "600",
+        "image": "shopify:\/\/shop_images\/smith_and_hanks_champagne_2.jpg",
+        "image_1_focal_point": "center_center",
+        "image_2_focal_point": "center_center",
+        "image_mobile_focal_point": "center_center",
+        "text_alignment": "center",
+        "color_overlay_foreground": "#ffffff",
+        "overlay_color": "#584d48",
+        "overlay_gradient": "",
+        "color_overlay_opacity": 57
+      }
+    }
+  },
+  "order": [
+    "spacer",
+    "16467577644769665a",
+    "1646760728de6d39ef",
+    "164675949137807652",
+    "16467598133da3236f",
+    "16502351829459f610",
+    "16467603271473fb9b",
+    "16467603298a5c3a73",
+    "164676417611233456",
+    "1646763770aab6318d",
+    "164676112788ebc2b4",
+    "1646761136965a0511",
+    "164676376837d6d553",
+    "1646760730a3948d41"
+  ]
+}

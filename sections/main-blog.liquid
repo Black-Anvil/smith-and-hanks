@@ -1,0 +1,324 @@
+{% liquid
+  assign banner_image_present = false
+  if section.settings.header_image != blank
+    assign banner_image_present = true
+  endif
+
+  assign featured_block_present = false
+  assign featured_article = blank
+
+  for block in section.blocks
+    if block.type == 'article' and block.settings.featured_article != blank
+      assign featured_block_present = true
+      assign featured_article = block.settings.featured_article
+    endif
+  endfor
+
+  assign paginate_by = 6
+  if section.settings.blog_card_layout == 'collage'
+    assign paginate_by = 5
+  endif
+
+  assign blog_tags = blog.all_tags
+  if featured_block_present and featured_article != blank
+    assign blog_tags = blog_tags | concat: featured_article.tags | uniq
+  endif
+%}
+
+<section data-component="blog" data-component-type="section" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="main-blog">
+  <section-wrapper
+    {% if banner_image_present %}
+      width="wide"
+    {% endif %}
+  >
+    <section-header>
+      <div
+        class="
+          main-blog__header
+          {% if banner_image_present %}
+            main-blog__header--with-image
+          {% endif %}
+        "
+      >
+        {% if banner_image_present %}
+          <div class="main-blog__header-image-wrapper">
+            {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+            {% render 'lazy-img', img: section.settings.header_image, size: '1200x', lazy: true, canvas: true %}
+            {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+          </div>
+        {% endif %}
+        <div class="main-blog__header-content-wrapper">
+          <div class="main-blog__header-content">
+            <h1 class="main-blog__title">{{ blog.title | escape }}</h1>
+            {% if section.settings.show_tag_filer %}
+              <ul class="main-blog__tags">
+                <li class="main-blog__tag">
+                  <a href="{{ blog.url }}" class="main-blog__tag-link">{{ 'blogs.blog_lists.all_tags' | t }}</a>
+                </li>
+                {% for tag in blog_tags %}
+                  <li class="main-blog__tag">
+                    {{ tag | escape | link_to_tag: tag }}
+                  </li>
+                {% endfor %}
+              </ul>
+
+              {% capture options %}
+                <option value="all">{{ 'blogs.blog_lists.all_tags' | t }}</option>
+                {% for tag in blog_tags %}
+                  {% if current_tags contains tag %}
+                    <option
+                      value="{{ tag | handle }}"
+                      selected="selected"
+                    >
+                      {{ tag | escape }}
+                    </option>
+                  {% else %}
+                    <option value="{{ tag | handle }}">
+                      {{ tag | escape }}
+                    </option>
+                  {% endif %}
+                {% endfor %}
+              {% endcapture %}
+
+              {% capture attributes %}
+                data-blog-tags
+                data-blog-url="{{ blog.url }}"
+              {% endcapture %}
+
+              {% assign label_text = 'blogs.blog_lists.tags_label_text' | t %}
+              <div class="main-blog__mobile-tags">
+                {% comment %}Component input-select:default:1.0.0-pre.10 begin{% endcomment %}
+                {% liquid
+                  assign field_name_75b1bff9 = field_name
+                  assign field_name = 'blog[tags]'
+                %}
+                {% comment %}
+                  @param label_text [Required]
+                    The text for the label to be included.
+                
+                  @param options [Required]
+                    The list of options to include in the select.
+                
+                  @param form_id [Optional]
+                    The form id to associate with
+                
+                  @param input_id [Optional]
+                    The option id to apply to the label and input
+                
+                  @param field_name [Optional]
+                    The field name for the form. Will be used for the "name" attribute.
+                
+                  @param attributes [Optional]
+                    Additional attributes to append to the input field.
+                {% endcomment %}
+                
+                {% if input_id == blank %}
+                  {% comment %}UUID input_id begin{% endcomment %}
+                  {% assign input_id = '0dcf6258-fc6a-4be0-8b73-45a93944e7bb' %}
+                  {% comment %}UUID input_id end{% endcomment %}
+                {% endif %}
+                
+                <div data-component="input-select" data-component-type="component" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="input-select">
+                  <label class="input-select__label" for="{{ input_id }}" data-label>{{ label_text }}</label>
+                  <div class="input-select__wrapper">
+                    <select
+                      id="{{ input_id }}"
+                      class="input-select__select"
+                      {% if form_id != blank %}form="{{ form_id }}"{% endif %}
+                      {% if field_name != blank %}name="{{ field_name }}"{% endif %}
+                      {{ attributes }}
+                      data-input
+                    >
+                      {{ options }}
+                    </select>
+                  </div>
+                </div>
+                
+                {% liquid
+                  assign field_name = field_name_75b1bff9
+                  assign field_name_75b1bff9 = nil
+                %}
+                {% comment %}Component input-select:default:1.0.0-pre.10 end{% endcomment %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section-header>
+  </section-wrapper>
+  <section-wrapper>
+    <section-content>
+      {% paginate blog.articles by paginate_by %}
+        {% if paginate.current_page != 1 %}
+          {% assign featured_block_present = false %}
+        {% endif %}
+        <div
+          class="
+            main-blog__content-wrapper
+            main-blog__content-wrapper--{{ section.settings.blog_card_layout }}
+          "
+        >
+          {% if featured_block_present %}
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'article' %}
+                  <div class="main-blog__article main-blog__article--collage" {{ block.shopify_attributes }}>
+                    {% comment %}Component article-card:default:1.0.0-pre.10 begin{% endcomment %}
+                    {% render 'article-card', article: featured_article, blog: blog, alternate_image: block.settings.alternate_image %}
+                    {% comment %}Component article-card:default:1.0.0-pre.10 end{% endcomment %}
+                  </div>
+                {% when 'image' %}
+                  <div class="main-blog__featured-image" {{ block.shopify_attributes }}>
+                    {% if block.settings.featured_image != blank %}
+                      {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+                      {% render 'lazy-img', img: block.settings.featured_image, size: '1200x', lazy: true, canvas: true %}
+                      {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </div>
+              {% endcase %}
+            {% endfor %}
+          {% endif %}
+          {% for article in blog.articles %}
+            {% if featured_block_present and article.id == featured_article.id %}
+              {% continue %}
+            {% endif %}
+            <div
+              class="
+                main-blog__article
+                {% if section.settings.blog_card_layout == 'collage' and forloop.index == 1 %}
+                  {% unless featured_block_present %}
+                    main-blog__article--collage
+                  {% endunless %}
+                {% endif %}
+              "
+            >
+              {% comment %}Component article-card:default:1.0.0-pre.10 begin{% endcomment %}
+              {% render 'article-card', article: article, blog: blog %}
+              {% comment %}Component article-card:default:1.0.0-pre.10 end{% endcomment %}
+            </div>
+          {% endfor %}
+        </div>
+        {% if paginate.pages > 1 %}
+          {% comment %}Component pagination:default:1.0.0-pre.10 begin{% endcomment %}
+          {% render 'pagination', paginate: paginate %}
+          {% comment %}Component pagination:default:1.0.0-pre.10 end{% endcomment %}
+        {% endif %}
+      {% endpaginate %}
+    </section-content>
+  </section-wrapper>
+</section>
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Blog post page header"
+    },
+    {
+      "type": "image_picker",
+      "id": "header_image",
+      "label": "Image",
+      "info": "Banner image for page title. 1920 x 300px recommended."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag_filer",
+      "label": "Show tag filter",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "blog_card_layout",
+      "label": "Layout on large screens",
+      "options": [
+        {
+          "value": "collage",
+          "label": "Collage"
+        },
+        {
+          "value": "grid",
+          "label": "Grid"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Blog post card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show article tags",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show article excerpt",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show article author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show article date",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Featured article",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "The featured article block will only display on the first page."
+        },
+        {
+          "type": "article",
+          "id": "featured_article",
+          "label": "Article"
+        },
+        {
+          "type": "image_picker",
+          "id": "alternate_image",
+          "label": "Image",
+          "info": "Replaces the article's default image. 1280 x 550px recommended."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Featured image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "The featured image block will only appear when the featured article block is also present."
+        },
+        {
+          "type": "image_picker",
+          "id": "featured_image",
+          "label": "Image",
+          "info": "960 x 1280px recommended."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

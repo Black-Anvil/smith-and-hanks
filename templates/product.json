@@ -1,0 +1,147 @@
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "block_1": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "block_2": {
+          "type": "price",
+          "settings": {
+            "show_label": false
+          }
+        },
+        "block_3": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "subheading"
+          }
+        },
+        "block_4": {
+          "type": "variant_picker",
+          "settings": {
+            "product_option_style": "select",
+            "sold_out_options": "selectable",
+            "swatches_enable": true,
+            "swatches_option_style": "color_swatch"
+          }
+        },
+        "block_5": {
+          "type": "quantity_selector",
+          "settings": {
+          }
+        },
+        "block_6": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
+        },
+        "block_7": {
+          "type": "description",
+          "settings": {
+          }
+        },
+        "block_8": {
+          "type": "details",
+          "settings": {
+            "show_tab_as_open": true,
+            "heading": "Product details",
+            "content": "<p>{{ product.metafields.my_fields.product_details | metafield_tag }}<\/p>",
+            "page": ""
+          }
+        },
+        "block_9": {
+          "type": "specifications",
+          "settings": {
+            "show_tab_as_open": false,
+            "heading": "Specifications",
+            "content": "<p>{{ product.metafields.my_fields.specifications.value }}<\/p>",
+            "page": ""
+          }
+        },
+        "block_10": {
+          "type": "shipping",
+          "settings": {
+            "show_tab_as_open": false,
+            "heading": "Shipping",
+            "content": "<p>{{ product.metafields.my_fields.shipping | metafield_tag }}<\/p>",
+            "page": ""
+          }
+        },
+        "block_11": {
+          "type": "documentation",
+          "settings": {
+            "show_tab_as_open": false,
+            "heading": "Documentation",
+            "content": "",
+            "page": ""
+          }
+        },
+        "block_12": {
+          "type": "reviews",
+          "settings": {
+            "show_tab_as_open": false,
+            "heading": "Reviews",
+            "content": "",
+            "page": ""
+          }
+        },
+        "cbebe0cd-7ebe-43e1-96d5-9f2a13aa5470": {
+          "type": "warranty",
+          "settings": {
+            "show_tab_as_open": false,
+            "heading": "Warranty",
+            "content": "<p>{{ product.metafields.my_fields.warranty | metafield_tag }}<\/p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5",
+        "block_6",
+        "block_7",
+        "block_8",
+        "block_9",
+        "block_10",
+        "block_11",
+        "block_12",
+        "cbebe0cd-7ebe-43e1-96d5-9f2a13aa5470"
+      ],
+      "settings": {
+        "select_first_available_variant": true,
+        "gallery_badges": "sale",
+        "gallery_layout": "column",
+        "show_gallery_thumbnails": true,
+        "media_ratio": "landscape",
+        "media_crop": "fit",
+        "mobile_media_width": 80,
+        "enable_image_zoom": true,
+        "autoplay": false,
+        "autoloop": true,
+        "mute_video": false
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "limit": 4,
+        "cards_per_group": "3"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations"
+  ]
+}

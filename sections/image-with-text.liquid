@@ -1,0 +1,678 @@
+{% comment %}
+  Section Settings
+
+  @param width [Optional]
+    The width of the section. Either 'wide' or 'constrained'.
+
+  @param image [Required]
+    The image to be displayed alongside the text.
+
+  @param image_position [Optional]
+    The position of the image: 'left' or 'right', default 'right'.
+
+  @param blocks [Required]
+    The list of blocks that will be shown in the text side of the section.
+
+{% endcomment %}
+
+<section data-component="image-with-text" data-component-type="section" {% if tag != blank %}data-component-tag="{{ tag }}" {% endif %}class="image-with-text">
+  <section-wrapper {% if section.settings.wide %}width="wide"{% endif %}>
+    <section-content>
+      <div
+        class="
+          image-with-text__content
+          image-with-text__content--image-style-{{ section.settings.image_style }}
+          image-with-text__content--image-position-{{ section.settings.image_position }}
+        "
+        style="
+          --block-text-color: {{ section.settings.color_text }};
+          --local-background-color: {{ section.settings.color_background }};
+          --local-image-width: {{ section.settings.image_width }}%;
+          {% if section.settings.image_height_desktop != 'natural' %}
+            --local-image-height-desktop: {{ section.settings.image_height_desktop }}px;
+          {% endif %}
+          {% if section.settings.image_height_mobile != 'natural' %}
+            --local-image-height-mobile: {{ section.settings.image_height_mobile }}px;
+          {% endif %}
+        "
+      >
+        {% if section.settings.image_position == 'left' %}
+          <div
+            class="
+              image-with-text__image
+              image-with-text__image--first
+              image-with-text__image--{{ section.settings.image_style }}
+            "
+          >
+            {% if section.settings.image %}
+              {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+              {% render 'lazy-img', img: section.settings.image, size: '1200x', lazy: true, canvas: true %}
+              {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div
+          class="
+            image-with-text__text
+            image-with-text__text--alignment-{{ section.settings.text_alignment }}
+          "
+        >
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'heading' %}
+                {% comment %}Component block-heading:sizeable:1.0.0-pre.10 begin{% endcomment %}
+                <div
+                  data-component="block-heading"
+                  data-component-type="block"
+                  {% if tag != blank %}data-component-tag="{{ tag }}"
+                  {% endif %}class="
+                    block-heading
+                    block-heading--desktop-{{ block.settings.size_desktop }}
+                    {% unless block.settings.size_mobile == 'same_as_desktop' %}
+                      block-heading--mobile-{{ block.settings.size_mobile }}
+                    {% endunless %}
+                  "
+                  {{ block.shopify_attributes }}
+                >
+                  <h2>
+                    {{ block.settings.content | escape }}
+                  </h2>
+                </div>
+                
+                {% comment %}Component block-heading:sizeable:1.0.0-pre.10 end{% endcomment %}
+              {% when 'preheading' %}
+                {% comment %}Component block-preheading:sizeable:1.0.0-pre.10 begin{% endcomment %}
+                <div
+                  data-component="block-preheading"
+                  data-component-type="block"
+                  {% if tag != blank %}data-component-tag="{{ tag }}"
+                  {% endif %}class="
+                    block-preheading
+                    block-preheading--{{ block.settings.size }}
+                    {% if block.settings.bolder %}
+                      block-preheading--bolder
+                    {% endif %}
+                    {% if block.settings.uppercase %}
+                      block-preheading--uppercase
+                    {% endif %}
+                  "
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.content | escape }}
+                </div>
+                
+                {% comment %}Component block-preheading:sizeable:1.0.0-pre.10 end{% endcomment %}
+              {% when 'text' %}
+                {% comment %}Component block-richtext:sizeable:1.0.0-pre.10 begin{% endcomment %}
+                <div
+                  data-component="block-richtext"
+                  data-component-type="block"
+                  {% if tag != blank %}data-component-tag="{{ tag }}"
+                  {% endif %}class="block-richtext block-richtext--{{ block.settings.size }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{ block.settings.content }}
+                </div>
+                
+                {% comment %}Component block-richtext:sizeable:1.0.0-pre.10 end{% endcomment %}
+              {% when 'button' %}
+                {% comment %}Component block-button-link:default:1.0.0-pre.10 begin{% endcomment %}
+                {% liquid
+                  assign size_04e90d17 = size
+                  assign size = 'medium'
+                %}
+                {% comment %}
+                
+                  @param size [Required]
+                    This defines the size of the button: small, medium, or large.
+                
+                {% endcomment %}
+                {% assign morph_base_color = block.settings.color_main %}
+                {% assign morph_adjustment = 3 %}
+                {% capture color_button_morphed %}{% comment %}Inject morph begin{% endcomment %}
+{% comment %}
+  This adjusts the color to give it an appropriate difference from the original color.
+  It is usually used for link hover color, and things where we need to distinguish a change.
+
+  @param morph_base_color {Color}
+    The origin color to morph
+
+  @param morph_adjustment {Number}
+    The number to multiply the lightness and saturation by. Default 2.
+{% endcomment %}
+
+{% if morph_adjustment == blank %}
+  {% assign morph_adjustment = 2 %}
+{% endif %}
+
+{% assign morph_adjustment = morph_adjustment | times: 1.0 %}
+
+{% assign color_lightness = morph_base_color | color_extract: 'lightness' %}
+
+{% if color_lightness > 20.0 %}
+  {% if color_lightness > 50.0 %}
+    {% assign light_adjustment = color_lightness | divided_by: 25.0 | times: morph_adjustment %}
+  {% else %}
+    {% assign light_adjustment = color_lightness | divided_by: 15.0 | times: morph_adjustment %}
+  {% endif %}
+  {% assign new_color = morph_base_color | color_darken: light_adjustment %}
+{% else %}
+  {% if color_lightness < 7.0 %}
+    {% assign light_adjustment = 3.0 | times: morph_adjustment %}
+    {% assign new_color = morph_base_color | color_desaturate: 45.0 %}
+  {% elsif color_lightness < 12.0 %}
+    {% assign light_adjustment = 2.25 | times: morph_adjustment %}
+    {% assign new_color = morph_base_color | color_desaturate: 15.0 %}
+  {% else %}
+    {% assign light_adjustment = 1.75 | times: morph_adjustment %}
+    {% assign new_color = morph_base_color %}
+  {% endif %}
+  {% assign new_color = new_color | color_lighten: light_adjustment %}
+{% endif %}
+
+{{ new_color }}
+
+{% assign morph_base_color = blank %}
+{% assign morph_adjustment = blank %}
+
+{% comment %}Inject morph end{% endcomment %}{% endcapture %}
+                
+                <div
+                  data-component="block-button-link"
+                  data-component-type="block"
+                  {% if tag != blank %}data-component-tag="{{ tag }}"
+                  {% endif %}class="block-button-link"
+                  style="
+                    --color-button-main-contrast: {{ block.settings.color_contrast }};
+                    --color-button-main: {{ block.settings.color_main }};
+                    --color-button-main-invoked: {{ color_button_morphed | strip }};
+                  "
+                  {{ block.shopify_attributes }}
+                >
+                  {% comment %}Component button-link:default:1.0.0-pre.10 begin{% endcomment %}
+                  {% liquid
+                    assign href_202218e4 = href
+                    assign href = block.settings.url
+                    assign style_202218e4 = style
+                    assign style = block.settings.style
+                    assign text_202218e4 = text
+                    assign text = block.settings.text | escape
+                  %}
+                  {% comment %}
+                    @param href [Required]
+                      This is the anchor tag for the link button.
+                  
+                    @param style [Required]
+                      This is the style of the button: primary, secondary, tertiary, or text.
+                  
+                    @param size [Required]
+                      This defines the size of the button: small, medium, or large.
+                  
+                    @param text [Required]
+                      This is the text to be included in the button.
+                  
+                    @param attributes [Optional]
+                      Any additional attributes to add to the button-link tag.
+                  {% endcomment %}
+                  
+                  <a
+                    data-component="button-link"
+                    data-component-type="component"
+                    {% if tag != blank %}data-component-tag="{{ tag }}"
+                    {% endif %}class="button-link button-link--{{ style }} button-link--{{ size }}{% if style == 'primary' or style == 'secondary' %} button-link--shadow{% endif %%}"
+                    {% if href != blank %}
+                      href="{{ href }}"
+                    {% endif %}
+                    {{ attributes }}
+                  >
+                    {{ text }}
+                  </a>
+                  
+                  {% liquid
+                    assign href = href_202218e4
+                    assign href_202218e4 = nil
+                    assign style = style_202218e4
+                    assign style_202218e4 = nil
+                    assign text = text_202218e4
+                    assign text_202218e4 = nil
+                  %}
+                  {% comment %}Component button-link:default:1.0.0-pre.10 end{% endcomment %}
+                </div>
+                
+                {% liquid
+                  assign size = size_04e90d17
+                  assign size_04e90d17 = nil
+                %}
+                {% comment %}Component block-button-link:default:1.0.0-pre.10 end{% endcomment %}
+              {% when 'image' %}
+                <div class="image-with-text__text-image">
+                  {% if block.settings.image %}
+                    {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+                    {% render 'lazy-img', img: block.settings.image, size: '800x', lazy: true, canvas: true %}
+                    {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+
+        {% if section.settings.image_position != 'left' %}
+          <div
+            class="
+              image-with-text__image
+              image-with-text__image--last
+              image-with-text__image--{{ section.settings.image_style }}
+            "
+          >
+            {% if section.settings.image %}
+              {% comment %}Component lazy-img:default:1.0.0-pre.10 begin{% endcomment %}
+              {% render 'lazy-img', img: section.settings.image, size: '1200x', lazy: true, canvas: true %}
+              {% comment %}Component lazy-img:default:1.0.0-pre.10 end{% endcomment %}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </section-content>
+  </section-wrapper>
+</section>
+{% schema %}
+{
+  "name": "Image with text",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "wide",
+      "label": "Wide display"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_height_desktop",
+      "label": "Desktop height",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "400",
+          "label": "400px"
+        },
+        {
+          "value": "500",
+          "label": "500px"
+        },
+        {
+          "value": "600",
+          "label": "600px"
+        },
+        {
+          "value": "700",
+          "label": "700px"
+        },
+        {
+          "value": "800",
+          "label": "800px"
+        }
+      ],
+      "default": "natural"
+    },
+    {
+      "type": "select",
+      "id": "image_height_mobile",
+      "label": "Mobile height",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural"
+        },
+        {
+          "value": "300",
+          "label": "300px"
+        },
+        {
+          "value": "400",
+          "label": "400px"
+        },
+        {
+          "value": "500",
+          "label": "500px"
+        }
+      ],
+      "default": "natural"
+    },
+    {
+      "type": "select",
+      "label": "Width",
+      "id": "image_width",
+      "options": [
+        {
+          "value": "50",
+          "label": "50%"
+        },
+        {
+          "value": "60",
+          "label": "60%"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "image_style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "padded",
+          "label": "Padded"
+        },
+        {
+          "value": "offset",
+          "label": "Offset"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": "Background color",
+      "default": "#F0F0F0"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text color",
+      "default": "#222222"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Heading",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "select",
+          "id": "size_desktop",
+          "label": "Desktop size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            },
+            {
+              "value": "extra-large",
+              "label": "Extra large"
+            }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "select",
+          "id": "size_mobile",
+          "label": "Mobile size",
+          "options": [
+            {
+              "value": "same_as_desktop",
+              "label": "Same as desktop"
+            },
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            },
+            {
+              "value": "extra-large",
+              "label": "Extra large"
+            }
+          ],
+          "default": "same_as_desktop"
+        }
+      ]
+    },
+    {
+      "type": "preheading",
+      "name": "Preheading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content",
+          "default": "Preheading"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "checkbox",
+          "id": "bolder",
+          "label": "Bolder text",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "Uppercase text",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Description",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "medium"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Label",
+          "default": "Button"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "text",
+              "label": "Signpost"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "color_main",
+          "label": "Main color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "color_contrast",
+          "label": "Contrast color",
+          "default": "#ffffff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "content": "Image with text"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "content": "<p>Pair text with an image to focus on your chosen product, collection, or blog post.</p>"
+          }
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

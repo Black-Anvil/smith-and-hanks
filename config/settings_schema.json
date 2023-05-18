@@ -1,0 +1,798 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Tailor",
+    "theme_author": "Pixel Union",
+    "theme_version": "1.1.0",
+    "theme_documentation_url": "https:\/\/support.pixelunion.net\/hc\/en-us\/sections\/4461374954003",
+    "theme_support_url": "https:\/\/support.pixelunion.net\/hc\/en-us\/requests\/new"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "color",
+        "id": "color_heading",
+        "label": "Headings",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "color_body",
+        "label": "Body",
+        "default": "#444444"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent",
+        "default": "#086321"
+      },
+      {
+        "type": "color",
+        "id": "color_lines",
+        "label": "Lines and borders",
+        "default": "#555555"
+      },
+      {
+        "type": "color",
+        "id": "color_site_background",
+        "label": "Site background",
+        "default": "#efeee1"
+      },
+      {
+        "type": "color",
+        "id": "color_site_background_secondary",
+        "label": "Secondary background",
+        "default": "#f0f0f0",
+        "info": "Use a color that is close to the site background."
+      },
+      {
+        "type": "header",
+        "content": "Products"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale color",
+        "default": "#c93030"
+      },
+      {
+        "type": "color",
+        "id": "color_badge_text",
+        "label": "Sale badge text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_star_ratings",
+        "label": "Star ratings",
+        "default": "#e8ad16"
+      },
+      {
+        "type": "color",
+        "id": "color_in_stock",
+        "label": "In stock",
+        "default": "#3c9342"
+      },
+      {
+        "type": "color",
+        "id": "color_low_in_stock",
+        "label": "Low in stock",
+        "default": "#d1ab25"
+      },
+      {
+        "type": "color",
+        "id": "color_out_of_stock",
+        "label": "Out of stock",
+        "default": "#bf262f"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_button_main_contrast",
+        "label": "Solid button text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_button_main",
+        "label": "Buttons",
+        "default": "#076320"
+      },
+      {
+        "type": "header",
+        "content": "Text protection",
+        "info": "Applies to features with text over top of an image. Adjust these properties to protect the legibility of text. [Learn more](http:\/\/support.pixelunion.net)"
+      },
+      {
+        "type": "color",
+        "id": "color_overlay_text",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_overlay",
+        "label": "Overlay",
+        "default": "#000000"
+      },
+      {
+        "id": "color_overlay_opacity",
+        "type": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Overlay opacity",
+        "unit": "%",
+        "default": 40
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "color_footer_background",
+        "label": "Background",
+        "default": "#f0f0f0"
+      },
+      {
+        "type": "color",
+        "id": "color_footer_text",
+        "label": "Text",
+        "default": "#444444"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Body text"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font",
+        "id": "font_body",
+        "default": "helvetica_n4"
+      },
+      {
+        "id": "font_body_size",
+        "type": "range",
+        "min": 15,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "label": "Base size",
+        "default": 16
+      },
+      {
+        "id": "font_body_height",
+        "type": "range",
+        "min": 1,
+        "max": 2,
+        "step": 0.1,
+        "label": "Line height",
+        "default": 1.5
+      },
+      {
+        "type": "header",
+        "content": "Heading text"
+      },
+      {
+        "type": "font_picker",
+        "label": "Font",
+        "id": "font_heading",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "checkbox",
+        "id": "font_heading_uppercase",
+        "label": "Uppercase",
+        "default": false
+      },
+      {
+        "id": "font_heading_size",
+        "type": "range",
+        "min": 16,
+        "max": 45,
+        "step": 1,
+        "unit": "px",
+        "label": "Base size",
+        "default": 40
+      },
+      {
+        "id": "font_heading_spacing",
+        "type": "range",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "%",
+        "label": "Letter spacing",
+        "default": 0
+      },
+      {
+        "id": "font_heading_height",
+        "type": "range",
+        "min": 1,
+        "max": 2,
+        "step": 0.1,
+        "label": "Line height",
+        "default": 1.2
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "32 x 32px .png required"
+      }
+    ]
+  },
+  {
+    "name": "Currency format",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Currency codes",
+        "info": "Cart and checkout prices always show currency codes. Example: $1.00 USD."
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_code_enabled",
+        "label": "Show currency codes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_checkout_lock_icon",
+        "label": "Show lock icon on checkout buttons",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_enable_cross_sell",
+        "label": "Enable cart recommendations",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "cart_cross_sell_heading",
+        "label": "Cart recommendations heading",
+        "default": "We think you'll love this"
+      },
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          },
+          {
+            "value": "page",
+            "label": "Page"
+          }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Enable order notes",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_dynamic_payment",
+        "label": "Show dynamic checkout buttons",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_vendor",
+        "label": "Show product vendor",
+        "default": true
+      },
+      {
+        "type": "collection",
+        "id": "continue_shopping_collection",
+        "label": "Continue shopping button link",
+        "info": "Visible when cart is empty."
+      }
+    ]
+  },
+  {
+    "name": "Product grid",
+    "settings": [
+      {
+        "type": "select",
+        "id": "product_card_color_option_name",
+        "label": "Color option name",
+        "options": [
+          {
+            "value": "below",
+            "label": "Display below product name"
+          },
+          {
+            "value": "beside",
+            "label": "Display beside product name"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          }
+        ],
+        "default": "below"
+      },
+      {
+        "type": "radio",
+        "id": "product_card_color_option",
+        "label": "Color options",
+        "info": "[Learn how to set up color swatches](https:\/\/support.pixelunion.net\/hc\/en-us\/articles\/4484475749779).",
+        "options": [
+          {
+            "value": "count",
+            "label": "Display as count"
+          },
+          {
+            "value": "swatches",
+            "label": "Display as swatches"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          }
+        ],
+        "default": "swatches"
+      },
+      {
+        "type": "text",
+        "id": "product_card_label_metafield",
+        "label": "Product label metafield",
+        "default": "my_fields.product_label"
+      },
+      {
+        "type": "text",
+        "id": "product_card_icon_metafield",
+        "label": "Product label icon metafield",
+        "default": "my_fields.product_label_icon"
+      },
+      {
+        "type": "select",
+        "id": "product_card_label_style",
+        "label": "Product label style",
+        "options": [
+          {
+            "value": "standard",
+            "label": "Standard"
+          },
+          {
+            "value": "outlined",
+            "label": "Outlined"
+          }
+        ],
+        "default": "standard"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_vendor",
+        "label": "Show vendor",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_enable_quick_add",
+        "label": "Enable quick add",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_card_show_second_image",
+        "label": "Show second image on hover",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product_card_media_ratio",
+        "label": "Media aspect ratio",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape (3:2)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (2:3)"
+          }
+        ],
+        "default": "natural"
+      },
+      {
+        "type": "select",
+        "id": "product_card_crop_mode",
+        "label": "Image crop mode",
+        "info": "This will have no effect when media aspect ratio is set to \"Natural\".",
+        "options": [
+          {
+            "value": "fill",
+            "label": "Fill"
+          },
+          {
+            "value": "fit",
+            "label": "Fit"
+          }
+        ],
+        "default": "fill"
+      },
+      {
+        "type": "header",
+        "content": "Product badges"
+      },
+      {
+        "type": "select",
+        "id": "product_card_badges",
+        "label": "Display badges",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "sale",
+            "label": "Sale badge only"
+          },
+          {
+            "value": "custom",
+            "label": "Custom badges only"
+          },
+          {
+            "value": "custom-preferred",
+            "label": "Custom badges preferred"
+          },
+          {
+            "value": "sale-custom",
+            "label": "Both sale and custom badges"
+          }
+        ],
+        "default": "sale"
+      },
+      {
+        "type": "header",
+        "content": "Product label"
+      },
+      {
+        "type": "paragraph",
+        "content": "Use a dynamic source to highlight a unique attribute by creating product label and product label icon metafields."
+      },
+      {
+        "type": "paragraph",
+        "content": "[Learn more about product labels](https:\/\/support.pixelunion.net\/hc\/en-us\/articles\/4495512773779)."
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Prices"
+      },
+      {
+        "type": "checkbox",
+        "id": "price_show_saved",
+        "label": "Show saved amount",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "price_savings_style",
+        "label": "Savings style",
+        "options": [
+          {
+            "value": "dollar",
+            "label": "Currency amount"
+          },
+          {
+            "value": "percent",
+            "label": "Percentage"
+          }
+        ],
+        "default": "dollar"
+      }
+    ]
+  },
+  {
+    "name": "Color swatches",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Add swatch image files to your store's [files area](\/admin\/settings\/files). Make sure the file names match the names of your color variants, replacing spaces and special characters with hyphens. For example, a variant called Pacific Blue would need a file named 'pacific-blue.png'."
+      },
+      {
+        "type": "paragraph",
+        "content": "[Learn more about color swatches](https:\/\/support.pixelunion.net\/hc\/en-us\/articles\/4484475749779-How-do-I-set-up-product-variant-swatches-)."
+      },
+      {
+        "type": "textarea",
+        "id": "swatches_custom_colors",
+        "label": "Custom colors",
+        "info": "Follow the format: <Color>: <HEX Color>. Example: Deep Purple: #7000AA. Each custom color must be on a new line.",
+        "default": "Black: #000000\nWhite: #FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Design"
+      },
+      {
+        "type": "select",
+        "id": "swatch_shape",
+        "label": "Swatch shape",
+        "options": [
+          {
+            "value": "circle",
+            "label": "Circle"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          }
+        ],
+        "default": "circle"
+      }
+    ]
+  },
+  {
+    "name": "Live search",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_live_search",
+        "label": "Enable live search",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_product_images",
+        "label": "Show product images in results",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_posts_and_pages",
+        "label": "Show blog posts and pages in results",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Product badges",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Design"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_badges_uppercase",
+        "label": "Uppercase text",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_badges_bold",
+        "label": "Bolder text",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "product_badges_font",
+        "label": "Font",
+        "options": [
+          {
+            "value": "body",
+            "label": "Use body font"
+          },
+          {
+            "value": "heading",
+            "label": "Use heading font"
+          }
+        ],
+        "default": "body"
+      },
+      {
+        "type": "paragraph",
+        "content": "[Learn more about product badges](https:\/\/support.pixelunion.net\/hc\/en-us\/articles\/4560683714195)."
+      },
+      {
+        "type": "header",
+        "content": "Custom badge 1"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_text_color_1",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_background_color_1",
+        "label": "Background",
+        "default": "#000000"
+      },
+      {
+        "type": "text",
+        "id": "product_badge_tag_1",
+        "label": "Tag",
+        "default": "Best selling"
+      },
+      {
+        "type": "header",
+        "content": "Custom badge 2"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_text_color_2",
+        "label": "Text",
+        "default": "#c93030"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_background_color_2",
+        "label": "Background",
+        "default": "#fff4f4"
+      },
+      {
+        "type": "text",
+        "id": "product_badge_tag_2",
+        "label": "Tag",
+        "default": "Almost gone"
+      },
+      {
+        "type": "header",
+        "content": "Custom badge 3"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_text_color_3",
+        "label": "Text",
+        "default": "#252525"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_background_color_3",
+        "label": "Background",
+        "default": "#f1f1f1"
+      },
+      {
+        "type": "text",
+        "id": "product_badge_tag_3",
+        "label": "Tag",
+        "default": "New"
+      },
+      {
+        "type": "header",
+        "content": "Custom badge 4"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_text_color_4",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "product_badge_background_color_4",
+        "label": "Background",
+        "default": "#076320"
+      },
+      {
+        "type": "text",
+        "id": "product_badge_tag_4",
+        "label": "Tag",
+        "default": "Our pick"
+      }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_image_zoom_animation",
+        "label": "Show image zoom animation",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter",
+        "info": "https:\/\/twitter.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https:\/\/facebook.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https:\/\/pinterest.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https:\/\/instagram.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok",
+        "info": "https:\/\/tiktok.com\/@shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr",
+        "info": "https:\/\/shopify.tumblr.com\/"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat",
+        "info": "https:\/\/www.snapchat.com\/add\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube",
+        "info": "https:\/\/youtube.com\/user\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo",
+        "info": "https:\/\/vimeo.com\/shopify"
+      }
+    ]
+  }
+]

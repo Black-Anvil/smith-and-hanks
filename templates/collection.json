@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "settings": {
+        "show_description": true,
+        "show_image": false,
+        "image_width_large": "50",
+        "image_height_large": "400",
+        "image_height_small": "200",
+        "image_position_small": "above",
+        "color_heading": "#ffffff",
+        "color_text": "#ffffff",
+        "color_background": "#940b2b"
+      }
+    },
+    "title": {
+      "type": "collection-title",
+      "disabled": true,
+      "settings": {
+        "show_description": true
+      }
+    },
+    "subcollections": {
+      "type": "collection-subcollections",
+      "disabled": true,
+      "blocks": {
+        "7bdef843-a5ad-448f-b66b-0a78bfa30076": {
+          "type": "collection",
+          "settings": {
+            "collection": "free-standing-wine-coolers",
+            "use_custom_image": true,
+            "custom_image": "shopify:\/\/shop_images\/wine_cabinets_glass_door_main.jpg"
+          }
+        },
+        "943969b1-9e50-4079-ac98-f2caf9d754de": {
+          "type": "collection",
+          "settings": {
+            "collection": "under-counter-wine-coolers",
+            "use_custom_image": true,
+            "custom_image": "shopify:\/\/shop_images\/under_counter_wine_cooler_main_2.jpg"
+          }
+        },
+        "5411515f-c766-4f75-8bd9-10013af0b701": {
+          "type": "collection",
+          "settings": {
+            "collection": "beverage-coolers",
+            "use_custom_image": true,
+            "custom_image": "shopify:\/\/shop_images\/beverage_cooler_under_counter_environment.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "7bdef843-a5ad-448f-b66b-0a78bfa30076",
+        "943969b1-9e50-4079-ac98-f2caf9d754de",
+        "5411515f-c766-4f75-8bd9-10013af0b701"
+      ],
+      "settings": {
+        "heading": "Main collections",
+        "subheading": "",
+        "collections_per_row": 3,
+        "menu": "main-menu",
+        "show_title": true,
+        "show_description": false,
+        "show_product_count": false,
+        "collection_card_media_ratio": "natural",
+        "collection_card_crop_mode": "fill"
+      }
+    },
+    "main": {
+      "type": "main-collection-grid",
+      "settings": {
+        "show_divider": true,
+        "columns_desktop": 4,
+        "products_per_page": "12",
+        "filters_show_sorting": true,
+        "filters_show_filters": true,
+        "filters_show_totals": true
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "title",
+    "subcollections",
+    "main"
+  ]
+}
