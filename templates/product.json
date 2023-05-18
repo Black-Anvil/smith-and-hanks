@@ -130,10 +130,26 @@
         "limit": 4,
         "cards_per_group": "3"
       }
+    },
+    "16843763717d6f823a": {
+      "type": "apps",
+      "blocks": {
+        "d20e70db-eb23-49f2-8c1b-1f0baee57c58": {
+          "type": "shopify:\/\/apps\/judge-me-product-reviews\/blocks\/review_widget\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "d20e70db-eb23-49f2-8c1b-1f0baee57c58"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [
     "main",
-    "product-recommendations"
+    "product-recommendations",
+    "16843763717d6f823a"
   ]
 }
