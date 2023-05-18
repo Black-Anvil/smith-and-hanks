@@ -141,7 +141,7 @@
           "type": "text",
           "settings": {
             "position": "center_center",
-            "content": "<p>Single zone coolers are best for XXXXXXXXXX situations, whereas dual zone coolers are optimal for YYYYYYYYYY.<\/p>",
+            "content": "<p>Single zone coolers are best for storing mostly red wines whereas dual zone coolers are optimal for storage of both red and white wines<\/p>",
             "size": "large"
           }
         },
@@ -172,7 +172,7 @@
         "image_2_focal_point": "center_center",
         "image_mobile_focal_point": "center_center",
         "text_alignment": "left",
-        "color_overlay_foreground": "#FFFFFF",
+        "color_overlay_foreground": "#ffffff",
         "overlay_color": "#000000",
         "overlay_gradient": "",
         "color_overlay_opacity": 50
@@ -187,8 +187,8 @@
     "16467603298a5c3a73": {
       "type": "featured-collection",
       "settings": {
-        "heading": "Wine cabinets",
-        "subheading": "Single and Dual Zone models",
+        "heading": "Wine Cabinets",
+        "subheading": "Single and Dual Zone Models",
         "collection": "large-collection-wine-cabinets",
         "limit": 4,
         "show_view_all_button": true,

@@ -46,15 +46,6 @@
           "settings": {
           }
         },
-        "block_8": {
-          "type": "details",
-          "settings": {
-            "show_tab_as_open": true,
-            "heading": "Product details",
-            "content": "<p>{{ product.metafields.my_fields.product_details | metafield_tag }}<\/p>",
-            "page": ""
-          }
-        },
         "block_9": {
           "type": "specifications",
           "settings": {
@@ -75,6 +66,7 @@
         },
         "block_11": {
           "type": "documentation",
+          "disabled": true,
           "settings": {
             "show_tab_as_open": false,
             "heading": "Documentation",
@@ -84,6 +76,7 @@
         },
         "block_12": {
           "type": "reviews",
+          "disabled": true,
           "settings": {
             "show_tab_as_open": false,
             "heading": "Reviews",
@@ -109,7 +102,6 @@
         "block_5",
         "block_6",
         "block_7",
-        "block_8",
         "block_9",
         "block_10",
         "block_11",

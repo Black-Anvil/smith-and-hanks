@@ -117,9 +117,9 @@
           "d91dcd0f-ef8a-41b9-8315-e97f6bc8e0b1"
         ],
         "settings": {
-          "header_logo": "shopify:\/\/shop_images\/S_H_LOGO_4be56172-57e6-48a5-bfbb-197c22def735.jpg",
+          "header_logo": "shopify:\/\/shop_images\/red-horizontal.png",
           "mobile_header_logo": "shopify:\/\/shop_images\/S_H_LOGO_4be56172-57e6-48a5-bfbb-197c22def735.jpg",
-          "logo_width": 120,
+          "logo_width": 175,
           "logo_width_mobile": 130,
           "nav_position": "left-left",
           "header_sticky": true,
