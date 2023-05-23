@@ -20,6 +20,8 @@
     "font_heading": "din_neuzeit_grotesk_n3",
     "font_heading_size": 18,
     "font_heading_height": 1.1,
+    "cart_enable_cross_sell": false,
+    "cart_type": "drawer",
     "cart_show_vendor": false,
     "product_card_color_option_name": "hidden",
     "product_card_label_style": "outlined",
