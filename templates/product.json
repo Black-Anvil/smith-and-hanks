@@ -1,5 +1,10 @@
 {
   "sections": {
+    "1721bcc0-51d2-43e2-902b-196dbae15604": {
+      "type": "judgeme-banner-section",
+      "settings": {
+      }
+    },
     "main": {
       "type": "product",
       "blocks": {
@@ -148,6 +153,7 @@
     }
   },
   "order": [
+    "1721bcc0-51d2-43e2-902b-196dbae15604",
     "main",
     "product-recommendations",
     "16843763717d6f823a"
