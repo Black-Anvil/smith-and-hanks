@@ -1,22 +1,44 @@
-<div class='jdgm-widget jdgm-all-reviews-text' data-from-snippet='{% if concierge_install != nil  %}{{ concierge_install }}{% else %}{% endif %}' >
-  <a href="#judgeme_product_reviews">
-    <span class='jdgm-all-reviews-text__text' data-score="{{ shop.metafields.judgeme.all_reviews_rating }}" data-number-of-reviews="{{ shop.metafields.judgeme.all_reviews_count }}" data-locale="en">
-      Customers rate us {{ shop.metafields.judgeme.all_reviews_rating | round: 1 }}/5 based on {{ shop.metafields.judgeme.all_reviews_count }} reviews.
-    </span>
-    <p> Click to see or leave reviews.</p>
-  </a>
-</div>
+{%- assign product_rating = product.metafields.reviews.rating.value -%}
+{% if product.metafields.reviews.rating_count > 0 %}
+  <div class='jdgm-widget jdgm-all-reviews-text {{ section.settings.txt_align }} custom' data-from-snippet='{% if concierge_install != nil  %}{{ concierge_install }}{% else %}{% endif %}' >
+    <a href="#judgeme_product_reviews">
+      <span class='jdgm-all-reviews-text__text' data-score="{{ shop.metafields.judgeme.all_reviews_rating }}" data-number-of-reviews="{{ shop.metafields.judgeme.all_reviews_count }}" data-locale="en">
+        Our customers rate this product <span class="jdgm-link">{{ product_rating }} / 5.0 </span>based on {{ product.metafields.reviews.rating_count }} review{% if product.metafields.reviews.rating_count > 1 %}s{% endif %}.
+      </span>
+      <p class="jdgm-link"> Click to see or leave reviews.</p>
+    </a>
+  </div>
+{% endif %}
 
 {% schema %}
 {
-    "name": "Judge.me Banner Link",
-    "settings": [
-
-    ],
-    "presets": [
+  "name": "Judge.me Banner Link",
+  "settings": [
+    {
+      "type": "select",
+      "id": "txt_align",
+      "label": "Text alignment",
+      "options": [
         {
-            "name": "Judge.me Banner Link"
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
         }
-    ]
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+      {
+          "name": "Judge.me Banner Link"
+      }
+  ]
 }
 {% endschema %}
