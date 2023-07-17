@@ -1103,3 +1103,42 @@ body:not(.user-is-tabbing) summary {
   border: 1px solid var(--color-error);
   box-shadow: 0 0 10px rgba(var(--color-error-rgb), 0.8);
 }
+
+{% comment%}/////////////////////////////////////
+/////////////////////////////////////////////////
+//////////////CUSTOM STYLE RULES/////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////{% endcomment %}
+
+:root {
+  scroll-behavior: smooth;
+}
+#judgeme_product_reviews::before {
+  content:"";
+  display: block;
+  height: 82px;
+  margin-top: -82px;
+}
+.jdgm-all-reviews-text.custom {
+  padding: 0 var(--space-gutter-mobile);
+  text-align: center;
+}
+.jdgm-all-reviews-text.custom > a {
+  pointer-events: auto;
+  display: unset;
+}
+
+@media screen and (min-width: 720px) {
+  .jdgm-all-reviews-text.custom {
+    padding: 0 var(--space-gutter-desktop);
+  }
+  .jdgm-all-reviews-text.left {
+    text-align: left;
+  }
+  .jdgm-all-reviews-text.center {
+    text-align: center;
+  }
+  .jdgm-all-reviews-text.right {
+    text-align: right;
+  }
+}
